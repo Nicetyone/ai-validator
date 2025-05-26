@@ -10,6 +10,17 @@
       <p class="text-gray-700 mb-4">
         Our platform provides a reliable way to verify the authenticity of documents, helping institutions, businesses, and individuals distinguish between human-created content and that produced by artificial intelligence.
       </p>
+      <p class="text-gray-700"> 
+        🔗 Curious about the code? Check out the project on 
+        <a 
+          href="https://github.com/Nicetyone/ai-validator" 
+          target="_blank" 
+          rel="noopener" 
+          class="text-blue-600 underline" 
+        > 
+          GitHub 
+        </a>. 
+      </p>
     </div>
     
     <div class="bg-white shadow-md rounded-lg p-6 mb-8">

@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex flex-col">
     <!-- Header -->
-    <header class="bg-white shadow-md">
+    <header class="bg-white dark:bg-gray-900 dark:text-gray-100 shadow-md">
       <div class="container mx-auto px-4 py-4 flex justify-between items-center">
         <NuxtLink to="/" class="text-2xl font-bold text-blue-600">AI-Validator</NuxtLink>
         <div class="flex items-center space-x-4">
@@ -24,7 +24,7 @@
 
     <div class="flex-grow flex">
       <!-- Sidebar -->
-      <aside class="w-64 bg-gray-800 text-white">
+      <aside class="w-64 bg-gray-800 dark:bg-gray-800 text-white">
         <div class="p-4">
           <h2 class="text-xl font-semibold">Dashboard</h2>
         </div>
@@ -55,7 +55,7 @@
       </aside>
 
       <!-- Main Content -->
-      <main class="flex-grow p-6 bg-gray-100">
+      <main class="flex-grow p-6 bg-gray-100 dark:bg-gray-900">
         <slot />
       </main>
     </div>

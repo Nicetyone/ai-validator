@@ -16,7 +16,10 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@iconify-json/ph": "^1.2.2",
+    "@nuxt/icon": "^1.13.0",
     "@nuxtjs/tailwindcss": "^7.0.0-beta.0",
-    "@pinia/nuxt": "^0.11.0"
+    "@pinia/nuxt": "^0.11.0",
+    "nuxt-icon": "^1.0.0-beta.7"
   }
 }

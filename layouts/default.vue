@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex flex-col">
     <!-- Header/Navbar -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
+    <header class="bg-white dark:bg-gray-900 dark:text-gray-100 shadow-md sticky top-0 z-50">
       <div class="container mx-auto px-4 py-3">
         <div class="flex justify-between items-center">
           <NuxtLink to="/" class="text-2xl font-bold text-blue-600 flex items-center gap-2">
@@ -36,6 +36,7 @@
                 /> 
               </svg> 
             </a>
+            <DarkToggle />
           </nav>
           
           <!-- Mobile menu button -->
@@ -61,6 +62,7 @@
             >
               My Documents
             </NuxtLink>
+            <DarkToggle class="mt-2" />
           </nav>
         </div>
       </div>
@@ -72,7 +74,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-100 py-8 mt-12">
+    <footer class="bg-gray-100 dark:bg-gray-900 dark:text-gray-100 py-8 mt-12">
       <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
@@ -128,5 +130,6 @@
 </template>
 
 <script setup>
+import DarkToggle from '~/components/DarkToggle.vue'
 const mobileMenuOpen = ref(false);
 </script> 

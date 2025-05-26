@@ -38,7 +38,7 @@
 
         <div v-else>
           <!-- Certificate -->
-          <div class="bg-white rounded-lg shadow-md overflow-hidden print:shadow-none print:border print:border-gray-300">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden print:shadow-none print:border print:border-gray-300">
             <!-- Certificate Header -->
             <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-8 print:bg-white print:text-black">
               <div class="text-center">
@@ -82,14 +82,14 @@
               <!-- Explanation -->
               <div class="mb-8 text-center max-w-2xl mx-auto">
                 <div class="text-lg font-semibold mb-2">Analysis Summary:</div>
-                <p class="text-gray-700">
+                <p class="text-gray-700 dark:text-gray-300">
                   {{ document.summary }}
                 </p>
               </div>
               
               <!-- Certification Statement -->
               <div class="mb-8 text-center">
-                <p class="text-gray-700">
+                <p class="text-gray-700 dark:text-gray-300">
                   This certificate verifies that the document has been analyzed by AI-Validator's proprietary 
                   algorithm designed to detect AI-generated content. The analysis was performed on 
                   {{ formatDate(document.date) }} and the results are valid as of this date.

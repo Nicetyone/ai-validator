@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex flex-col">
     <!-- Header/Navbar -->
-    <header class="bg-white dark:bg-gray-900 dark:text-gray-100 shadow-md sticky top-0 z-50">
+    <header class="bg-white dark:bg-gray-900 dark:text-gray-200 shadow-md sticky top-0 z-50">
       <div class="container mx-auto px-4 py-3">
         <div class="flex justify-between items-center">
           <NuxtLink to="/" class="text-2xl font-bold text-blue-600 flex items-center gap-2">
@@ -12,10 +12,10 @@
           </NuxtLink>
           
           <nav class="hidden md:flex items-center space-x-8">
-            <NuxtLink to="/" class="text-gray-700 hover:text-blue-600 font-medium">Home</NuxtLink>
-            <NuxtLink to="/validate" class="text-gray-700 hover:text-blue-600 font-medium">Validate</NuxtLink>
-            <NuxtLink to="/docs" class="text-gray-700 hover:text-blue-600 font-medium">Documentation</NuxtLink>
-            <NuxtLink to="/about" class="text-gray-700 hover:text-blue-600 font-medium">About</NuxtLink>
+            <NuxtLink to="/" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium">Home</NuxtLink>
+            <NuxtLink to="/validate" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium">Validate</NuxtLink>
+            <NuxtLink to="/docs" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium">Documentation</NuxtLink>
+            <NuxtLink to="/about" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium">About</NuxtLink>
             <NuxtLink 
               to="/uploads" 
               class="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition duration-300"
@@ -27,7 +27,7 @@
               href="https://github.com/Nicetyone/ai-validator" 
               target="_blank" 
               rel="noopener" 
-              class="text-gray-500 hover:text-blue-600 transition" 
+              class="text-gray-500 dark:text-gray-400 hover:text-blue-600 transition"
               aria-label="GitHub repository" 
             > 
               <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"> 
@@ -40,7 +40,7 @@
           </nav>
           
           <!-- Mobile menu button -->
-          <button class="md:hidden text-gray-700 hover:text-blue-600 focus:outline-none" @click="mobileMenuOpen = !mobileMenuOpen">
+          <button class="md:hidden text-gray-700 dark:text-gray-300 hover:text-blue-600 focus:outline-none" @click="mobileMenuOpen = !mobileMenuOpen">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
               <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -51,10 +51,10 @@
         <!-- Mobile menu -->
         <div v-if="mobileMenuOpen" class="md:hidden mt-4 pb-3">
           <nav class="flex flex-col space-y-3">
-            <NuxtLink to="/" class="text-gray-700 hover:text-blue-600 font-medium py-2" @click="mobileMenuOpen = false">Home</NuxtLink>
-            <NuxtLink to="/validate" class="text-gray-700 hover:text-blue-600 font-medium py-2" @click="mobileMenuOpen = false">Validate</NuxtLink>
-            <NuxtLink to="/docs" class="text-gray-700 hover:text-blue-600 font-medium py-2" @click="mobileMenuOpen = false">Documentation</NuxtLink>
-            <NuxtLink to="/about" class="text-gray-700 hover:text-blue-600 font-medium py-2" @click="mobileMenuOpen = false">About</NuxtLink>
+            <NuxtLink to="/" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium py-2" @click="mobileMenuOpen = false">Home</NuxtLink>
+            <NuxtLink to="/validate" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium py-2" @click="mobileMenuOpen = false">Validate</NuxtLink>
+            <NuxtLink to="/docs" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium py-2" @click="mobileMenuOpen = false">Documentation</NuxtLink>
+            <NuxtLink to="/about" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 font-medium py-2" @click="mobileMenuOpen = false">About</NuxtLink>
             <NuxtLink 
               to="/uploads" 
               class="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition duration-300 inline-block w-full text-center"
@@ -74,12 +74,12 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-100 dark:bg-gray-900 dark:text-gray-100 py-8 mt-12">
+    <footer class="bg-gray-100 dark:bg-gray-900 dark:text-gray-200 py-8 mt-12">
       <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <h3 class="text-lg font-semibold mb-4">AI-Validator</h3>
-            <p class="text-gray-600 text-sm">
+            <p class="text-gray-600 dark:text-gray-400 text-sm">
               Detect AI-generated content with confidence. Our platform helps you validate PDF documents for AI involvement.
             </p>
           </div>
@@ -87,17 +87,17 @@
           <div>
             <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
             <ul class="space-y-2">
-              <li><NuxtLink to="/" class="text-gray-600 hover:text-blue-600 text-sm">Home</NuxtLink></li>
-              <li><NuxtLink to="/validate" class="text-gray-600 hover:text-blue-600 text-sm">Validate Document</NuxtLink></li>
-              <li><NuxtLink to="/docs" class="text-gray-600 hover:text-blue-600 text-sm">Documentation</NuxtLink></li>
-              <li><NuxtLink to="/about" class="text-gray-600 hover:text-blue-600 text-sm">About Us</NuxtLink></li>
+              <li><NuxtLink to="/" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 text-sm">Home</NuxtLink></li>
+              <li><NuxtLink to="/validate" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 text-sm">Validate Document</NuxtLink></li>
+              <li><NuxtLink to="/docs" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 text-sm">Documentation</NuxtLink></li>
+              <li><NuxtLink to="/about" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 text-sm">About Us</NuxtLink></li>
             </ul>
           </div>
           
           <div>
             <h3 class="text-lg font-semibold mb-4">Resources</h3>
             <ul class="space-y-2">
-              <li><NuxtLink to="/docs/ai-usage" class="text-gray-600 hover:text-blue-600 text-sm">AI Usage Guide</NuxtLink></li>
+              <li><NuxtLink to="/docs/ai-usage" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 text-sm">AI Usage Guide</NuxtLink></li>
             </ul>
           </div>
           
@@ -108,7 +108,7 @@
                 href="https://github.com/Nicetyone/ai-validator" 
                 target="_blank" 
                 rel="noopener" 
-                class="text-gray-600 hover:text-blue-600" 
+                class="text-gray-600 dark:text-gray-400 hover:text-blue-600"
                 aria-label="GitHub repository" 
               > 
                 <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"> 
@@ -122,7 +122,7 @@
         </div>
         
         <div class="mt-8 pt-6 border-t border-gray-200 text-center">
-          <p class="text-sm text-gray-600">© {{ new Date().getFullYear() }} AI-Validator. All rights reserved.</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">© {{ new Date().getFullYear() }} AI-Validator. All rights reserved.</p>
         </div>
       </div>
     </footer>

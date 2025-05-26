@@ -9,7 +9,7 @@
         </p>
         <NuxtLink 
           to="/dashboard" 
-          class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition duration-300"
+          class="bg-white dark:bg-gray-800 text-blue-600 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition duration-300"
         >
           Try It Now
         </NuxtLink>
@@ -17,9 +17,9 @@
     </section>
 
     <!-- Features Section -->
-    <section class="py-16 bg-white">
+    <section class="py-16 bg-white dark:bg-gray-800">
       <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-12">How It Works</h2>
+        <h2 class="text-3xl dark:text-gray-300 font-bold text-center mb-12">How It Works</h2>
         
         <div class="grid md:grid-cols-3 gap-8">
           <div class="bg-gray-50 p-6 rounded-lg shadow-md">
@@ -49,19 +49,19 @@
         <h2 class="text-3xl font-bold text-center mb-12">AI Detection Levels</h2>
         
         <div class="grid md:grid-cols-3 gap-8">
-          <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-green-500">
             <h3 class="text-xl font-semibold mb-3 text-green-600">Level 1: Clean</h3>
             <p class="text-gray-600 mb-4">No AI detected. The document appears to be entirely human-created.</p>
             <div class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm inline-block">Fully Authentic</div>
           </div>
           
-          <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-yellow-500">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-yellow-500">
             <h3 class="text-xl font-semibold mb-3 text-yellow-600">Level 2: AI-Supported</h3>
             <p class="text-gray-600 mb-4">Document shows signs of AI assistance, but with significant human input.</p>
             <div class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm inline-block">Partially AI-Generated</div>
           </div>
           
-          <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-red-500">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-red-500">
             <h3 class="text-xl font-semibold mb-3 text-red-600">Level 3: AI-Generated</h3>
             <p class="text-gray-600 mb-4">Document appears to be primarily AI-generated with minimal human editing.</p>
             <div class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm inline-block">AI Ripoff</div>
@@ -79,7 +79,7 @@
         </p>
         <NuxtLink 
           to="/dashboard" 
-          class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition duration-300"
+          class="bg-white dark:bg-gray-800 text-blue-600 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition duration-300"
         >
           Go to Dashboard
         </NuxtLink>

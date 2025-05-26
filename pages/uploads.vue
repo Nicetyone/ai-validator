@@ -63,20 +63,20 @@
       </div>
       
       <!-- Verification tool -->
-      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-        <h2 class="text-xl font-bold mb-4">Verify a Document</h2>
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl dark:text-gray-300 font-bold mb-4">Verify a Document</h2>
         <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
           <div class="flex-1">
             <input 
               v-model="verificationId"
               placeholder="Enter certificate ID (e.g., ABCD-1234-EFGH-5678)"
-              class="w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500"
+              class="w-full dark:text-gray-300 p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500"
             />
           </div>
           <div>
             <button 
               @click="verifyDocument"
-              class="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded-md font-medium hover:bg-green-700 transition duration-300"
+              class="w-full dark:text-gray-300 md:w-auto bg-green-600 text-white px-6 py-2 rounded-md font-medium hover:bg-green-700 transition duration-300"
               :disabled="!verificationId"
             >
               Verify
@@ -115,11 +115,11 @@
       <!-- Documents section -->
       <div v-if="!isLoading">
         <!-- Empty state -->
-        <div v-if="filteredDocuments.length === 0" class="bg-white rounded-lg shadow-md p-12 text-center">
+        <div v-if="filteredDocuments.length === 0" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-12 text-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
           </svg>
-          <h3 class="text-xl font-medium text-gray-900 mb-2">No documents found</h3>
+          <h3 class="text-xl dark:text-gray-300 font-medium text-gray-900 mb-2">No documents found</h3>
           <p class="text-gray-500 mb-6">
             {{ 
               filters.status || filters.result 
@@ -137,7 +137,7 @@
         
         <!-- Documents grid -->
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div v-for="doc in filteredDocuments" :key="doc.id" class="bg-white rounded-lg shadow-md overflow-hidden">
+          <div v-for="doc in filteredDocuments" :key="doc.id" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
             <div class="p-6">
               <div class="flex items-start space-x-4">
                 <div class="bg-gray-100 rounded-lg p-3">
@@ -146,8 +146,8 @@
                   </svg>
                 </div>
                 <div class="flex-1 min-w-0">
-                  <h3 class="text-lg font-semibold text-gray-900 truncate">{{ doc.name }}</h3>
-                  <p class="text-sm text-gray-500">{{ formatDate(doc.date) }}</p>
+                  <h3 class="text-lg dark:text-gray-300 font-semibold text-gray-900 truncate">{{ doc.name }}</h3>
+                  <p class="text-sm dark:text-gray-300 text-gray-500">{{ formatDate(doc.date) }}</p>
                 </div>
               </div>
               
@@ -165,7 +165,7 @@
               </div>
               
               <div v-if="doc.certificateId" class="mt-2">
-                <p class="text-xs text-gray-500">Certificate ID: <span class="font-mono">{{ doc.certificateId }}</span></p>
+                <p class="text-xs dark:text-gray-300 text-gray-500">Certificate ID: <span class="font-mono">{{ doc.certificateId }}</span></p>
               </div>
               
               <div class="mt-6 flex space-x-2">
@@ -202,7 +202,7 @@
             <button
               @click="prevPage"
               :disabled="pagination.currentPage === 1"
-              class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 hover:bg-gray-50"
               :class="{ 'cursor-not-allowed opacity-50': pagination.currentPage === 1 }"
             >
               <span class="sr-only">Previous</span>
@@ -218,7 +218,7 @@
               :class="[
                 page === pagination.currentPage 
                   ? 'z-10 bg-blue-50 border-blue-500 text-blue-600' 
-                  : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50',
+                  : 'bg-white dark:bg-gray-800 border-gray-300 text-gray-500 hover:bg-gray-50',
                 'relative inline-flex items-center px-4 py-2 border text-sm font-medium'
               ]"
             >
@@ -228,7 +228,7 @@
             <button
               @click="nextPage"
               :disabled="pagination.currentPage === pagination.totalPages"
-              class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 hover:bg-gray-50"
               :class="{ 'cursor-not-allowed opacity-50': pagination.currentPage === pagination.totalPages }"
             >
               <span class="sr-only">Next</span>

@@ -38,7 +38,7 @@
 
         <div v-else>
           <!-- Document Information -->
-          <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
             <div class="flex items-start justify-between">
               <div class="flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-red-500 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -62,7 +62,7 @@
           </div>
 
           <!-- Summary Section -->
-          <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
             <h2 class="text-xl font-semibold mb-4">Analysis Summary</h2>
             
             <div class="flex flex-col md:flex-row md:divide-x divide-gray-200">
@@ -76,13 +76,13 @@
               </div>
               
               <div class="md:w-2/3 pl-0 md:pl-6">
-                <p class="text-gray-700 mb-4">
+                <p class="text-gray-700 dark:text-gray-300 mb-4">
                   {{ document.summary }}
                 </p>
                 
                 <div class="mt-4">
                   <h3 class="font-semibold mb-2">Key Findings:</h3>
-                  <ul class="list-disc pl-5 text-gray-700">
+                  <ul class="list-disc pl-5 text-gray-700 dark:text-gray-300">
                     <li v-for="(finding, index) in document.keyFindings" :key="index" class="mb-1">
                       {{ finding }}
                     </li>
@@ -93,7 +93,7 @@
           </div>
 
           <!-- Detailed Analysis -->
-          <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
             <h2 class="text-xl font-semibold mb-4">Detailed Analysis</h2>
             
             <div class="space-y-4">
@@ -104,13 +104,13 @@
                     <div class="h-2.5 rounded-full" :style="{ width: category.score + '%' }" :class="getCategoryScoreClass(category.score)"></div>
                   </div>
                 </div>
-                <p class="text-gray-700 text-sm">{{ category.description }}</p>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">{{ category.description }}</p>
               </div>
             </div>
           </div>
 
           <!-- Content Excerpts -->
-          <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
             <h2 class="text-xl font-semibold mb-4">Content Excerpts</h2>
             
             <div v-if="document.excerpts.length === 0" class="text-gray-500 italic text-center py-4">
@@ -119,7 +119,7 @@
             
             <div v-else class="space-y-4">
               <div v-for="(excerpt, index) in document.excerpts" :key="index" class="border-l-4 pl-4 py-1" :class="getExcerptBorderClass(excerpt.type)">
-                <p class="text-gray-700 mb-1 italic">"{{ excerpt.text }}"</p>
+                <p class="text-gray-700 dark:text-gray-300 mb-1 italic">"{{ excerpt.text }}"</p>
                 <p class="text-sm text-gray-500">{{ excerpt.explanation }}</p>
               </div>
             </div>

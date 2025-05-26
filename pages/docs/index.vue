@@ -14,7 +14,7 @@
         <!-- Introduction -->
         <div class="mb-12">
           <h2 class="text-2xl font-bold mb-4">Documentation Overview</h2>
-          <p class="text-gray-700 mb-4">
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
             Welcome to the AI-Validator documentation. Here you'll find comprehensive guides and documentation to help you understand and use AI detection tools effectively. Browse through our documentation sections below to learn more.
           </p>
         </div>
@@ -23,7 +23,7 @@
         <div class="grid grid-cols-1 gap-6 mb-12">
           <!-- AI-Usage Guide Panel -->
           <div
-            class="bg-white rounded-lg shadow-md p-6 transition duration-300 cursor-pointer hover:shadow-lg"
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition duration-300 cursor-pointer hover:shadow-lg"
             :class="{ 'ring-2 ring-blue-500': openItem === 1 }"
             @click="toggle(1)"
           >
@@ -43,7 +43,7 @@
             <transition name="fade">
               <ul
                 v-if="openItem === 1"
-                class="list-disc pl-5 text-gray-700 space-y-2"
+                class="list-disc pl-5 text-gray-700 dark:text-gray-300 space-y-2"
               >
                 <li>Ethical guidelines &amp; transparency</li>
                 <li>Disclosure templates for assignments</li>
@@ -54,7 +54,7 @@
           </div>
           <!-- Validation Process Panel -->
           <div
-            class="bg-white rounded-lg shadow-md p-6 transition duration-300 cursor-pointer hover:shadow-lg"
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition duration-300 cursor-pointer hover:shadow-lg"
             :class="{ 'ring-2 ring-blue-500': openItem === 2 }"
             @click="toggle(2)"
           >
@@ -74,7 +74,7 @@
             <transition name="fade">
               <ul
                 v-if="openItem === 2"
-                class="list-disc pl-5 text-gray-700 space-y-2"
+                class="list-disc pl-5 text-gray-700 dark:text-gray-300 space-y-2"
               >
                 <li>PDF parsing &amp; text extraction</li>
                 <li>AI‑generated text probability scoring</li>
@@ -87,7 +87,7 @@
 
           <!-- Certificates Panel -->
           <div
-            class="bg-white rounded-lg shadow-md p-6 transition duration-300 cursor-pointer hover:shadow-lg"
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition duration-300 cursor-pointer hover:shadow-lg"
             :class="{ 'ring-2 ring-blue-500': openItem === 3 }"
             @click="toggle(3)"
           >
@@ -107,7 +107,7 @@
             <transition name="fade">
               <ul
                 v-if="openItem === 3"
-                class="list-disc pl-5 text-gray-700 space-y-2"
+                class="list-disc pl-5 text-gray-700 dark:text-gray-300 space-y-2"
               >
                 <li>Levels &amp; score thresholds explained</li>
                 <li>Unique verification code &amp; QR</li>
@@ -121,7 +121,7 @@
         <!-- Getting started -->
         <div class="bg-blue-50 rounded-lg p-8 mb-12">
           <h2 class="text-2xl font-bold mb-4">Getting Started</h2>
-          <p class="text-gray-700 mb-6">
+          <p class="text-gray-700 dark:text-gray-300 mb-6">
             New to AI-Validator? Follow these quick steps to get started:
           </p>
 
@@ -130,7 +130,7 @@
               <span class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center font-bold text-sm mr-3 flex-shrink-0 mt-0.5">1</span>
               <div>
                 <h3 class="font-semibold text-lg">Create an account (optional)</h3>
-                <p class="text-gray-700">While AI-Validator can be used without an account, creating one allows you to save your validation history.</p>
+                <p class="text-gray-700 dark:text-gray-300">While AI-Validator can be used without an account, creating one allows you to save your validation history.</p>
               </div>
             </li>
 
@@ -138,7 +138,7 @@
               <span class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center font-bold text-sm mr-3 flex-shrink-0 mt-0.5">2</span>
               <div>
                 <h3 class="font-semibold text-lg">Upload a document</h3>
-                <p class="text-gray-700">Go to the <NuxtLink to="/validate" class="text-blue-600 hover:underline">Validate</NuxtLink> page and upload your PDF document.</p>
+                <p class="text-gray-700 dark:text-gray-300">Go to the <NuxtLink to="/validate" class="text-blue-600 hover:underline">Validate</NuxtLink> page and upload your PDF document.</p>
               </div>
             </li>
 
@@ -146,7 +146,7 @@
               <span class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center font-bold text-sm mr-3 flex-shrink-0 mt-0.5">3</span>
               <div>
                 <h3 class="font-semibold text-lg">Review the results</h3>
-                <p class="text-gray-700">Once processing is complete, review the detailed report to understand the AI detection findings.</p>
+                <p class="text-gray-700 dark:text-gray-300">Once processing is complete, review the detailed report to understand the AI detection findings.</p>
               </div>
             </li>
 
@@ -154,7 +154,7 @@
               <span class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center font-bold text-sm mr-3 flex-shrink-0 mt-0.5">4</span>
               <div>
                 <h3 class="font-semibold text-lg">Get your certificate</h3>
-                <p class="text-gray-700">Download or share your certificate of authenticity to prove your document's AI detection status.</p>
+                <p class="text-gray-700 dark:text-gray-300">Download or share your certificate of authenticity to prove your document's AI detection status.</p>
               </div>
             </li>
           </ol>

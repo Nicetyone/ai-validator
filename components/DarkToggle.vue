@@ -1,29 +1,20 @@
 <script setup lang="ts">
-const isDark = useState('dark', () => false)
+import { useDark } from '~/composables/useDark'
 
-onMounted(() => {
-  if (process.client) {
-    const stored = localStorage.getItem('dark')
-    if (stored)
-      isDark.value = stored === 'true'
-  }
-})
+const { isDark } = useDark()
 
-watchEffect(() => {
-  if (process.client) {
-    document.documentElement.classList.toggle('dark', isDark.value)
-    localStorage.setItem('dark', String(isDark.value))
-  }
-})
+function toggleDark () {
+  isDark.value = !isDark.value
+}
 </script>
 
 <template>
   <button
-    @click="isDark.value = !isDark.value"
+    type="button"
     aria-label="Toggle dark mode"
-    class="p-2 rounded-full"
+    class="p-2 rounded-full focus:outline-none"
+    @click="toggleDark"
   >
-    <Icon name="ph:sun-bold" v-if="isDark.value" />
-    <Icon name="ph:moon-bold" v-else />
+    <Icon :name="isDark ? 'ph:moon-bold' : 'ph:sun-bold'" />
   </button>
 </template>

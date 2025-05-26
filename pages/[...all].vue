@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex flex-col items-center justify-center text-center p-6">
     <h1 class="text-5xl font-bold mb-4 text-blue-600">404</h1>
-    <p class="text-xl mb-6 text-gray-700">
+    <p class="text-xl mb-6 text-gray-700 dark:text-gray-300">
       Oops – we couldn’t find that page.
     </p>
     <NuxtLink

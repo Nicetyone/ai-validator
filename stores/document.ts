@@ -22,6 +22,9 @@ export interface Document {
     type: 'ai' | 'human' | 'unknown';
     explanation: string;
   }[];
+  language?: string;    // Detected language name (e.g., "English", "Spanish")
+  languageCode?: string; // Language code (e.g., "en", "es")
+  languageConfidence?: number; // Confidence level of language detection (0-100)
 }
 
 // Simulated server-side storage - persists across page refreshes
@@ -393,7 +396,7 @@ export const useDocumentStore = defineStore('document', {
         // Create a deterministic ID based on the hash
         const id = hashUtils.generateIdFromHash(hash);
         
-        // Generate AI analysis based on content
+        // Analyze document
         const analysisResult = await this.analyzeDocument(file);
         
         // Generate a deterministic certificate ID based on the hash
@@ -413,7 +416,10 @@ export const useDocumentStore = defineStore('document', {
           certificateId,
           keyFindings: analysisResult.keyFindings,
           analysisCategories: analysisResult.analysisCategories,
-          excerpts: analysisResult.excerpts
+          excerpts: analysisResult.excerpts,
+          language: analysisResult.language,
+          languageCode: analysisResult.languageCode,
+          languageConfidence: analysisResult.languageConfidence
         };
         
         // Add to simulated server
@@ -444,23 +450,30 @@ export const useDocumentStore = defineStore('document', {
       // Extract text content from file
       const fileContent = await this.extractTextFromFile(file);
       
+      // Detect the language of the content
+      const langInfo = this.detectLanguage(fileContent);
+      
+      // Get language-specific stop words and phrases
+      const stopWords = this.getStopWords(langInfo.code);
+      const boilerplatePhrases = this.getBoilerplatePhrases(langInfo.code);
+      
       // Calculate various linguistic metrics
-      const metrics = this.calculateLinguisticMetrics(fileContent);
+      const metrics = this.calculateLinguisticMetrics(fileContent, langInfo.code);
       
       // Analyze patterns in the text
-      const patternAnalysis = this.analyzeTextPatterns(fileContent);
+      const patternAnalysis = this.analyzeTextPatterns(fileContent, langInfo.code, boilerplatePhrases);
       
       // Analyze language complexity
-      const complexityAnalysis = this.analyzeLanguageComplexity(fileContent);
+      const complexityAnalysis = this.analyzeLanguageComplexity(fileContent, langInfo.code);
       
       // Analyze topic coherence
-      const coherenceScore = this.analyzeTopicCoherence(fileContent);
+      const coherenceScore = this.analyzeTopicCoherence(fileContent, langInfo.code, stopWords);
       
       // Calculate creativity score
-      const creativityScore = this.analyzeCreativity(fileContent);
+      const creativityScore = this.analyzeCreativity(fileContent, langInfo.code);
       
       // Calculate repetition score
-      const repetitionScore = this.analyzeRepetition(fileContent);
+      const repetitionScore = this.analyzeRepetition(fileContent, langInfo.code);
       
       // Calculate AI score - lower is more human-like
       const rawScore = (
@@ -528,7 +541,10 @@ export const useDocumentStore = defineStore('document', {
         summary,
         keyFindings,
         analysisCategories,
-        excerpts
+        excerpts,
+        language: langInfo.language,
+        languageCode: langInfo.code,
+        languageConfidence: Math.round(langInfo.confidence * 100)
       };
     },
     
@@ -650,7 +666,27 @@ export const useDocumentStore = defineStore('document', {
     },
     
     // Generate key findings based on result level
-    generateKeyFindings(result: string, metrics: any, patternAnalysis: any, complexityAnalysis: any): string[] {
+    generateKeyFindings(
+      result: string, 
+      metrics: any,
+      patternAnalysis: any,
+      complexityAnalysis: any
+    ): string[] {
+      // Get language code from pattern analysis
+      const langCode = patternAnalysis.languageCode || 'en';
+      
+      // Get translated key findings based on language
+      if (langCode !== 'en') {
+        return this.getTranslatedKeyFindings(
+          result, 
+          metrics, 
+          patternAnalysis, 
+          complexityAnalysis, 
+          langCode
+        );
+      }
+      
+      // Default English key findings
       if (result.includes('Clean')) {
         return [
           'Natural language patterns with varied sentence structures',
@@ -682,6 +718,123 @@ export const useDocumentStore = defineStore('document', {
           'Poor contextual coherence with limited logical flow between concepts'
         ];
       }
+    },
+    
+    // Get translated key findings based on language
+    getTranslatedKeyFindings(
+      result: string, 
+      metrics: any,
+      patternAnalysis: any,
+      complexityAnalysis: any,
+      langCode: string
+    ): string[] {
+      // Spanish translations
+      if (langCode === 'es') {
+        if (result.includes('Clean')) {
+          return [
+            'Patrones de lenguaje natural con estructuras de oraciones variadas',
+            `Fuerte diversidad léxica (${Math.round(metrics.lexicalDiversity * 100)}% palabras únicas)`,
+            'Complejidad apropiada y legibilidad equilibrada',
+            'Flujo lógico y coherencia contextual entre párrafos',
+            'Uso limitado de frases genéricas y lenguaje predefinido'
+          ];
+        } else if (result.includes('AI-Supported')) {
+          return [
+            'Patrones de escritura mixtos con alguna repetición estructural',
+            `Diversidad léxica moderada (${Math.round(metrics.lexicalDiversity * 100)}% palabras únicas)`,
+            patternAnalysis.boilerplateScore > 0.5 
+              ? 'Varios casos de frases predefinidas típicas de texto de IA' 
+              : 'Uso ocasional de frases genéricas que podrían mejorarse',
+            complexityAnalysis.score > 0.5
+              ? 'Complejidad desigual con algunas secciones demasiado simplificadas o innecesariamente complejas'
+              : 'Complejidad generalmente equilibrada con algunas inconsistencias',
+            'Algunas secciones muestran mayor aporte humano mientras que otras parecen más generadas por IA'
+          ];
+        } else {
+          return [
+            'Estructuras de oraciones muy formulaicas en todo el texto',
+            `Baja diversidad léxica (${Math.round(metrics.lexicalDiversity * 100)}% palabras únicas)`,
+            'Uso frecuente de frases genéricas y lenguaje predefinido',
+            patternAnalysis.genericScore > 0.7 
+              ? 'Uso excesivo de lenguaje vago y no específico típico de contenido generado por IA'
+              : 'Frases repetitivas que carecen de originalidad',
+            'Poca coherencia contextual con flujo lógico limitado entre conceptos'
+          ];
+        }
+      }
+      
+      // French translations
+      if (langCode === 'fr') {
+        if (result.includes('Clean')) {
+          return [
+            'Modèles de langage naturel avec des structures de phrases variées',
+            `Forte diversité lexicale (${Math.round(metrics.lexicalDiversity * 100)}% de mots uniques)`,
+            'Complexité appropriée et lisibilité équilibrée',
+            'Flux logique et cohérence contextuelle entre les paragraphes',
+            'Utilisation limitée de phrases génériques et de langage préfabriqué'
+          ];
+        } else if (result.includes('AI-Supported')) {
+          return [
+            'Modèles d\'écriture mixtes avec quelques répétitions structurelles',
+            `Diversité lexicale modérée (${Math.round(metrics.lexicalDiversity * 100)}% de mots uniques)`,
+            patternAnalysis.boilerplateScore > 0.5 
+              ? 'Plusieurs instances de phrases préfabriquées typiques du texte IA' 
+              : 'Utilisation occasionnelle de formulations génériques qui pourraient être améliorées',
+            complexityAnalysis.score > 0.5
+              ? 'Complexité inégale avec certaines sections trop simplifiées ou inutilement complexes'
+              : 'Complexité généralement équilibrée avec quelques incohérences',
+            'Certaines sections montrent une contribution humaine plus forte tandis que d\'autres semblent plus générées par l\'IA'
+          ];
+        } else {
+          return [
+            'Structures de phrases très formulaires tout au long du texte',
+            `Faible diversité lexicale (${Math.round(metrics.lexicalDiversity * 100)}% de mots uniques)`,
+            'Utilisation fréquente de phrases génériques et de langage préfabriqué',
+            patternAnalysis.genericScore > 0.7 
+              ? 'Utilisation excessive d\'un langage vague et non spécifique typique du contenu généré par l\'IA'
+              : 'Formulations répétitives manquant d\'originalité',
+            'Faible cohérence contextuelle avec un flux logique limité entre les concepts'
+          ];
+        }
+      }
+      
+      // German translations
+      if (langCode === 'de') {
+        if (result.includes('Clean')) {
+          return [
+            'Natürliche Sprachmuster mit abwechslungsreichen Satzstrukturen',
+            `Starke lexikalische Vielfalt (${Math.round(metrics.lexicalDiversity * 100)}% einzigartige Wörter)`,
+            'Angemessene Komplexität und ausgewogene Lesbarkeit',
+            'Logischer Fluss und kontextuelle Kohärenz zwischen Absätzen',
+            'Begrenzte Verwendung von generischen Phrasen und vorgefertigter Sprache'
+          ];
+        } else if (result.includes('AI-Supported')) {
+          return [
+            'Gemischte Schreibmuster mit einigen strukturellen Wiederholungen',
+            `Mäßige lexikalische Vielfalt (${Math.round(metrics.lexicalDiversity * 100)}% einzigartige Wörter)`,
+            patternAnalysis.boilerplateScore > 0.5 
+              ? 'Mehrere Instanzen von vorgefertigten Phrasen, die typisch für KI-Text sind' 
+              : 'Gelegentliche Verwendung generischer Formulierungen, die verbessert werden könnten',
+            complexityAnalysis.score > 0.5
+              ? 'Ungleichmäßige Komplexität mit einigen zu vereinfachten oder unnötig komplexen Abschnitten'
+              : 'Generell ausgewogene Komplexität mit einigen Inkonsistenzen',
+            'Einige Abschnitte zeigen stärkeren menschlichen Input, während andere mehr KI-generiert erscheinen'
+          ];
+        } else {
+          return [
+            'Hochgradig formelhafte Satzstrukturen im gesamten Text',
+            `Geringe lexikalische Vielfalt (${Math.round(metrics.lexicalDiversity * 100)}% einzigartige Wörter)`,
+            'Häufige Verwendung von generischen Phrasen und vorgefertigter Sprache',
+            patternAnalysis.genericScore > 0.7 
+              ? 'Übermäßige Verwendung von vager, unspezifischer Sprache, typisch für KI-generierte Inhalte'
+              : 'Repetitive Formulierungen, die Originalität vermissen lassen',
+            'Schlechte kontextuelle Kohärenz mit begrenztem logischen Fluss zwischen Konzepten'
+          ];
+        }
+      }
+      
+      // For other languages, fall back to English
+      return this.generateKeyFindings(result, metrics, patternAnalysis, complexityAnalysis);
     },
     
     // Generate analysis categories based on AI score
@@ -853,19 +1006,29 @@ export const useDocumentStore = defineStore('document', {
     },
     
     // Calculate linguistic metrics
-    calculateLinguisticMetrics(text: string) {
+    calculateLinguisticMetrics(text: string, langCode: string = 'en') {
       // Normalize text
       const normalizedText = text.toLowerCase().replace(/\s+/g, ' ').trim();
       
+      // Get language-specific sentence and word splitting patterns
+      const sentenceSplitters = this.getSentenceSplitters(langCode);
+      const stopWords = this.getStopWords(langCode);
+      
       // Split into sentences, words, and paragraphs
-      const sentences = normalizedText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      const sentences = normalizedText.split(sentenceSplitters).filter(s => s.trim().length > 0);
       const words = normalizedText.split(/\s+/).filter(w => w.length > 0);
       const paragraphs = normalizedText.split(/\n\s*\n/).filter(p => p.trim().length > 0);
       
+      // Filter out stop words for more accurate lexical analysis
+      const contentWords = words.filter(word => !stopWords.includes(word));
+      
       // Word-level metrics
       const wordCount = words.length;
+      const contentWordCount = contentWords.length;
       const uniqueWords = new Set(words).size;
+      const uniqueContentWords = new Set(contentWords).size;
       const wordVariety = uniqueWords / (wordCount || 1);
+      const contentWordVariety = uniqueContentWords / (contentWordCount || 1);
       const avgWordLength = words.reduce((sum, word) => sum + word.length, 0) / (wordCount || 1);
       
       // Sentence-level metrics
@@ -878,15 +1041,10 @@ export const useDocumentStore = defineStore('document', {
       const avgParagraphLength = wordCount / (paragraphCount || 1);
       const paragraphLengthVariation = this.calculateVariation(paragraphs.map(p => p.split(/\s+/).length));
       
-      // Calculate lexical diversity (ratio of unique words to total words)
-      const lexicalDiversity = uniqueWords / (wordCount || 1);
+      // Get language-specific transition words
+      const transitionWords = this.getTransitionWords(langCode);
       
       // Count transition words (indicators of complex thought)
-      const transitionWords = [
-        'however', 'therefore', 'furthermore', 'consequently', 'meanwhile',
-        'nevertheless', 'alternatively', 'conversely', 'similarly', 'additionally',
-        'subsequently', 'despite', 'although', 'whereas', 'moreover'
-      ];
       const transitionWordCount = words.filter(word => transitionWords.includes(word)).length;
       const transitionWordRatio = transitionWordCount / (wordCount || 1);
       
@@ -894,6 +1052,7 @@ export const useDocumentStore = defineStore('document', {
         wordCount,
         uniqueWords,
         wordVariety,
+        contentWordVariety,
         avgWordLength,
         sentenceCount,
         avgSentenceLength,
@@ -901,10 +1060,66 @@ export const useDocumentStore = defineStore('document', {
         paragraphCount,
         avgParagraphLength,
         paragraphLengthVariation,
-        lexicalDiversity,
+        lexicalDiversity: contentWordVariety, // Use content word variety as lexical diversity
         transitionWordCount,
         transitionWordRatio
       };
+    },
+    
+    // Get language-specific sentence splitters
+    getSentenceSplitters(langCode: string): RegExp {
+      // Most languages use similar sentence ending punctuation
+      const standardPattern = /[.!?]+/;
+      
+      // Language-specific patterns
+      const patterns: Record<string, RegExp> = {
+        // Spanish inverted question and exclamation marks
+        'es': /[.!?¡¿]+/,
+        
+        // Chinese, Japanese use different punctuation
+        'zh': /[。！？]+/,
+        'ja': /[。！？]+/,
+        
+        // Thai doesn't use periods for sentences but uses spaces
+        'th': /[\s]+/
+        
+        // Add more language-specific patterns as needed
+      };
+      
+      return patterns[langCode] || standardPattern;
+    },
+    
+    // Get language-specific transition words
+    getTransitionWords(langCode: string): string[] {
+      const transitionWordsByLanguage: Record<string, string[]> = {
+        'en': [
+          'however', 'therefore', 'furthermore', 'consequently', 'meanwhile',
+          'nevertheless', 'alternatively', 'conversely', 'similarly', 'additionally',
+          'subsequently', 'despite', 'although', 'whereas', 'moreover'
+        ],
+        
+        'es': [
+          'sin embargo', 'por lo tanto', 'además', 'en consecuencia', 'mientras tanto',
+          'no obstante', 'alternativamente', 'inversamente', 'similarmente', 'adicionalmente',
+          'posteriormente', 'a pesar de', 'aunque', 'mientras que', 'por otra parte'
+        ],
+        
+        'fr': [
+          'cependant', 'donc', 'en outre', 'par conséquent', 'pendant ce temps',
+          'néanmoins', 'alternativement', 'inversement', 'de même', 'de plus',
+          'par la suite', 'malgré', 'bien que', 'tandis que', 'en revanche'
+        ],
+        
+        'de': [
+          'jedoch', 'deshalb', 'außerdem', 'folglich', 'mittlerweile',
+          'trotzdem', 'alternativ', 'umgekehrt', 'ähnlich', 'zusätzlich',
+          'anschließend', 'trotz', 'obwohl', 'wohingegen', 'darüber hinaus'
+        ]
+        
+        // Add more languages as needed
+      };
+      
+      return transitionWordsByLanguage[langCode] || transitionWordsByLanguage['en'];
     },
     
     // Calculate statistical variation (normalized standard deviation)
@@ -922,19 +1137,21 @@ export const useDocumentStore = defineStore('document', {
     },
     
     // Analyze text for AI patterns
-    analyzeTextPatterns(text: string) {
+    analyzeTextPatterns(text: string, langCode: string = 'en', customBoilerplatePhrases?: string[]) {
       // Normalize text
       const normalizedText = text.toLowerCase().replace(/\s+/g, ' ').trim();
       
+      // Get language-specific patterns
+      const sentenceSplitters = this.getSentenceSplitters(langCode);
+      
       // Split text into sentences
-      const sentences = normalizedText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      const sentences = normalizedText.split(sentenceSplitters).filter(s => s.trim().length > 0);
       
       // Check for repetitive sentence structures
       const sentenceStructures = sentences.map(s => {
         // Simplified structure analysis - count words and identify question/statement
         const wordCount = s.split(/\s+/).length;
-        const isQuestion = s.includes('?') || s.includes(' how ') || s.includes(' what ') || 
-                          s.includes(' why ') || s.includes(' when ') || s.includes(' where ');
+        const isQuestion = this.isQuestionInLanguage(s, langCode);
         return { wordCount, isQuestion };
       });
       
@@ -951,29 +1168,20 @@ export const useDocumentStore = defineStore('document', {
       const patternGroups = Object.values(structureCounts);
       const patternRepetition = 1 - (patternGroups.length / (sentences.length || 1));
       
-      // Check for boilerplate phrases common in AI text
-      const boilerplatePhrases = [
-        'it is important to note', 'it is worth mentioning', 'it is crucial to understand',
-        'it is essential to recognize', 'it is interesting to consider', 'it should be noted',
-        'as we can see', 'as mentioned earlier', 'in conclusion', 'to summarize',
-        'in this context', 'moving forward', 'on the other hand', 'with that being said',
-        'with this in mind', 'at the end of the day', 'when all is said and done'
-      ];
+      // Use language-specific boilerplate phrases or custom ones if provided
+      const boilerplatePhrases = customBoilerplatePhrases || this.getBoilerplatePhrases(langCode);
       
+      // Check for boilerplate phrases common in AI text
       const boilerplateCount = boilerplatePhrases.reduce((count, phrase) => {
         return count + (normalizedText.match(new RegExp(phrase, 'g')) || []).length;
       }, 0);
       
       const boilerplateScore = Math.min(1, boilerplateCount / (sentences.length * 0.3 || 1));
       
-      // Check for generic, non-specific language
-      const genericPhrases = [
-        'various factors', 'many people', 'in many cases', 'different aspects',
-        'several studies', 'multiple sources', 'different perspectives', 'numerous examples',
-        'a wide range', 'a variety of', 'many instances', 'significant implications',
-        'important considerations', 'diverse perspectives', 'key insights'
-      ];
+      // Get language-specific generic phrases
+      const genericPhrases = this.getGenericPhrases(langCode);
       
+      // Check for generic, non-specific language
       const genericCount = genericPhrases.reduce((count, phrase) => {
         return count + (normalizedText.match(new RegExp(phrase, 'g')) || []).length;
       }, 0);
@@ -998,12 +1206,68 @@ export const useDocumentStore = defineStore('document', {
         patternRepetition,
         boilerplateScore,
         genericScore,
-        description
+        description,
+        languageCode: langCode
       };
     },
     
+    // Check if a sentence is a question in the specified language
+    isQuestionInLanguage(sentence: string, langCode: string): boolean {
+      // Basic patterns that indicate questions in various languages
+      const questionPatterns: Record<string, RegExp[]> = {
+        'en': [/\?/, /\b(who|what|when|where|why|how|which|is|are|do|does|did|can|could|will|would|should|may|might)\b/i],
+        'es': [/\?/, /¿/, /\b(quién|qué|cuándo|dónde|por qué|cómo|cuál|es|son|hace|hacen|hizo|puede|podría|será|sería|debería)\b/i],
+        'fr': [/\?/, /\b(qui|que|quand|où|pourquoi|comment|quel|quelle|est-ce|sont-ils|fait|font|a fait|peut|pourrait|sera|serait|devrait)\b/i],
+        'de': [/\?/, /\b(wer|was|wann|wo|warum|wie|welche|ist|sind|tut|tun|tat|kann|könnte|wird|würde|sollte)\b/i],
+        // Add more languages as needed
+      };
+      
+      // Get patterns for the specified language, or fall back to English
+      const patterns = questionPatterns[langCode] || questionPatterns['en'];
+      
+      // Check if any pattern matches
+      return patterns.some(pattern => pattern.test(sentence));
+    },
+    
+    // Get language-specific generic phrases
+    getGenericPhrases(langCode: string): string[] {
+      const genericPhrasesByLanguage: Record<string, string[]> = {
+        'en': [
+          'various factors', 'many people', 'in many cases', 'different aspects',
+          'several studies', 'multiple sources', 'different perspectives', 'numerous examples',
+          'a wide range', 'a variety of', 'many instances', 'significant implications',
+          'important considerations', 'diverse perspectives', 'key insights'
+        ],
+        
+        'es': [
+          'varios factores', 'muchas personas', 'en muchos casos', 'diferentes aspectos',
+          'varios estudios', 'múltiples fuentes', 'diferentes perspectivas', 'numerosos ejemplos',
+          'una amplia gama', 'una variedad de', 'muchos casos', 'implicaciones significativas',
+          'consideraciones importantes', 'perspectivas diversas', 'ideas clave'
+        ],
+        
+        'fr': [
+          'divers facteurs', 'beaucoup de gens', 'dans de nombreux cas', 'différents aspects',
+          'plusieurs études', 'sources multiples', 'différentes perspectives', 'nombreux exemples',
+          'une large gamme', 'une variété de', 'nombreux cas', 'implications significatives',
+          'considérations importantes', 'perspectives diverses', 'idées clés'
+        ],
+        
+        'de': [
+          'verschiedene faktoren', 'viele menschen', 'in vielen fällen', 'verschiedene aspekte',
+          'mehrere studien', 'multiple quellen', 'unterschiedliche perspektiven', 'zahlreiche beispiele',
+          'ein breites spektrum', 'eine vielzahl von', 'viele fälle', 'bedeutende auswirkungen',
+          'wichtige überlegungen', 'vielfältige perspektiven', 'wichtige erkenntnisse'
+        ]
+        
+        // Add more languages as needed
+      };
+      
+      return genericPhrasesByLanguage[langCode] || genericPhrasesByLanguage['en'];
+    },
+    
     // Analyze language complexity
-    analyzeLanguageComplexity(text: string) {
+    analyzeLanguageComplexity(text: string, languageCode: string) {
       // Normalize text
       const normalizedText = text.toLowerCase().replace(/\s+/g, ' ').trim();
       
@@ -1104,21 +1368,18 @@ export const useDocumentStore = defineStore('document', {
     },
     
     // Analyze topic coherence
-    analyzeTopicCoherence(text: string): number {
+    analyzeTopicCoherence(text: string, langCode: string = 'en', customStopWords?: string[]): number {
       // Normalize text
       const normalizedText = text.toLowerCase().replace(/\s+/g, ' ').trim();
       
       // Split into paragraphs and sentences
       const paragraphs = normalizedText.split(/\n\s*\n/).filter(p => p.trim().length > 0);
       
-      // If very little text, return low coherence
+      // If very little text, return moderate coherence
       if (paragraphs.length <= 1) return 0.7;
       
-      // Extract topic words from each paragraph (excluding stop words)
-      const stopWords = ['the', 'and', 'a', 'an', 'in', 'on', 'at', 'of', 'to', 'for', 'with', 
-        'by', 'about', 'as', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 
-        'had', 'do', 'does', 'did', 'but', 'or', 'if', 'then', 'else', 'when', 'up', 'down',
-        'this', 'that', 'these', 'those', 'it', 'they', 'he', 'she', 'we', 'you', 'i', 'me'];
+      // Get language-specific stop words or use custom ones if provided
+      const stopWords = customStopWords || this.getStopWords(langCode);
       
       const paragraphTopics = paragraphs.map(paragraph => {
         const words = paragraph.split(/\s+/).filter(w => w.length > 3 && !stopWords.includes(w));
@@ -1174,13 +1435,13 @@ export const useDocumentStore = defineStore('document', {
     },
     
     // Analyze creativity
-    analyzeCreativity(text: string): number {
+    analyzeCreativity(text: string, langCode: string = 'en'): number {
       // Normalize text
       const normalizedText = text.toLowerCase().replace(/\s+/g, ' ').trim();
       
       // Split into words and sentences
       const words = normalizedText.split(/\s+/).filter(w => w.length > 0);
-      const sentences = normalizedText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      const sentences = normalizedText.split(this.getSentenceSplitters(langCode)).filter(s => s.trim().length > 0);
       
       // If very little text, return low creativity
       if (words.length < 50) return 0.3;
@@ -1189,25 +1450,20 @@ export const useDocumentStore = defineStore('document', {
       const uniqueWords = new Set(words).size;
       const lexicalDiversity = uniqueWords / (words.length || 1);
       
-      // Check for metaphors, similes, and figurative language
-      const figurativePatterns = [
-        'like a ', 'as a ', 'as if ', 'similar to ', 'resembles ', 'compared to ',
-        'metaphor', 'simile', 'analogy'
-      ];
+      // Get language-specific figurative patterns
+      const figurativePatterns = this.getFigurativePatterns(langCode);
       
+      // Check for metaphors, similes, and figurative language
       const figurativeCount = figurativePatterns.reduce((count, pattern) => {
         return count + (normalizedText.match(new RegExp(pattern, 'g')) || []).length;
       }, 0);
       
       const figurativeRatio = figurativeCount / (sentences.length || 1);
       
-      // Check for emotional and evocative language
-      const emotionalWords = [
-        'love', 'hate', 'fear', 'joy', 'sadness', 'anger', 'surprise', 'disgust',
-        'excited', 'terrified', 'delighted', 'frustrated', 'anxious', 'peaceful',
-        'wonderful', 'terrible', 'beautiful', 'ugly', 'amazing', 'horrific'
-      ];
+      // Get language-specific emotional words
+      const emotionalWords = this.getEmotionalWords(langCode);
       
+      // Check for emotional and evocative language
       const emotionalCount = emotionalWords.reduce((count, word) => {
         const regex = new RegExp(`\\b${word}\\b`, 'g');
         return count + (normalizedText.match(regex) || []).length;
@@ -1240,12 +1496,12 @@ export const useDocumentStore = defineStore('document', {
     },
     
     // Analyze repetition
-    analyzeRepetition(text: string): number {
+    analyzeRepetition(text: string, langCode: string = 'en'): number {
       // Normalize text
       const normalizedText = text.toLowerCase().replace(/\s+/g, ' ').trim();
       
       // Split into sentences and words
-      const sentences = normalizedText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      const sentences = normalizedText.split(this.getSentenceSplitters(langCode)).filter(s => s.trim().length > 0);
       const words = normalizedText.split(/\s+/).filter(w => w.length > 0);
       
       // If very little text, return medium repetition
@@ -1291,7 +1547,7 @@ export const useDocumentStore = defineStore('document', {
       const trigramRepetitionScore = repeatedTrigrams / (Object.keys(trigramCounts).length || 1);
       const phraseRepetitionScore = repeatedPhrases / (Object.keys(phraseFrequency).length || 1);
       
-      // Check for repeated sentence structures
+      // Get language-specific sentence starters (first few words of sentences)
       const sentenceStarts = sentences.map(s => {
         const words = s.split(/\s+/).filter(w => w.length > 0);
         return words.slice(0, Math.min(3, words.length)).join(' ');
@@ -1333,20 +1589,13 @@ export const useDocumentStore = defineStore('document', {
       // If not enough text, return empty array
       if (sentences.length < 3) return [];
       
-      const excerpts = [];
+      const excerpts: { text: string; type: 'ai' | 'human' | 'unknown'; explanation: string; }[] = [];
       
-      // Check for generic AI phrases
-      const aiPhrasePatterns = [
-        'it is important to note that',
-        'it is worth mentioning that',
-        'it should be noted that',
-        'as we can see',
-        'at the end of the day',
-        'various factors',
-        'numerous examples',
-        'multiple sources',
-        'a wide range of'
-      ];
+      // Detect language from pattern analysis
+      const langCode = patternAnalysis.languageCode || 'en';
+      
+      // Get language-specific AI phrase patterns
+      const aiPhrasePatterns = this.getBoilerplatePhrases(langCode);
       
       // Find sentences containing AI phrases
       for (const pattern of aiPhrasePatterns) {
@@ -1366,21 +1615,8 @@ export const useDocumentStore = defineStore('document', {
         }
       }
       
-      // Look for likely human-written sentences
-      // (complex, with emotional language or unique phrasing)
-      const humanIndicators = [
-        // Personal experience markers
-        'i remember when', 'in my experience', 'i found that',
-        'personally,', 'from my perspective', 'in my view',
-        
-        // Complex reasoning markers
-        'could be argued that', 'contrary to popular belief',
-        'paradoxically,', 'interestingly enough',
-        
-        // Emotional or vivid language
-        'absolutely stunning', 'deeply troubling', 'profoundly moving',
-        'utterly fascinating', 'genuinely surprised'
-      ];
+      // Get language-specific human indicators
+      const humanIndicators = this.getHumanIndicators(langCode);
       
       // Find sentences containing human indicators
       for (const indicator of humanIndicators) {
@@ -1463,6 +1699,331 @@ export const useDocumentStore = defineStore('document', {
       }
       
       return excerpts.slice(0, 3); // Return at most 3 excerpts
+    },
+    
+    // Get language-specific human indicators
+    getHumanIndicators(langCode: string): string[] {
+      const indicatorsByLanguage: Record<string, string[]> = {
+        'en': [
+          // Personal experience markers
+          'i remember when', 'in my experience', 'i found that',
+          'personally,', 'from my perspective', 'in my view',
+          
+          // Complex reasoning markers
+          'could be argued that', 'contrary to popular belief',
+          'paradoxically,', 'interestingly enough'
+        ],
+        
+        'es': [
+          // Personal experience markers
+          'recuerdo cuando', 'en mi experiencia', 'descubrí que',
+          'personalmente,', 'desde mi perspectiva', 'en mi opinión',
+          
+          // Complex reasoning markers
+          'se podría argumentar que', 'contrario a la creencia popular',
+          'paradójicamente,', 'curiosamente'
+        ],
+        
+        'fr': [
+          // Personal experience markers
+          'je me souviens quand', 'dans mon expérience', 'j\'ai trouvé que',
+          'personnellement,', 'de mon point de vue', 'à mon avis',
+          
+          // Complex reasoning markers
+          'on pourrait soutenir que', 'contrairement à la croyance populaire',
+          'paradoxalement,', 'il est intéressant de noter'
+        ],
+        
+        'de': [
+          // Personal experience markers
+          'ich erinnere mich als', 'meiner erfahrung nach', 'ich habe festgestellt, dass',
+          'persönlich,', 'aus meiner perspektive', 'meiner meinung nach',
+          
+          // Complex reasoning markers
+          'man könnte argumentieren, dass', 'entgegen der landläufigen meinung',
+          'paradoxerweise,', 'interessanterweise'
+        ]
+        
+        // Add more languages as needed
+      };
+      
+      return indicatorsByLanguage[langCode] || indicatorsByLanguage['en'];
+    },
+    
+    // Get language-specific figurative patterns
+    getFigurativePatterns(langCode: string): string[] {
+      const patternsByLanguage: Record<string, string[]> = {
+        'en': [
+          'like a ', 'as a ', 'as if ', 'similar to ', 'resembles ', 'compared to ',
+          'metaphor', 'simile', 'analogy'
+        ],
+        
+        'es': [
+          'como un ', 'como una ', 'como si ', 'similar a ', 'se parece a ', 'comparado con ',
+          'metáfora', 'símil', 'analogía'
+        ],
+        
+        'fr': [
+          'comme un ', 'comme une ', 'comme si ', 'similaire à ', 'ressemble à ', 'comparé à ',
+          'métaphore', 'comparaison', 'analogie'
+        ],
+        
+        'de': [
+          'wie ein ', 'wie eine ', 'als ob ', 'ähnlich wie ', 'gleicht ', 'verglichen mit ',
+          'metapher', 'gleichnis', 'analogie'
+        ]
+        
+        // Add more languages as needed
+      };
+      
+      return patternsByLanguage[langCode] || patternsByLanguage['en'];
+    },
+    
+    // Get language-specific emotional words
+    getEmotionalWords(langCode: string): string[] {
+      const wordsByLanguage: Record<string, string[]> = {
+        'en': [
+          'love', 'hate', 'fear', 'joy', 'sadness', 'anger', 'surprise', 'disgust',
+          'excited', 'terrified', 'delighted', 'frustrated', 'anxious', 'peaceful',
+          'wonderful', 'terrible', 'beautiful', 'ugly', 'amazing', 'horrific'
+        ],
+        
+        'es': [
+          'amor', 'odio', 'miedo', 'alegría', 'tristeza', 'ira', 'sorpresa', 'asco',
+          'emocionado', 'aterrorizado', 'encantado', 'frustrado', 'ansioso', 'tranquilo',
+          'maravilloso', 'terrible', 'hermoso', 'feo', 'increíble', 'horroroso'
+        ],
+        
+        'fr': [
+          'amour', 'haine', 'peur', 'joie', 'tristesse', 'colère', 'surprise', 'dégoût',
+          'excité', 'terrifié', 'ravi', 'frustré', 'anxieux', 'paisible',
+          'merveilleux', 'terrible', 'beau', 'laid', 'étonnant', 'horrible'
+        ],
+        
+        'de': [
+          'liebe', 'hass', 'angst', 'freude', 'trauer', 'wut', 'überraschung', 'ekel',
+          'aufgeregt', 'verängstigt', 'entzückt', 'frustriert', 'besorgt', 'friedlich',
+          'wunderbar', 'schrecklich', 'schön', 'hässlich', 'erstaunlich', 'entsetzlich'
+        ]
+        
+        // Add more languages as needed
+      };
+      
+      return wordsByLanguage[langCode] || wordsByLanguage['en'];
+    },
+    
+    // Detect the language of the text
+    detectLanguage(text: string): {
+      language: string;
+      code: string;
+      confidence: number;
+    } {
+      // Ensure we have enough text to analyze
+      if (!text || text.length < 20) {
+        return { language: 'English', code: 'en', confidence: 1.0 };
+      }
+      
+      // Sample of the text (first 1000 characters) for language detection
+      const sample = text.substring(0, Math.min(text.length, 1000));
+      
+      // Language detection based on character frequency and n-grams
+      // Common character patterns per language
+      const languagePatterns = {
+        english: {
+          trigrams: ['the', 'and', 'ing', 'ion', 'to ', 'ed ', 're ', 'ati', 'con', 'ers'],
+          characters: 'etaoinsrhldcumfpgwybvkxjqz',
+          articles: ['the', 'a', 'an'],
+          prepositions: ['of', 'in', 'to', 'for', 'with', 'on', 'at', 'by', 'about']
+        },
+        spanish: {
+          trigrams: ['de ', ' la', 'que', 'el ', 'en ', ' de', 'os ', 'ien', 'tra', 'es '],
+          characters: 'eaosrnidlctumpbgvyqjñzfhxw',
+          articles: ['el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas'],
+          prepositions: ['de', 'en', 'a', 'por', 'para', 'con', 'sin', 'sobre']
+        },
+        french: {
+          trigrams: ['es ', 'de ', ' de', 'le ', 'ent', 'et ', ' la', 'la ', 'on ', ' le'],
+          characters: 'eaisnrtoludcmpévqfbghjàxzèêyçôùâîïw',
+          articles: ['le', 'la', 'les', 'un', 'une', 'des'],
+          prepositions: ['de', 'à', 'dans', 'sur', 'avec', 'par', 'pour', 'en', 'vers']
+        },
+        german: {
+          trigrams: ['der', 'ein', 'die', 'und', 'den', 'ich', 'von', 'zu ', 'das', 'mit'],
+          characters: 'enirstadhulgocmbfwzkpvüäößjyqx',
+          articles: ['der', 'die', 'das', 'ein', 'eine', 'einen'],
+          prepositions: ['in', 'auf', 'mit', 'an', 'von', 'für', 'aus', 'zu', 'bei']
+        },
+        italian: {
+          trigrams: ['che', ' di', 'di ', 'la ', ' la', 'to ', 'e d', ' co', 'o d', 'no '],
+          characters: 'eaiotnrslcdpumvgzbfhqàèìòù',
+          articles: ['il', 'lo', 'la', 'i', 'gli', 'le', 'un', 'una'],
+          prepositions: ['di', 'a', 'da', 'in', 'con', 'su', 'per', 'tra', 'fra']
+        },
+        portuguese: {
+          trigrams: ['de ', ' de', 'os ', 'que', ' co', 'do ', 'da ', 'es ', 'ar ', 'a d'],
+          characters: 'eaosrdintmucplbgfvhqjzxkyw',
+          articles: ['o', 'a', 'os', 'as', 'um', 'uma', 'uns', 'umas'],
+          prepositions: ['de', 'em', 'para', 'com', 'por', 'sobre', 'até', 'desde']
+        },
+        dutch: {
+          trigrams: ['de ', 'en ', 'van', ' de', 'een', 'het', ' he', 'er ', ' va', 'aan'],
+          characters: 'enatirodslgvhkmubpwjzfcyxq',
+          articles: ['de', 'het', 'een'],
+          prepositions: ['in', 'op', 'van', 'met', 'door', 'over', 'aan', 'bij']
+        },
+        russian: {
+          trigrams: ['ого', 'его', 'ени', 'ого', 'ать', 'что', 'ени', 'тьс', 'ост', 'про'],
+          characters: 'оеаинтсрвлкмдпуяыьгзбчйхжшюцщэфъ',
+          // Using transliteration for simplicity in this example
+          articles: [], // Russian doesn't use articles
+          prepositions: ['в', 'на', 'с', 'из', 'о', 'об', 'от', 'по', 'при']
+        },
+        // Add more languages as needed
+      };
+      
+      // Normalize the text for analysis
+      const normalizedText = sample.toLowerCase();
+      
+      // Calculate scores for each language based on character and trigram frequency
+      const scores: Record<string, number> = {};
+      const languageCodes: Record<string, string> = {
+        english: 'en',
+        spanish: 'es',
+        french: 'fr',
+        german: 'de',
+        italian: 'it',
+        portuguese: 'pt',
+        dutch: 'nl',
+        russian: 'ru',
+        // Add more as needed
+      };
+      
+      // Count occurrences of language features
+      for (const [language, patterns] of Object.entries(languagePatterns)) {
+        let score = 0;
+        
+        // Check for common trigrams
+        for (const trigram of patterns.trigrams) {
+          const matches = normalizedText.match(new RegExp(trigram, 'g')) || [];
+          score += matches.length * 0.3;
+        }
+        
+        // Check for character frequency
+        for (let i = 0; i < patterns.characters.length; i++) {
+          const char = patterns.characters[i];
+          const matches = normalizedText.match(new RegExp(char, 'g')) || [];
+          // Higher weight for more common characters (earlier in the pattern)
+          const charWeight = 1 - (i / patterns.characters.length);
+          score += matches.length * 0.01 * charWeight;
+        }
+        
+        // Check for common articles and prepositions
+        if (patterns.articles) {
+          for (const article of patterns.articles) {
+            const articleRegex = new RegExp(`\\b${article}\\b`, 'g');
+            const matches = normalizedText.match(articleRegex) || [];
+            score += matches.length * 2;
+          }
+        }
+        
+        if (patterns.prepositions) {
+          for (const preposition of patterns.prepositions) {
+            const prepositionRegex = new RegExp(`\\b${preposition}\\b`, 'g');
+            const matches = normalizedText.match(prepositionRegex) || [];
+            score += matches.length;
+          }
+        }
+        
+        scores[language] = score;
+      }
+      
+      // Find the language with the highest score
+      let detectedLanguage = 'english';
+      let highestScore = 0;
+      
+      for (const [language, score] of Object.entries(scores)) {
+        if (score > highestScore) {
+          highestScore = score;
+          detectedLanguage = language;
+        }
+      }
+      
+      // Calculate confidence (normalized score relative to other languages)
+      const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
+      const confidence = highestScore / (totalScore || 1);
+      
+      return {
+        language: detectedLanguage.charAt(0).toUpperCase() + detectedLanguage.slice(1),
+        code: languageCodes[detectedLanguage] || 'en',
+        confidence
+      };
+    },
+    
+    // Get language-specific stop words
+    getStopWords(languageCode: string): string[] {
+      const stopWordsByLanguage: Record<string, string[]> = {
+        en: ['the', 'and', 'a', 'an', 'in', 'on', 'at', 'of', 'to', 'for', 'with', 
+          'by', 'about', 'as', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 
+          'had', 'do', 'does', 'did', 'but', 'or', 'if', 'then', 'else', 'when', 'up', 'down',
+          'this', 'that', 'these', 'those', 'it', 'they', 'he', 'she', 'we', 'you', 'i', 'me'],
+        
+        es: ['el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'y', 'o', 'a', 'ante', 'bajo',
+          'con', 'de', 'desde', 'en', 'entre', 'hacia', 'hasta', 'para', 'por', 'según', 'sin',
+          'sobre', 'tras', 'como', 'cuando', 'donde', 'que', 'quien', 'cuyo', 'si', 'no', 'al'],
+        
+        fr: ['le', 'la', 'les', 'un', 'une', 'des', 'du', 'de', 'la', 'à', 'au', 'aux', 'et',
+          'ou', 'en', 'sur', 'sous', 'avec', 'sans', 'dans', 'par', 'pour', 'pendant', 'après',
+          'avant', 'ce', 'cette', 'ces', 'que', 'qui', 'où', 'quand', 'comment', 'pourquoi'],
+        
+        de: ['der', 'die', 'das', 'den', 'dem', 'des', 'ein', 'eine', 'einen', 'einem', 'einer',
+          'eines', 'und', 'oder', 'aber', 'in', 'auf', 'mit', 'zu', 'von', 'bei', 'nach', 'aus',
+          'vor', 'über', 'unter', 'während', 'durch', 'für', 'gegen', 'ohne', 'um', 'wenn', 'als'],
+        
+        // Add more languages as needed
+      };
+      
+      return stopWordsByLanguage[languageCode] || stopWordsByLanguage['en'];
+    },
+    
+    // Get language-specific boilerplate phrases
+    getBoilerplatePhrases(languageCode: string): string[] {
+      const phrasesByLanguage: Record<string, string[]> = {
+        en: [
+          'it is important to note', 'it is worth mentioning', 'it is crucial to understand',
+          'it is essential to recognize', 'it is interesting to consider', 'it should be noted',
+          'as we can see', 'as mentioned earlier', 'in conclusion', 'to summarize',
+          'in this context', 'moving forward', 'on the other hand', 'with that being said',
+          'with this in mind', 'at the end of the day', 'when all is said and done'
+        ],
+        
+        es: [
+          'es importante destacar', 'vale la pena mencionar', 'es crucial entender',
+          'es esencial reconocer', 'es interesante considerar', 'debe tenerse en cuenta',
+          'como podemos ver', 'como se mencionó anteriormente', 'en conclusión', 'para resumir',
+          'en este contexto', 'avanzando', 'por otro lado', 'dicho esto',
+          'con esto en mente', 'al final del día', 'cuando todo está dicho y hecho'
+        ],
+        
+        fr: [
+          'il est important de noter', 'il vaut la peine de mentionner', 'il est crucial de comprendre',
+          'il est essentiel de reconnaître', 'il est intéressant de considérer', 'il convient de noter',
+          'comme on peut le voir', 'comme mentionné précédemment', 'en conclusion', 'pour résumer',
+          'dans ce contexte', 'aller de l\'avant', 'd\'autre part', 'cela étant dit',
+          'en gardant cela à l\'esprit', 'au bout du compte', 'en fin de compte'
+        ],
+        
+        de: [
+          'es ist wichtig zu beachten', 'es lohnt sich zu erwähnen', 'es ist entscheidend zu verstehen',
+          'es ist wesentlich zu erkennen', 'es ist interessant zu betrachten', 'es sollte beachtet werden',
+          'wie wir sehen können', 'wie bereits erwähnt', 'abschließend', 'zusammenfassend',
+          'in diesem zusammenhang', 'weiter voran', 'andererseits', 'damit gesagt',
+          'mit diesem gedanken', 'am ende des tages', 'wenn alles gesagt und getan ist'
+        ],
+        
+        // Add more languages as needed
+      };
+      
+      return phrasesByLanguage[languageCode] || phrasesByLanguage['en'];
     }
   }
 }); 

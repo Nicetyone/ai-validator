@@ -30,7 +30,7 @@
         </div>
         
         <!-- Table of Contents -->
-        <div class="bg-gray-50 rounded-lg p-6 mb-12">
+        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-12">
           <h2 class="text-xl font-bold mb-4">Contents</h2>
           <ul class="space-y-2">
             <li>
@@ -132,7 +132,7 @@
             </div>
           </div>
           
-          <div class="bg-blue-50 p-6 rounded-lg">
+          <div class="bg-blue-50 dark:bg-blue-900 p-6 rounded-lg">
             <h3 class="font-semibold text-lg mb-2">Example Disclosure Statement</h3>
             <p class="text-gray-700 dark:text-gray-300 italic">
               "I used ChatGPT to help brainstorm ideas and structure for this essay. All final content was written by me, with AI-suggested content thoroughly revised and integrated with my own analysis. No direct AI-generated text was included without significant editing and validation."
@@ -301,7 +301,7 @@
         </div>
         
         <!-- Conclusion -->
-        <div class="bg-blue-50 rounded-lg p-8">
+        <div class="bg-blue-50 dark:bg-blue-900 rounded-lg p-8">
           <h2 class="text-2xl font-bold mb-4">Final Thoughts</h2>
           <p class="text-gray-700 dark:text-gray-300 mb-4">
             AI tools are powerful assistants that, when used ethically and thoughtfully, can enhance your productivity and creativity. The key is to use them as tools that support your work, not replace your critical thinking, creativity, or learning.

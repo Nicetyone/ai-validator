@@ -5,7 +5,5 @@ export default defineNuxtPlugin(async () => {
   if (process.client) {
     const documentStore = useDocumentStore();
     await documentStore.initialize();
-    
-    console.log('Document store initialized on client');
   }
 }); 

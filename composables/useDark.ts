@@ -3,14 +3,9 @@ import { useState }    from '#app'
 import { watchEffect } from 'vue'
 
 export function useDark () {
-    const isDark = useState<boolean>('dark', () => {
-        if (process.client) {
-        console.log('[useDark] isDark =', isDark.value)
-        return localStorage.getItem('dark') === 'true'
-        }
-        return false
-    })
-
+    const initial = process.client && localStorage.getItem('dark') === 'true'
+    const isDark = useState<boolean>('dark', () => initial)
+    
     watchEffect(() => {
     if (process.client) {
         if (isDark.value)

@@ -136,11 +136,11 @@
         </div>
         
         <!-- Documents grid -->
-        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <TransitionGroup name="fade-in" appear tag="div" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div v-for="doc in filteredDocuments" :key="doc.id" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
             <div class="p-6">
               <div class="flex items-start space-x-4">
-                <div class="bg-gray-100 rounded-lg p-3">
+                <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                   </svg>
@@ -185,7 +185,7 @@
                 
                 <button 
                   @click="deleteDocument(doc.id)"
-                  class="flex-none bg-gray-100 text-gray-600 hover:bg-gray-200 py-2 px-3 rounded-md text-sm transition duration-300"
+                  class="flex-none bg-gray-100 dark:bg-gray-700 text-gray-600 hover:bg-gray-200 py-2 px-3 rounded-md text-sm transition duration-300"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -194,7 +194,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </TransitionGroup>
         
         <!-- Pagination -->
         <div v-if="filteredDocuments.length > 0" class="mt-8 flex justify-center">
@@ -202,7 +202,7 @@
             <button
               @click="prevPage"
               :disabled="pagination.currentPage === 1"
-              class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 hover:bg-gray-50"
+              class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700"
               :class="{ 'cursor-not-allowed opacity-50': pagination.currentPage === 1 }"
             >
               <span class="sr-only">Previous</span>
@@ -218,7 +218,7 @@
               :class="[
                 page === pagination.currentPage 
                   ? 'z-10 bg-blue-50 border-blue-500 text-blue-600' 
-                  : 'bg-white dark:bg-gray-800 border-gray-300 text-gray-500 hover:bg-gray-50',
+                  : 'bg-white dark:bg-gray-800 border-gray-300 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700',
                 'relative inline-flex items-center px-4 py-2 border text-sm font-medium'
               ]"
             >
@@ -228,7 +228,7 @@
             <button
               @click="nextPage"
               :disabled="pagination.currentPage === pagination.totalPages"
-              class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 hover:bg-gray-50"
+              class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700"
               :class="{ 'cursor-not-allowed opacity-50': pagination.currentPage === pagination.totalPages }"
             >
               <span class="sr-only">Next</span>

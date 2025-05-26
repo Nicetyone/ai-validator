@@ -65,7 +65,7 @@
           
           <!-- Score -->
           <div class="mb-8 flex justify-center">
-            <div class="text-center px-6 py-4 rounded-lg bg-gray-50 print:bg-gray-100">
+            <div class="text-center px-6 py-4 rounded-lg bg-gray-50 dark:bg-gray-700 print:bg-gray-100">
               <div class="text-lg font-semibold mb-1">AI Detection Score</div>
               <div class="text-4xl font-bold" :class="getResultTextClass(document.result)">
                 {{ document.aiScore }}%
@@ -93,7 +93,7 @@
           <!-- Verification Info -->
           <div class="mb-8 text-center">
             <div class="text-lg font-semibold mb-2">Certificate Verification</div>
-            <div class="bg-gray-50 inline-block px-6 py-3 rounded-lg text-lg font-mono print:bg-gray-100">
+            <div class="bg-gray-50 dark:bg-gray-700 inline-block px-6 py-3 rounded-lg text-lg font-mono print:bg-gray-100">
               {{ certificateId }}
             </div>
             <p class="mt-2 text-sm text-gray-500">

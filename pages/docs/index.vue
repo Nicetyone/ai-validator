@@ -119,7 +119,7 @@
         </div>
 
         <!-- Getting started -->
-        <div class="bg-blue-50 rounded-lg p-8 mb-12">
+        <div class="bg-blue-50 dark:bg-blue-900 rounded-lg p-8 mb-12">
           <h2 class="text-2xl font-bold mb-4">Getting Started</h2>
           <p class="text-gray-700 dark:text-gray-300 mb-6">
             New to AI-Validator? Follow these quick steps to get started:

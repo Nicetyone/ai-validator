@@ -27,7 +27,7 @@
               href="https://github.com/Nicetyone/ai-validator" 
               target="_blank" 
               rel="noopener" 
-              class="text-gray-500 dark:text-gray-400 hover:text-blue-600 transition"
+              class="text-gray-500 dark:text-gray-300 hover:text-blue-600 transition"
               aria-label="GitHub repository" 
             > 
               <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"> 
@@ -74,12 +74,12 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-blue-200 dark:bg-blue-900 dark:text-gray-200 py-8 mt-12">
+    <footer class="bg-blue-200 dark:bg-gray-900 dark:text-gray-300 py-8 mt-12 border-t border-gray-300 dark:border-gray-700 shadow-inner">
       <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <h3 class="text-lg font-semibold mb-4">AI-Validator</h3>
-            <p class="text-gray-600 dark:text-gray-400 text-sm">
+            <p class="text-gray-600 dark:text-gray-300 text-sm">
               Detect AI-generated content with confidence. Our platform helps you validate PDF documents for AI involvement.
             </p>
           </div>
@@ -87,18 +87,16 @@
           <div>
             <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
             <ul class="space-y-2">
-              <li><NuxtLink to="/" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 text-sm">Home</NuxtLink></li>
-              <li><NuxtLink to="/validate" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 text-sm">Validate Document</NuxtLink></li>
-              <li><NuxtLink to="/docs" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 text-sm">Documentation</NuxtLink></li>
-              <li><NuxtLink to="/about" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 text-sm">About Us</NuxtLink></li>
-            </ul>
+              <li><NuxtLink to="/" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 text-sm">Home</NuxtLink></li>
+              <li><NuxtLink to="/validate" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 text-sm">Validate Document</NuxtLink></li>
+              <li><NuxtLink to="/docs" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 text-sm">Documentation</NuxtLink></li>
+              <li><NuxtLink to="/about" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 text-sm">About Us</NuxtLink></li>           </ul>
           </div>
           
           <div>
             <h3 class="text-lg font-semibold mb-4">Resources</h3>
             <ul class="space-y-2">
-              <li><NuxtLink to="/docs/ai-usage" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 text-sm">AI Usage Guide</NuxtLink></li>
-            </ul>
+              <li><NuxtLink to="/docs/ai-usage" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 text-sm">AI Usage Guide</NuxtLink></li>            </ul>
           </div>
           
           <div>
@@ -108,7 +106,7 @@
                 href="https://github.com/Nicetyone/ai-validator" 
                 target="_blank" 
                 rel="noopener" 
-                class="text-gray-600 dark:text-gray-400 hover:text-blue-600"
+                class="text-gray-600 dark:text-gray-300 hover:text-blue-600"
                 aria-label="GitHub repository" 
               > 
                 <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"> 
@@ -121,8 +119,8 @@
           </div>
         </div>
         
-        <div class="mt-8 pt-6 border-t border-gray-200 text-center">
-          <p class="text-sm text-gray-600 dark:text-gray-400">© {{ new Date().getFullYear() }} AI-Validator. All rights reserved.</p>
+        <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 text-center">
+          <p class="text-sm text-gray-600 dark:text-gray-300">© {{ new Date().getFullYear() }} AI-Validator. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -36,7 +36,7 @@
         <div class="flex space-x-4">
           <select
             v-model="filters.status"
-            class="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            class="rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           >
             <option value="">All Statuses</option>
             <option value="Complete">Complete</option>
@@ -46,7 +46,7 @@
           
           <select
             v-model="filters.result"
-            class="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            class="rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           >
             <option value="">All Results</option>
             <option value="Clean">Level 1: Clean</option>
@@ -70,7 +70,7 @@
             <input 
               v-model="verificationId"
               placeholder="Enter certificate ID (e.g., ABCD-1234-EFGH-5678)"
-              class="w-full dark:text-gray-300 p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500"
+              class="w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
             />
           </div>
           <div>
@@ -85,7 +85,15 @@
         </div>
         
         <!-- Verification result -->
-        <div v-if="verificationResult" class="mt-4 p-4 rounded-md" :class="verificationSuccess ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'">
+        <div
+          v-if="verificationResult"
+          class="mt-4 p-4 rounded-md"
+          :class="
+            verificationSuccess
+              ? 'bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700'
+              : 'bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700'
+          "
+        >
           <div class="flex items-start">
             <div class="flex-shrink-0">
               <svg v-if="verificationSuccess" class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -169,16 +177,16 @@
               </div>
               
               <div class="mt-6 flex space-x-2">
-                <NuxtLink 
-                  :to="`/report/${doc.id}`" 
-                  class="flex-1 bg-blue-100 text-blue-600 hover:bg-blue-200 text-center py-2 rounded-md text-sm font-medium transition duration-300"
+                <NuxtLink
+                  :to="`/report/${doc.id}`"
+                  class="flex-1 bg-blue-100 dark:bg-blue-900/40 text-blue-600 hover:bg-blue-200 dark:hover:bg-blue-900/60 text-center py-2 rounded-md text-sm font-medium transition duration-300"
                 >
                   View Report
                 </NuxtLink>
                 
-                <NuxtLink 
-                  :to="`/certificate/${doc.id}`" 
-                  class="flex-1 bg-green-100 text-green-600 hover:bg-green-200 text-center py-2 rounded-md text-sm font-medium transition duration-300"
+                <NuxtLink
+                  :to="`/certificate/${doc.id}`"
+                  class="flex-1 bg-green-100 dark:bg-green-900/40 text-green-600 hover:bg-green-200 dark:hover:bg-green-900/60 text-center py-2 rounded-md text-sm font-medium transition duration-300"
                 >
                   Certificate
                 </NuxtLink>
@@ -291,13 +299,13 @@ const getStatusClass = (status) => {
   const classes = 'inline-flex text-xs leading-5 font-semibold ';
   switch (status) {
     case 'Complete':
-      return classes + 'bg-green-100 text-green-800';
+      return classes + 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
     case 'Processing':
-      return classes + 'bg-blue-100 text-blue-800';
+      return classes + 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
     case 'Failed':
-      return classes + 'bg-red-100 text-red-800';
+      return classes + 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
     default:
-      return classes + 'bg-gray-100 text-gray-800';
+      return classes + 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
   }
 };
 
@@ -305,13 +313,13 @@ const getStatusClass = (status) => {
 const getResultClass = (result) => {
   const classes = 'inline-flex text-xs leading-5 font-semibold ';
   if (result.includes('Clean')) {
-    return classes + 'bg-green-100 text-green-800';
+    return classes + 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
   } else if (result.includes('AI-Supported')) {
-    return classes + 'bg-yellow-100 text-yellow-800';
+    return classes + 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
   } else if (result.includes('AI-Generated')) {
-    return classes + 'bg-red-100 text-red-800';
+    return classes + 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
   } else {
-    return classes + 'bg-gray-100 text-gray-800';
+    return classes + 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
   }
 };
 

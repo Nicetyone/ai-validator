@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
     <!-- Header/Navbar -->
     <header class="bg-white dark:bg-gray-900 dark:text-gray-200 shadow-md sticky top-0 z-50">
       <div class="container mx-auto px-4 py-3">
@@ -74,7 +74,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-100 dark:bg-gray-900 dark:text-gray-200 py-8 mt-12">
+    <footer class="bg-blue-200 dark:bg-blue-900 dark:text-gray-200 py-8 mt-12">
       <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>

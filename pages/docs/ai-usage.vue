@@ -18,7 +18,7 @@
     </div>
     
     <div class="container mx-auto px-4 py-12">
-      <div class="max-w-4xl mx-auto">
+      <div class="max-w-4xl mx-auto text-gray-700 dark:text-gray-300">
         <!-- Introduction -->
         <div class="mb-12">
           <p class="text-gray-700 dark:text-gray-300 mb-6 text-lg">
@@ -101,7 +101,7 @@
           <h2 class="text-2xl font-bold mb-6 text-blue-600">Using AI in Academic Work</h2>
           
           <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
-            <div class="border-b border-gray-200 px-6 py-4">
+            <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
               <h3 class="text-xl font-semibold">Recommended Uses</h3>
             </div>
             <div class="p-6">
@@ -117,7 +117,7 @@
           </div>
           
           <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
-            <div class="border-b border-gray-200 px-6 py-4">
+            <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
               <h3 class="text-xl font-semibold">Cautions and Considerations</h3>
             </div>
             <div class="p-6">
@@ -145,7 +145,7 @@
           <h2 class="text-2xl font-bold mb-6 text-blue-600">Using AI in Professional Settings</h2>
           
           <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
-            <div class="border-b border-gray-200 px-6 py-4">
+            <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
               <h3 class="text-xl font-semibold">Recommended Uses</h3>
             </div>
             <div class="p-6">
@@ -161,7 +161,7 @@
           </div>
           
           <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
-            <div class="border-b border-gray-200 px-6 py-4">
+            <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
               <h3 class="text-xl font-semibold">Cautions and Considerations</h3>
             </div>
             <div class="p-6">
@@ -182,7 +182,7 @@
           <h2 class="text-2xl font-bold mb-6 text-blue-600">Using AI for Creative Projects</h2>
           
           <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
-            <div class="border-b border-gray-200 px-6 py-4">
+            <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
               <h3 class="text-xl font-semibold">Recommended Uses</h3>
             </div>
             <div class="p-6">
@@ -198,7 +198,7 @@
           </div>
           
           <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
-            <div class="border-b border-gray-200 px-6 py-4">
+            <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
               <h3 class="text-xl font-semibold">Cautions and Considerations</h3>
             </div>
             <div class="p-6">

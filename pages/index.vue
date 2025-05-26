@@ -23,7 +23,7 @@
         
         <div class="grid md:grid-cols-3 gap-8">
           <Transition name="fade-in" appear>
-            <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+            <div class="bg-gray-50 dark:bg-gray-300 p-6 rounded-lg shadow-md">
               <div class="text-blue-600 text-4xl font-bold mb-4">1</div>
               <h3 class="text-xl font-semibold mb-3">Upload Your Document</h3>
               <p class="text-gray-600">Upload your PDF document to our secure platform for analysis.</p>
@@ -31,7 +31,7 @@
           </Transition>
 
           <Transition name="fade-in" appear>
-            <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+            <div class="bg-gray-50 dark:bg-gray-300 p-6 rounded-lg shadow-md">
               <div class="text-blue-600 text-4xl font-bold mb-4">2</div>
               <h3 class="text-xl font-semibold mb-3">AI Analysis</h3>
               <p class="text-gray-600">Our advanced algorithm analyzes your document for AI-generated content.</p>
@@ -39,7 +39,7 @@
           </Transition>
 
           <Transition name="fade-in" appear>
-            <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+            <div class="bg-gray-50 dark:bg-gray-300 p-6 rounded-lg shadow-md">
               <div class="text-blue-600 text-4xl font-bold mb-4">3</div>
               <h3 class="text-xl font-semibold mb-3">Get Your Certificate</h3>
               <p class="text-gray-600">Receive a detailed report and certificate of creation for your document.</p>

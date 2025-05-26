@@ -1,34 +1,8 @@
 # AI-Validator
 
-A web application that allows users to upload PDF documents and analyze them for AI-generated content. The application provides a detailed report and certificate of authenticity that classifies documents based on the level of AI involvement.
+## Project Overview
 
-## Features
-
-- Upload PDF documents for AI content analysis
-- Receive detailed reports on AI detection findings
-- Get certificates of authenticity for your documents
-- View document history and analysis results
-- Dashboard for managing multiple documents
-
-## AI Detection Levels
-
-The AI-Validator classifies documents into three levels:
-
-1. **Level 1: Clean** - No AI detected. The document appears to be entirely human-created.
-2. **Level 2: AI-Supported** - Document shows signs of AI assistance, but with significant human input.
-3. **Level 3: AI-Generated** - Document appears to be primarily AI-generated with minimal human editing.
-
-## Project Structure
-
-The project is organized as follows:
-
-- `/pages` - Nuxt pages including dashboard, reports, and certificates
-- `/components` - Reusable Vue components
-- `/layouts` - Page layouts (default and dashboard)
-- `/stores` - Pinia stores for state management
-- `/composables` - Reusable composition functions
-- `/server/api` - API endpoints for document processing and retrieval
-- `/public` - Static assets and uploaded files
+AI-Validator is a Nuxt 3 web application that validates uploaded PDF documents for AI-generated content. It provides detailed reports and verification certificates while storing results in the browser so they persist across sessions. A built-in dark mode offers comfortable viewing.
 
 ## Technologies Used
 
@@ -36,6 +10,21 @@ The project is organized as follows:
 - [Pinia](https://pinia.vuejs.org/) - State management
 - [Tailwind CSS](https://tailwindcss.com/) - Styling
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
+
+## Features
+
+- **File Upload with Duplicate Detection** — upload PDFs via drag and drop or file selection. Duplicate files are detected by hash and previous results are reused.
+- **Status & Result Levels** — each document displays its processing status and one of three result levels: **Clean**, **AI-Supported**, or **AI-Generated**.
+- **Document List** — view uploaded documents with filtering, pagination and deletion options.
+- **Certificate Generation & Verification** — completed analyses generate certificates that can later be verified via their unique ID.
+- **Dark Mode Toggle** — switch between light and dark themes. Preference is saved to local storage.
+- **Clear Cached Documents** — remove all locally stored documents and analysis data.
+
+## AI Detection Levels
+
+1. **Level 1: Clean** – no AI detected; the document appears human created.
+2. **Level 2: AI-Supported** – some signs of AI assistance with notable human input.
+3. **Level 3: AI-Generated** – document seems primarily AI-generated with minimal editing.
 
 ## Getting Started
 
@@ -47,12 +36,14 @@ The project is organized as follows:
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/yourusername/ai-validator.git
    cd ai-validator
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    # or
@@ -60,17 +51,41 @@ The project is organized as follows:
    ```
 
 3. Start the development server:
+
    ```bash
    npm run dev
    # or
    yarn dev
    ```
 
-4. Open your browser and navigate to `http://localhost:3000`
+4. Open your browser and navigate to `http://localhost:3000`.
+
+## Local Development
+
+Run the following scripts during local development:
+
+```bash
+npm run dev        # start dev server
+npm run build      # build for production
+npm run preview    # preview built app
+npm run clear-cache # clear cached documents
+```
+
+## Repository Structure
+
+- **`pages/`** – Nuxt pages such as validation, uploads and certificate views
+- **`components/`** – reusable Vue components including the uploader and dark mode toggle
+- **`composables/`** – shared composables like `useFileUpload` and `useDark`
+- **`stores/`** – Pinia store managing documents and local storage
+- **`server/api/`** – mock API endpoints for document upload and retrieval
+
+## Using the Application
+
+1. **Validate a Document** – go to the **Validate** page and upload your PDF. After processing you receive a report and certificate.
+2. **View Uploads** – the **My Documents** page lists previous uploads. Filter or paginate the list, open reports or certificates, or delete unwanted items.
+3. **Verify Certificates** – on the uploads page enter a certificate ID to confirm its validity.
 
 ## Project Tasks and Division
-
-This project can be divided among team members as follows:
 
 ### Frontend Tasks
 
@@ -80,7 +95,6 @@ This project can be divided among team members as follows:
   - File upload component
   - Document lists and filtering
   - Reports and certificates
-
 - **State Management**
   - Document store
   - User authentication (future enhancement)
@@ -93,7 +107,6 @@ This project can be divided among team members as follows:
   - Document analysis
   - Document retrieval and listing
   - Certificate generation
-
 - **AI Analysis System**
   - PDF text extraction
   - AI detection algorithms

@@ -171,6 +171,9 @@ onMounted(async () => {
   const id = route.params.id;
   
   try {
+    // Ensure document store is initialized first
+    await documentStore.initialize();
+    
     // Try to load from document store
     await documentStore.fetchDocumentById(id);
     document.value = documentStore.selectedDocument;
@@ -178,7 +181,7 @@ onMounted(async () => {
     // If document doesn't have a certificateId yet, generate one
     if (document.value && !document.value.certificateId) {
       document.value.certificateId = documentStore.generateCertificateId();
-      documentStore.saveDocumentsToCache();
+      documentStore.saveToLocalStorage();
     }
   } catch (error) {
     console.error('Error fetching document:', error);

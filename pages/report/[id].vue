@@ -160,6 +160,9 @@ onMounted(async () => {
   const id = route.params.id;
   
   try {
+    // Ensure document store is initialized first
+    await documentStore.initialize();
+    
     // Try to load from document store
     await documentStore.fetchDocumentById(id);
     document.value = documentStore.selectedDocument;

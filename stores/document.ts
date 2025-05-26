@@ -24,12 +24,115 @@ export interface Document {
   }[];
 }
 
+// Simulated server-side storage - persists across page refreshes
+const simulatedDatabase = {
+  documents: new Map<string, Document>(),
+  
+  // Add document to DB
+  addDocument(doc: Document) {
+    this.documents.set(doc.id, doc);
+    return doc;
+  },
+  
+  // Get document by ID
+  getDocument(id: string) {
+    return this.documents.get(id) || null;
+  },
+  
+  // Get all documents
+  getAllDocuments() {
+    return Array.from(this.documents.values());
+  },
+  
+  // Get document by hash
+  getDocumentByHash(hash: string) {
+    return Array.from(this.documents.values()).find(doc => doc.hash === hash) || null;
+  },
+  
+  // Get document by certificate ID
+  getDocumentByCertificateId(certificateId: string) {
+    return Array.from(this.documents.values()).find(doc => doc.certificateId === certificateId) || null;
+  },
+  
+  // Delete document
+  deleteDocument(id: string) {
+    return this.documents.delete(id);
+  },
+  
+  // Clear all documents
+  clearAllDocuments() {
+    this.documents.clear();
+  }
+};
+
+// Key for localStorage
+const STORAGE_KEY = 'ai-validator-documents-v2';
+
+// Safe access to localStorage (only in browser environment)
+const storage = {
+  getItem(key: string): string | null {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(key);
+    }
+    return null;
+  },
+  
+  setItem(key: string, value: string): boolean {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(key, value);
+      return true;
+    }
+    return false;
+  },
+  
+  removeItem(key: string): boolean {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(key);
+      return true;
+    }
+    return false;
+  }
+};
+
+// Hash generation utility - ensures consistent hash across uploads of the same file
+const hashUtils = {
+  // Generate a deterministic ID from hash
+  generateIdFromHash(hash: string): string {
+    // Use the first 10 characters of the hash to create a unique ID
+    return hash.substring(0, 10);
+  },
+  
+  // Generate a deterministic certificate ID from hash
+  generateCertificateIdFromHash(hash: string): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const sections = [];
+    
+    // Use different parts of the hash to generate a deterministic but readable ID
+    for (let i = 0; i < 4; i++) {
+      const sectionHash = hash.substring(i * 8, (i + 1) * 8);
+      let section = '';
+      
+      for (let j = 0; j < 4; j++) {
+        // Convert a pair of hex chars to a number and use it to index into the chars array
+        const hexPair = sectionHash.substring(j * 2, (j + 1) * 2);
+        const index = parseInt(hexPair, 16) % chars.length;
+        section += chars.charAt(index);
+      }
+      
+      sections.push(section);
+    }
+    
+    return sections.join('-');
+  }
+};
+
 export const useDocumentStore = defineStore('document', {
   state: () => ({
     documents: [] as Document[],
     selectedDocument: null as Document | null,
     isLoading: false,
     error: null as string | null,
+    isInitialized: false
   }),
   
   getters: {
@@ -65,38 +168,94 @@ export const useDocumentStore = defineStore('document', {
   },
   
   actions: {
-    // Load documents from localStorage
-    loadDocumentsFromCache() {
+    // Initialize the store - called once at app startup
+    async initialize() {
+      if (this.isInitialized) return;
+      
+      // Only initialize on client-side
+      if (process.client) {
+        await this.syncFromServer();
+        this.isInitialized = true;
+      }
+    },
+    
+    // Load documents from localStorage to the simulated server
+    loadFromLocalStorage() {
       try {
-        const cachedDocuments = localStorage.getItem('ai-validator-documents');
+        const cachedDocuments = storage.getItem(STORAGE_KEY);
         if (cachedDocuments) {
           const parsedDocs = JSON.parse(cachedDocuments);
-          this.documents = parsedDocs.map((doc: any) => ({
-            ...doc,
-            date: new Date(doc.date)
-          }));
+          
+          // Clear existing data
+          simulatedDatabase.clearAllDocuments();
+          
+          // Add parsed documents to simulated database
+          parsedDocs.forEach((doc: any) => {
+            simulatedDatabase.addDocument({
+              ...doc,
+              date: new Date(doc.date)
+            });
+          });
+          
+          return true;
         }
       } catch (error) {
         console.error('Error loading documents from cache:', error);
       }
+      return false;
     },
     
-    // Save documents to localStorage
-    saveDocumentsToCache() {
+    // Save documents from simulated server to localStorage
+    saveToLocalStorage() {
       try {
-        localStorage.setItem('ai-validator-documents', JSON.stringify(this.documents));
+        const documents = simulatedDatabase.getAllDocuments();
+        return storage.setItem(STORAGE_KEY, JSON.stringify(documents));
       } catch (error) {
         console.error('Error saving documents to cache:', error);
+        return false;
       }
     },
     
-    // Clear localStorage cache (for testing)
-    clearCache() {
+    // Clear localStorage and simulated server
+    clearAllData() {
       try {
-        localStorage.removeItem('ai-validator-documents');
+        // Clear localStorage
+        storage.removeItem(STORAGE_KEY);
+        
+        // Clear simulated database
+        simulatedDatabase.clearAllDocuments();
+        
+        // Clear store state
         this.documents = [];
+        this.selectedDocument = null;
+        
+        return true;
       } catch (error) {
-        console.error('Error clearing cache:', error);
+        console.error('Error clearing data:', error);
+        return false;
+      }
+    },
+    
+    // Sync data from simulated server to store
+    async syncFromServer() {
+      this.isLoading = true;
+      
+      try {
+        // Load from localStorage into simulated server first
+        this.loadFromLocalStorage();
+        
+        // Get all documents from simulated server
+        const documents = simulatedDatabase.getAllDocuments();
+        
+        // Update store state
+        this.documents = documents;
+        
+        return true;
+      } catch (error) {
+        console.error('Error syncing from server:', error);
+        return false;
+      } finally {
+        this.isLoading = false;
       }
     },
     
@@ -143,133 +302,97 @@ export const useDocumentStore = defineStore('document', {
       return id;
     },
     
+    // Fetch all documents
     async fetchDocuments() {
+      if (!process.client) return [];
+      
       this.isLoading = true;
       this.error = null;
       
       try {
-        // First check localStorage
-        this.loadDocumentsFromCache();
-        
-        // Then try to fetch from API
-        const response = await fetch('/api/documents');
-        const data = await response.json();
-        
-        if (data.success) {
-          this.documents = data.documents.map((doc: any) => ({
-            ...doc,
-            date: new Date(doc.date)
-          }));
-          
-          // Update cache
-          this.saveDocumentsToCache();
-        } else {
-          this.error = data.error || 'Failed to fetch documents';
-        }
-      } catch (error: any) {
-        // If API fails but we have cached data, don't set error
-        if (this.documents.length === 0) {
-          this.error = error.message || 'An error occurred';
-        }
-      } finally {
-        this.isLoading = false;
-      }
-    },
-    
-    async fetchDocumentById(id: string) {
-      this.isLoading = true;
-      this.error = null;
-      
-      try {
-        // First check local cache
-        const cachedDoc = this.getDocumentById(id);
-        if (cachedDoc) {
-          this.selectedDocument = cachedDoc;
-          this.isLoading = false;
-          return cachedDoc;
-        }
-        
-        // If not in cache, try API
-        const response = await fetch(`/api/documents/${id}`);
-        const data = await response.json();
-        
-        if (data.success) {
-          const document = {
-            ...data.document,
-            date: new Date(data.document.date)
-          };
-          
-          // Update the document in the documents array if it exists
-          const index = this.documents.findIndex(doc => doc.id === id);
-          if (index !== -1) {
-            this.documents[index] = document;
-          } else {
-            this.documents.push(document);
-          }
-          
-          this.selectedDocument = document;
-          
-          // Update cache
-          this.saveDocumentsToCache();
-          
-          return document;
-        } else {
-          this.error = data.error || 'Failed to fetch document';
-        }
+        // Sync from simulated server
+        await this.syncFromServer();
+        return this.documents;
       } catch (error: any) {
         this.error = error.message || 'An error occurred';
+        return [];
       } finally {
         this.isLoading = false;
       }
-      
-      return null;
     },
     
-    async uploadDocument(file: File) {
+    // Fetch document by ID
+    async fetchDocumentById(id: string) {
+      if (!process.client) return null;
+      
       this.isLoading = true;
       this.error = null;
       
       try {
+        // First check in current state
+        const stateDoc = this.getDocumentById(id);
+        if (stateDoc) {
+          this.selectedDocument = stateDoc;
+          return stateDoc;
+        }
+        
+        // Then check simulated server
+        const serverDoc = simulatedDatabase.getDocument(id);
+        if (serverDoc) {
+          this.selectedDocument = serverDoc;
+          return serverDoc;
+        }
+        
+        this.error = 'Document not found';
+        return null;
+      } catch (error: any) {
+        this.error = error.message || 'An error occurred';
+        return null;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    
+    // Upload and analyze document
+    async uploadDocument(file: File) {
+      if (!process.client) return null;
+      
+      this.isLoading = true;
+      this.error = null;
+      
+      try {
+        // Ensure simulated server is initialized
+        this.loadFromLocalStorage();
+        
         // Generate file hash
         const hash = await this.generateFileHash(file);
         
-        // Check if document with this hash already exists
-        const existingDoc = this.getDocumentByHash(hash);
+        // Check if document with this hash already exists in simulated server
+        const existingDoc = simulatedDatabase.getDocumentByHash(hash);
         if (existingDoc && existingDoc.status === 'Complete') {
           // Document already analyzed, return it
+          
+          // Make sure it's in our state
+          const index = this.documents.findIndex(doc => doc.id === existingDoc.id);
+          if (index === -1) {
+            this.documents.push(existingDoc);
+          }
+          
           this.isLoading = false;
           return existingDoc;
         }
         
-        // In a real app, we would upload the file to a server
-        // For now, we'll simulate the API response
-        
-        // Simulate API delay
+        // Simulate server-side processing
         await new Promise(resolve => setTimeout(resolve, 1500));
         
-        // Create a unique ID
-        const id = Math.random().toString(36).substring(2, 15);
+        // Create a deterministic ID based on the hash
+        const id = hashUtils.generateIdFromHash(hash);
         
-        // Determine AI score based on file name for demo purposes
-        // In a real app, this would be determined by analysis on the server
-        let aiScore, result, summary;
+        // Generate AI analysis based on content
+        const analysisResult = await this.analyzeDocument(file);
         
-        if (file.name.toLowerCase().includes('essay') || file.name.toLowerCase().includes('research')) {
-          aiScore = Math.floor(Math.random() * 25); // 0-25%
-          result = 'Level 1: Clean';
-          summary = 'This document appears to be human-created with no significant indicators of AI generation.';
-        } else if (file.name.toLowerCase().includes('draft') || file.name.toLowerCase().includes('review')) {
-          aiScore = 35 + Math.floor(Math.random() * 35); // 35-70%
-          result = 'Level 2: AI-Supported';
-          summary = 'This document shows signs of AI assistance but with significant human input and editing.';
-        } else {
-          aiScore = 75 + Math.floor(Math.random() * 25); // 75-100%
-          result = 'Level 3: AI-Generated';
-          summary = 'This document appears to be primarily AI-generated with minimal human editing.';
-        }
-        
-        // Generate a unique certificate ID
-        const certificateId = this.generateCertificateId();
+        // Generate a deterministic certificate ID based on the hash
+        const certificateId = hashUtils.generateCertificateIdFromHash(hash);
         
         // Create new document object
         const newDocument: Document = {
@@ -279,20 +402,28 @@ export const useDocumentStore = defineStore('document', {
           size: this.formatFileSize(file.size),
           date: new Date(),
           status: 'Complete',
-          result,
-          aiScore,
-          summary,
+          result: analysisResult.result,
+          aiScore: analysisResult.aiScore,
+          summary: analysisResult.summary,
           certificateId,
-          keyFindings: this.generateKeyFindings(result),
-          analysisCategories: this.generateAnalysisCategories(aiScore),
-          excerpts: this.generateExcerpts(result)
+          keyFindings: analysisResult.keyFindings,
+          analysisCategories: analysisResult.analysisCategories,
+          excerpts: analysisResult.excerpts
         };
         
-        // Add to collection
-        this.documents.unshift(newDocument);
+        // Add to simulated server
+        simulatedDatabase.addDocument(newDocument);
         
-        // Update cache
-        this.saveDocumentsToCache();
+        // Save to localStorage
+        this.saveToLocalStorage();
+        
+        // Update state
+        const existingIndex = this.documents.findIndex(doc => doc.id === id);
+        if (existingIndex !== -1) {
+          this.documents[existingIndex] = newDocument;
+        } else {
+          this.documents.unshift(newDocument);
+        }
         
         return newDocument;
       } catch (error: any) {
@@ -301,6 +432,140 @@ export const useDocumentStore = defineStore('document', {
       } finally {
         this.isLoading = false;
       }
+    },
+    
+    // Simulate AI analysis of document
+    async analyzeDocument(file: File) {
+      // In a real app, this would send the file to a server for processing
+      // Here we're simulating based on filename and other factors
+      
+      // Extract text content from the first few KB of the file for demo purposes
+      const fileContent = await this.extractTextFromFile(file);
+      
+      // Get file hash to ensure consistent analysis for the same file
+      const hash = await this.generateFileHash(file);
+      
+      // Use the hash to generate deterministic analysis values
+      // This ensures the same file always gets the same analysis result
+      const hashSum = hash.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+      
+      // Calculate deterministic metrics based on the hash
+      const hashBasedFactor = (hashSum % 100) / 100; // Value between 0-1
+      
+      // Calculate actual metrics based on the content
+      const wordCount = fileContent.split(/\s+/).length;
+      const avgWordLength = fileContent.length / (wordCount || 1);
+      const sentenceCount = fileContent.split(/[.!?]+/).length;
+      const avgSentenceLength = wordCount / (sentenceCount || 1);
+      
+      // Calculate entropy of text (measure of randomness)
+      const entropy = this.calculateTextEntropy(fileContent);
+      
+      // Higher entropy is often associated with human writing (more variation)
+      // Lower entropy can be associated with AI (more predictable patterns)
+      
+      // Calculate AI score - this is simplified for demo
+      // Real AI detection would use much more sophisticated techniques
+      let aiScore;
+      
+      // AI tends to have more consistent sentence lengths and word choices
+      const consistencyFactor = (avgSentenceLength < 10 || avgSentenceLength > 30) ? 0.7 : 1.3;
+      
+      // Scale entropy to get an AI score (inverse relationship)
+      // Use hash-based factor to ensure consistency for the same file
+      aiScore = Math.round((100 - (entropy * consistencyFactor * 10)) * (0.8 + (hashBasedFactor * 0.4)));
+      
+      // Clamp between 5-95% to avoid extremes in our simple model
+      aiScore = Math.max(5, Math.min(95, aiScore));
+      
+      // Adjust based on filename for demo purposes, but keep it deterministic
+      if (file.name.toLowerCase().includes('essay') || file.name.toLowerCase().includes('research')) {
+        aiScore = Math.min(aiScore, 25);
+      } else if (file.name.toLowerCase().includes('draft') || file.name.toLowerCase().includes('review')) {
+        aiScore = Math.max(35, Math.min(aiScore, 70));
+      } else if (file.name.toLowerCase().includes('ai') || file.name.toLowerCase().includes('generated')) {
+        aiScore = Math.max(75, aiScore);
+      }
+      
+      // Determine result level
+      let result, summary;
+      if (aiScore < 30) {
+        result = 'Level 1: Clean';
+        summary = 'This document appears to be human-created with no significant indicators of AI generation.';
+      } else if (aiScore < 70) {
+        result = 'Level 2: AI-Supported';
+        summary = 'This document shows signs of AI assistance but with significant human input and editing.';
+      } else {
+        result = 'Level 3: AI-Generated';
+        summary = 'This document appears to be primarily AI-generated with minimal human editing.';
+      }
+      
+      return {
+        result,
+        aiScore,
+        summary,
+        keyFindings: this.generateKeyFindings(result),
+        analysisCategories: this.generateAnalysisCategories(aiScore),
+        excerpts: this.generateExcerpts(result, fileContent)
+      };
+    },
+    
+    // Extract some text from the file for analysis
+    async extractTextFromFile(file: File): Promise<string> {
+      return new Promise((resolve) => {
+        // In a real app, this would use a PDF parser
+        // For this demo, we'll just extract text from the file name
+        const fileName = file.name.replace(/\.[^/.]+$/, ""); // Remove extension
+        const words = fileName.split(/[-_.\s]/);
+        
+        // Generate some dummy text based on filename
+        let text = `This is a document about ${words.join(' ')}. `;
+        text += `The document discusses various aspects of ${words[0] || 'the topic'}. `;
+        text += `It includes information about ${words[words.length - 1] || 'relevant subjects'}. `;
+        
+        // Add some random sentences for variety
+        const sentences = [
+          "The analysis reveals interesting patterns in the data.",
+          "Various methodologies were employed to ensure accurate results.",
+          "The conclusions drawn are supported by substantial evidence.",
+          "Further research may be necessary to validate these findings.",
+          "Several limitations were identified and addressed accordingly.",
+          "The implications of these results extend beyond the initial scope.",
+          "Comparative analysis with prior research indicates significant progress.",
+          "Theoretical frameworks provided the foundation for this investigation."
+        ];
+        
+        // Use the file name to deterministically select sentences
+        // This ensures the same file always gets the same analysis
+        const fileNameSum = fileName.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+        
+        // Add 5-10 sentences based on filename
+        const sentenceCount = 5 + (fileNameSum % 6);
+        for (let i = 0; i < sentenceCount; i++) {
+          const index = (fileNameSum + i) % sentences.length;
+          text += sentences[index] + " ";
+        }
+        
+        resolve(text);
+      });
+    },
+    
+    // Calculate Shannon entropy of text
+    calculateTextEntropy(text: string): number {
+      const len = text.length;
+      const frequencies: {[key: string]: number} = {};
+      
+      // Count character frequencies
+      for (let i = 0; i < len; i++) {
+        const char = text[i];
+        frequencies[char] = (frequencies[char] || 0) + 1;
+      }
+      
+      // Calculate entropy
+      return Object.values(frequencies).reduce((entropy, freq) => {
+        const p = freq / len;
+        return entropy - p * Math.log2(p);
+      }, 0);
     },
     
     // Helper method to format file size
@@ -383,37 +648,43 @@ export const useDocumentStore = defineStore('document', {
       ];
     },
     
-    // Generate excerpts based on result level
-    generateExcerpts(result: string): { text: string; type: 'ai' | 'human' | 'unknown'; explanation: string; }[] {
+    // Generate excerpts based on result level and content
+    generateExcerpts(result: string, content: string): { text: string; type: 'ai' | 'human' | 'unknown'; explanation: string; }[] {
+      // Extract some sample sentences from content
+      const sentences = content.split(/[.!?]/).filter(s => s.trim().length > 20);
+      const sampleSentences = sentences.slice(0, 3);
+      
       if (result.includes('Clean')) {
         return [];
       } else if (result.includes('AI-Supported')) {
+        // Use a mix of predefined and content-based excerpts
         return [
           {
-            text: 'The implementation of machine learning algorithms in healthcare settings has shown promising results across various diagnostic procedures and treatment protocols.',
+            text: sampleSentences[0] || 'The implementation of machine learning algorithms in healthcare settings has shown promising results across various diagnostic procedures and treatment protocols.',
             type: 'ai',
-            explanation: 'Generic phrasing common in AI-generated content about machine learning applications.'
+            explanation: 'Generic phrasing common in AI-generated content about the topic.'
           },
           {
-            text: "My own experience with patient data revealed unexpected correlations between treatment adherence and socioeconomic factors that weren't evident in the published literature.",
+            text: sampleSentences[1] || "My own experience with patient data revealed unexpected correlations between treatment adherence and socioeconomic factors that weren't evident in the published literature.",
             type: 'human',
             explanation: 'Personal insight and nuanced observation typical of human experience.'
           }
         ];
       } else {
+        // Use primarily content-based excerpts for AI-generated
         return [
           {
-            text: 'The proposed project will leverage cutting-edge technology to implement innovative solutions that address key challenges in the target sector while maximizing stakeholder value and promoting sustainable outcomes.',
+            text: sampleSentences[0] || 'The proposed project will leverage cutting-edge technology to implement innovative solutions that address key challenges in the target sector while maximizing stakeholder value and promoting sustainable outcomes.',
             type: 'ai',
-            explanation: 'Generic business jargon with minimal specific content; typical of AI-generated proposals.'
+            explanation: 'Generic business jargon with minimal specific content; typical of AI-generated text.'
           },
           {
-            text: 'Our approach will utilize state-of-the-art methodologies to analyze complex data sets, enabling data-driven decision making that optimizes resource allocation and enhances operational efficiency.',
+            text: sampleSentences[1] || 'Our approach will utilize state-of-the-art methodologies to analyze complex data sets, enabling data-driven decision making that optimizes resource allocation and enhances operational efficiency.',
             type: 'ai',
             explanation: 'Vague technical description without specific methodologies or techniques mentioned.'
           },
           {
-            text: 'The implementation timeline will be structured to ensure timely delivery of project milestones while maintaining flexibility to accommodate stakeholder feedback and changing requirements.',
+            text: sampleSentences[2] || 'The implementation timeline will be structured to ensure timely delivery of project milestones while maintaining flexibility to accommodate stakeholder feedback and changing requirements.',
             type: 'ai',
             explanation: 'Generic project management language that could apply to virtually any project.'
           }
@@ -421,55 +692,79 @@ export const useDocumentStore = defineStore('document', {
       }
     },
     
+    // Check document status (simulated)
     async checkDocumentStatus(id: string) {
+      if (!process.client) return null;
+      
       try {
-        const response = await fetch(`/api/documents/${id}`);
-        const data = await response.json();
+        const document = simulatedDatabase.getDocument(id);
         
-        if (data.success) {
-          const updatedDocument = {
-            ...data.document,
-            date: new Date(data.document.date)
-          };
+        if (document && document.status === 'Processing') {
+          // Simulate completion of processing
+          document.status = 'Complete';
           
-          // Update the document in the documents array
+          // Update in simulated database
+          simulatedDatabase.addDocument(document);
+          
+          // Save to localStorage
+          this.saveToLocalStorage();
+          
+          // Update in state if needed
           const index = this.documents.findIndex(doc => doc.id === id);
           if (index !== -1) {
-            this.documents[index] = updatedDocument;
+            this.documents[index] = document;
           }
           
           if (this.selectedDocument?.id === id) {
-            this.selectedDocument = updatedDocument;
+            this.selectedDocument = document;
           }
-          
-          // Update cache
-          this.saveDocumentsToCache();
-          
-          return updatedDocument;
         }
+        
+        return document;
       } catch (error) {
         console.error('Error checking document status:', error);
+        return null;
       }
-      
-      return null;
     },
     
-    // Delete document (from local cache only)
+    // Delete document
     deleteDocument(id: string) {
-      const index = this.documents.findIndex(doc => doc.id === id);
-      if (index !== -1) {
-        this.documents.splice(index, 1);
+      if (!process.client) return false;
+      
+      try {
+        // Delete from simulated database
+        const success = simulatedDatabase.deleteDocument(id);
         
-        // Update cache
-        this.saveDocumentsToCache();
-        return true;
+        if (success) {
+          // Delete from state
+          this.documents = this.documents.filter(doc => doc.id !== id);
+          
+          // If selected document is deleted, clear it
+          if (this.selectedDocument?.id === id) {
+            this.selectedDocument = null;
+          }
+          
+          // Save changes to localStorage
+          this.saveToLocalStorage();
+        }
+        
+        return success;
+      } catch (error) {
+        console.error('Error deleting document:', error);
+        return false;
       }
-      return false;
     },
     
     // Verify a document by certificate ID
     verifyDocument(certificateId: string) {
-      return this.getDocumentByCertificateId(certificateId);
+      if (!process.client) return null;
+      
+      // First check in state
+      const stateDoc = this.documents.find(doc => doc.certificateId === certificateId);
+      if (stateDoc) return stateDoc;
+      
+      // Then check in simulated database
+      return simulatedDatabase.getDocumentByCertificateId(certificateId);
     },
     
     resetError() {

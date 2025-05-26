@@ -269,8 +269,8 @@ const pagination = ref({
 });
 
 onMounted(async () => {
-  // Load documents from cache or API
-  await documentStore.fetchDocuments();
+  // Initialize the document store
+  await documentStore.initialize();
   isLoading.value = false;
   
   // Update pagination
@@ -404,7 +404,7 @@ const verifyDocument = () => {
 // Clear cache
 const clearCache = () => {
   if (confirm('Are you sure you want to clear all documents? This will remove all your uploaded files and analysis results.')) {
-    documentStore.clearCache();
+    documentStore.clearAllData();
     isLoading.value = false;
     updatePagination();
   }

@@ -9,6 +9,8 @@ export function useFileUpload() {
   const isUploading = ref(false);
   const uploadProgress = ref(0);
   const uploadError = ref<string | null>(null);
+  const fileHash = ref<string | null>(null);
+  const duplicateFound = ref(false);
   
   const hasFile = computed(() => selectedFile.value !== null);
   
@@ -28,8 +30,30 @@ export function useFileUpload() {
     return { valid: true };
   };
   
+  // Generate file hash when a file is selected
+  const generateFileHash = async (file: File): Promise<string> => {
+    try {
+      // Use the hash function from the document store
+      return await documentStore.generateFileHash(file);
+    } catch (error) {
+      console.error('Error generating file hash:', error);
+      throw error;
+    }
+  };
+  
+  // Check if file is already analyzed
+  const checkForDuplicate = async (hash: string): Promise<boolean> => {
+    const existingDoc = documentStore.getDocumentByHash(hash);
+    if (existingDoc && existingDoc.status === 'Complete') {
+      duplicateFound.value = true;
+      return true;
+    }
+    duplicateFound.value = false;
+    return false;
+  };
+  
   // Handle file selection from input
-  const handleFileSelect = (event: Event) => {
+  const handleFileSelect = async (event: Event) => {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
@@ -38,6 +62,15 @@ export function useFileUpload() {
       if (validation.valid) {
         selectedFile.value = file;
         uploadError.value = null;
+        
+        try {
+          // Generate hash for selected file
+          fileHash.value = await generateFileHash(file);
+          // Check if this file has already been analyzed
+          await checkForDuplicate(fileHash.value);
+        } catch (error) {
+          console.error('Error processing file:', error);
+        }
       } else {
         uploadError.value = validation.error || 'Invalid file';
         // Reset input
@@ -57,7 +90,7 @@ export function useFileUpload() {
     isDragging.value = false;
   };
   
-  const handleDrop = (event: DragEvent) => {
+  const handleDrop = async (event: DragEvent) => {
     event.preventDefault();
     isDragging.value = false;
     
@@ -68,6 +101,15 @@ export function useFileUpload() {
       if (validation.valid) {
         selectedFile.value = file;
         uploadError.value = null;
+        
+        try {
+          // Generate hash for dropped file
+          fileHash.value = await generateFileHash(file);
+          // Check if this file has already been analyzed
+          await checkForDuplicate(fileHash.value);
+        } catch (error) {
+          console.error('Error processing file:', error);
+        }
       } else {
         uploadError.value = validation.error || 'Invalid file';
       }
@@ -78,6 +120,8 @@ export function useFileUpload() {
   const removeFile = () => {
     selectedFile.value = null;
     uploadError.value = null;
+    fileHash.value = null;
+    duplicateFound.value = false;
   };
   
   // Format file size for display
@@ -90,19 +134,30 @@ export function useFileUpload() {
   };
   
   // Upload file to server
-  const uploadFile = async (): Promise<boolean> => {
+  const uploadFile = async (): Promise<any> => {
     if (!selectedFile.value) {
       uploadError.value = 'No file selected.';
       return false;
+    }
+    
+    // If we already have this document analyzed, return it directly
+    if (duplicateFound.value && fileHash.value) {
+      const existingDoc = documentStore.getDocumentByHash(fileHash.value);
+      if (existingDoc) {
+        return existingDoc;
+      }
     }
     
     isUploading.value = true;
     uploadProgress.value = 0;
     uploadError.value = null;
     
+    // Initialize progress interval variable
+    let progressInterval: ReturnType<typeof setInterval> | null = null;
+    
     try {
       // Simulate upload progress
-      const progressInterval = setInterval(() => {
+      progressInterval = setInterval(() => {
         if (uploadProgress.value < 90) {
           uploadProgress.value += 10;
         }
@@ -111,7 +166,7 @@ export function useFileUpload() {
       // Upload file using the document store
       const result = await documentStore.uploadDocument(selectedFile.value);
       
-      clearInterval(progressInterval);
+      if (progressInterval) clearInterval(progressInterval);
       uploadProgress.value = 100;
       
       if (result) {
@@ -120,9 +175,11 @@ export function useFileUpload() {
           selectedFile.value = null;
           isUploading.value = false;
           uploadProgress.value = 0;
+          fileHash.value = null;
+          duplicateFound.value = false;
         }, 500);
         
-        return true;
+        return result;
       } else {
         // Upload failed
         uploadError.value = documentStore.error || 'Upload failed.';
@@ -130,7 +187,7 @@ export function useFileUpload() {
         return false;
       }
     } catch (error: any) {
-      clearInterval(progressInterval);
+      if (progressInterval) clearInterval(progressInterval);
       uploadError.value = error.message || 'An error occurred during upload.';
       isUploading.value = false;
       return false;
@@ -144,6 +201,8 @@ export function useFileUpload() {
     uploadProgress,
     uploadError,
     hasFile,
+    duplicateFound,
+    fileHash,
     handleFileSelect,
     handleDragOver,
     handleDragLeave,

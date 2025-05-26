@@ -35,6 +35,9 @@
           <div>
             <p class="font-medium text-left">{{ selectedFile?.name }}</p>
             <p class="text-sm text-gray-500 text-left">{{ selectedFile ? formatFileSize(selectedFile.size) : '' }}</p>
+            <p v-if="duplicateFound" class="text-sm text-blue-600 font-medium mt-1">
+              This document has already been analyzed
+            </p>
           </div>
         </div>
         <button @click="removeFile" class="text-gray-500 hover:text-gray-700">
@@ -52,7 +55,9 @@
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
         </div>
-        <p class="text-blue-600 font-medium mb-2">Uploading your file...</p>
+        <p class="text-blue-600 font-medium mb-2">
+          {{ duplicateFound ? "Retrieving previous analysis..." : "Uploading your file..." }}
+        </p>
         <div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
           <div class="bg-blue-600 h-2.5 rounded-full" :style="{ width: uploadProgress + '%' }"></div>
         </div>
@@ -71,7 +76,7 @@
         @click="startUpload" 
         class="w-full bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
       >
-        Validate Document
+        {{ duplicateFound ? "Use Previous Analysis" : "Validate Document" }}
       </button>
     </div>
   </div>
@@ -91,6 +96,8 @@ const {
   uploadProgress,
   uploadError,
   hasFile,
+  duplicateFound,
+  fileHash,
   handleFileSelect,
   handleDragOver,
   handleDragLeave,
@@ -101,11 +108,11 @@ const {
 } = useFileUpload();
 
 const startUpload = async () => {
-  const success = await uploadFile();
+  const result = await uploadFile();
   
-  if (success) {
-    // Emit upload complete event
-    emit('upload-complete', {}); // In a real app, pass the document data
+  if (result) {
+    // Emit upload complete event with the document
+    emit('upload-complete', result); 
   }
 };
 </script> 

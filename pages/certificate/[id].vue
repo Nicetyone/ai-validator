@@ -100,7 +100,7 @@
               <div class="mb-8 text-center">
                 <div class="text-lg font-semibold mb-2">Certificate Verification</div>
                 <div class="bg-gray-50 inline-block px-6 py-3 rounded-lg text-lg font-mono print:bg-gray-100">
-                  {{ certificateId }}
+                  {{ document.certificateId }}
                 </div>
                 <p class="mt-2 text-sm text-gray-500">
                   To verify this certificate, visit <span class="font-semibold">ai-validator.com/verify</span> and enter the verification code.
@@ -111,13 +111,20 @@
               <div class="flex justify-between items-end">
                 <div>
                   <div class="h-16 border-b border-gray-400 mb-1 w-48">
-                    <img src="/signature.png" alt="Digital Signature" class="h-14 w-auto object-contain opacity-75" />
+                    <svg class="h-14 w-auto opacity-75" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M10,35 C20,10 30,40 40,20 C50,10 60,30 70,20 C80,15 90,40 100,30 C110,20 120,35 130,25 C140,30 150,15 160,25 C170,35 180,15 190,25" stroke="currentColor" fill="none" stroke-width="2" />
+                    </svg>
                   </div>
                   <div class="text-sm font-semibold">AI-Validator Authentication</div>
                 </div>
                 
                 <div class="w-24 h-24 relative">
-                  <img src="/certificate-seal.png" alt="Certificate Seal" class="w-full h-full object-contain opacity-75" />
+                  <svg class="w-full h-full opacity-75" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="2" />
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="1" />
+                    <path d="M50,15 L50,85 M15,50 L85,50 M25,25 L75,75 M25,75 L75,25" stroke="currentColor" stroke-width="1" />
+                    <text x="50" y="55" font-size="10" text-anchor="middle" fill="currentColor">VERIFIED</text>
+                  </svg>
                 </div>
               </div>
             </div>
@@ -152,72 +159,32 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { useDocumentStore } from '~/stores/document';
 
 const route = useRoute();
+const documentStore = useDocumentStore();
 const isLoading = ref(true);
 const document = ref(null);
-const certificateId = ref('');
-
-// Mock document data - in a real app, this would be fetched from an API
-const mockDocuments = [
-  {
-    id: '1',
-    name: 'research-paper.pdf',
-    size: '1.2 MB',
-    date: new Date(2023, 4, 15),
-    status: 'Complete',
-    result: 'Level 1: Clean',
-    aiScore: 12,
-    summary: 'This document appears to be human-created with no significant indicators of AI generation. The writing style is consistent with academic research, showing natural variations in sentence structure and vocabulary usage typical of human authors.'
-  },
-  {
-    id: '2',
-    name: 'thesis-draft.pdf',
-    size: '3.5 MB',
-    date: new Date(2023, 4, 10),
-    status: 'Complete',
-    result: 'Level 2: AI-Supported',
-    aiScore: 58,
-    summary: 'This document shows signs of AI assistance but with significant human input and editing. While some sections exhibit patterns typical of AI-generated text, others show clear evidence of human authorship and original thought.'
-  },
-  {
-    id: '3',
-    name: 'project-proposal.pdf',
-    size: '0.8 MB',
-    date: new Date(2023, 4, 5),
-    status: 'Complete',
-    result: 'Level 3: AI-Generated',
-    aiScore: 92,
-    summary: 'This document appears to be primarily AI-generated with minimal human editing. It exhibits numerous characteristics typical of large language model outputs, including formulaic structure, generic phrasing, and consistency issues.'
-  }
-];
-
-// Generate a random certificate ID
-const generateCertificateId = () => {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let id = '';
-  for (let i = 0; i < 16; i++) {
-    if (i > 0 && i % 4 === 0) {
-      id += '-';
-    }
-    id += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return id;
-};
 
 // Fetch document data based on ID
 onMounted(async () => {
-  // Simulate API request delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
   const id = route.params.id;
-  document.value = mockDocuments.find(doc => doc.id === id) || null;
   
-  if (document.value) {
-    certificateId.value = generateCertificateId();
+  try {
+    // Try to load from document store
+    await documentStore.fetchDocumentById(id);
+    document.value = documentStore.selectedDocument;
+    
+    // If document doesn't have a certificateId yet, generate one
+    if (document.value && !document.value.certificateId) {
+      document.value.certificateId = documentStore.generateCertificateId();
+      documentStore.saveDocumentsToCache();
+    }
+  } catch (error) {
+    console.error('Error fetching document:', error);
+  } finally {
+    isLoading.value = false;
   }
-  
-  isLoading.value = false;
 });
 
 // Format date helper

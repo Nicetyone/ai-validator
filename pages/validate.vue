@@ -90,16 +90,20 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import FileUpload from '~/components/FileUpload.vue';
 
+const router = useRouter();
 const uploadSuccess = ref(false);
+const uploadedDocument = ref(null);
 
-const handleUploadComplete = () => {
+const handleUploadComplete = (document) => {
   uploadSuccess.value = true;
+  uploadedDocument.value = document;
   
-  // Reset the success message after some time
+  // Redirect to the report page after a brief delay
   setTimeout(() => {
-    uploadSuccess.value = false;
-  }, 5000);
+    router.push(`/report/${document.id}`);
+  }, 2000);
 };
 </script> 

@@ -118,6 +118,21 @@ The project is organized as follows:
 - [Tailwind CSS](https://tailwindcss.com/) - Styling
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
 
+## Features
+
+- **File Upload with Duplicate Detection** — upload PDFs via drag and drop or file selection. Duplicate files are detected by hash and previous results are reused.
+- **Status & Result Levels** — each document displays its processing status and one of three result levels: **Clean**, **AI-Supported**, or **AI-Generated**.
+- **Document List** — view uploaded documents with filtering, pagination and deletion options.
+- **Certificate Generation & Verification** — completed analyses generate certificates that can later be verified via their unique ID.
+- **Dark Mode Toggle** — switch between light and dark themes. Preference is saved to local storage.
+- **Clear Cached Documents** — remove all locally stored documents and analysis data.
+
+## AI Detection Levels
+
+1. **Level 1: Clean** – no AI detected; the document appears human created.
+2. **Level 2: AI-Supported** – some signs of AI assistance with notable human input.
+3. **Level 3: AI-Generated** – document seems primarily AI-generated with minimal editing.
+
 ## Getting Started
 
 ### Prerequisites
@@ -128,12 +143,14 @@ The project is organized as follows:
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/yourusername/ai-validator.git
    cd ai-validator
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    # or
@@ -141,13 +158,14 @@ The project is organized as follows:
    ```
 
 3. Start the development server:
+
    ```bash
    npm run dev
    # or
    yarn dev
    ```
 
-4. Open your browser and navigate to `http://localhost:3000`
+4. Open your browser and navigate to `http://localhost:3000`.
 
 ## How to Use
 

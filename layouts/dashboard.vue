@@ -1,11 +1,12 @@
 <template>
   <div class="min-h-screen flex flex-col">
     <!-- Header -->
-    <header class="bg-white shadow-md">
+    <header class="bg-white dark:bg-gray-900 dark:text-gray-200 shadow-md">
       <div class="container mx-auto px-4 py-4 flex justify-between items-center">
         <NuxtLink to="/" class="text-2xl font-bold text-blue-600">AI-Validator</NuxtLink>
         <div class="flex items-center space-x-4">
-          <button class="text-gray-700 hover:text-blue-600">
+          <DarkToggle />
+          <button class="text-gray-700 dark:text-gray-300 hover:text-blue-600">
             <span class="sr-only">Notifications</span>
             <!-- Bell icon -->
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -13,7 +14,7 @@
             </svg>
           </button>
           <div class="relative">
-            <button class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+            <button class="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-blue-600">
               <span>User Name</span>
               <img src="https://via.placeholder.com/32" alt="User avatar" class="w-8 h-8 rounded-full" />
             </button>
@@ -24,7 +25,7 @@
 
     <div class="flex-grow flex">
       <!-- Sidebar -->
-      <aside class="w-64 bg-gray-800 text-white">
+      <aside class="w-64 bg-gray-800 dark:bg-gray-800 text-white">
         <div class="p-4">
           <h2 class="text-xl font-semibold">Dashboard</h2>
         </div>
@@ -55,7 +56,7 @@
       </aside>
 
       <!-- Main Content -->
-      <main class="flex-grow p-6 bg-gray-100">
+      <main class="flex-grow p-6 bg-gray-100 dark:bg-gray-900">
         <slot />
       </main>
     </div>
@@ -63,5 +64,5 @@
 </template>
 
 <script setup>
-// Dashboard layout functionality
+import DarkToggle from '~/components/DarkToggle.vue'
 </script> 

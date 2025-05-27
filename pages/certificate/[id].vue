@@ -38,7 +38,7 @@
 
         <div v-else>
           <!-- Certificate -->
-          <div class="bg-white rounded-lg shadow-md overflow-hidden print:shadow-none print:border print:border-gray-300">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden print:shadow-none print:border print:border-gray-300">
             <!-- Certificate Header -->
             <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-8 print:bg-white print:text-black">
               <div class="text-center">
@@ -61,17 +61,12 @@
               <!-- Result -->
               <div class="mb-8 text-center">
                 <div class="text-lg font-semibold mb-2">Has been analyzed and classified as:</div>
-                <div 
-                  class="text-3xl font-bold inline-block px-6 py-3 rounded-lg"
-                  :class="getResultClass(document.result)"
-                >
-                  {{ document.result }}
-                </div>
+                <DocumentStatus :status="document.result" type="result" class="text-3xl px-6 py-3" />
               </div>
               
               <!-- Score -->
               <div class="mb-8 flex justify-center">
-                <div class="text-center px-6 py-4 rounded-lg bg-gray-50 print:bg-gray-100">
+                <div class="text-center px-6 py-4 rounded-lg bg-gray-50 dark:bg-gray-700 print:bg-gray-100">
                   <div class="text-lg font-semibold mb-1">AI Detection Score</div>
                   <div class="text-4xl font-bold" :class="getResultTextClass(document.result)">
                     {{ document.aiScore }}%
@@ -82,14 +77,14 @@
               <!-- Explanation -->
               <div class="mb-8 text-center max-w-2xl mx-auto">
                 <div class="text-lg font-semibold mb-2">Analysis Summary:</div>
-                <p class="text-gray-700">
+                <p class="text-gray-700 dark:text-gray-300">
                   {{ document.summary }}
                 </p>
               </div>
               
               <!-- Certification Statement -->
               <div class="mb-8 text-center">
-                <p class="text-gray-700">
+                <p class="text-gray-700 dark:text-gray-300">
                   This certificate verifies that the document has been analyzed by AI-Validator's proprietary 
                   algorithm designed to detect AI-generated content. The analysis was performed on 
                   {{ formatDate(document.date) }} and the results are valid as of this date.
@@ -99,7 +94,7 @@
               <!-- Verification Info -->
               <div class="mb-8 text-center">
                 <div class="text-lg font-semibold mb-2">Certificate Verification</div>
-                <div class="bg-gray-50 inline-block px-6 py-3 rounded-lg text-lg font-mono print:bg-gray-100">
+                <div class="bg-gray-50 dark:bg-gray-700 inline-block px-6 py-3 rounded-lg text-lg font-mono print:bg-gray-100">
                   {{ document.certificateId }}
                 </div>
                 <p class="mt-2 text-sm text-gray-500">
@@ -157,9 +152,19 @@
 </template>
 
 <script setup>
+definePageMeta({ title: 'Certificate' })
+useHead({
+  meta: [
+    {
+      name: 'description',
+      content: 'Access the verification certificate for your analyzed document.'
+    }
+  ]
+})
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useDocumentStore } from '~/stores/document';
+import DocumentStatus from '~/components/DocumentStatus.vue';
 
 const route = useRoute();
 const documentStore = useDocumentStore();
@@ -197,19 +202,6 @@ const formatDate = (date) => {
     month: 'long',
     day: 'numeric'
   });
-};
-
-// Get result class
-const getResultClass = (result) => {
-  if (result.includes('Clean')) {
-    return 'bg-green-100 text-green-800 border border-green-300';
-  } else if (result.includes('AI-Supported')) {
-    return 'bg-yellow-100 text-yellow-800 border border-yellow-300';
-  } else if (result.includes('AI-Generated')) {
-    return 'bg-red-100 text-red-800 border border-red-300';
-  } else {
-    return 'bg-gray-100 text-gray-800 border border-gray-300';
-  }
 };
 
 // Get result text class

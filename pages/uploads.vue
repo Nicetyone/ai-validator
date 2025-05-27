@@ -22,7 +22,7 @@
           </NuxtLink>
           
           <button 
-            @click="clearCache" 
+            @click="promptClear" 
             class="bg-red-600 text-white px-4 py-2 rounded-md font-medium hover:bg-red-700 transition duration-300 inline-flex items-center"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -33,50 +33,54 @@
         </div>
         
         <!-- Filters -->
-        <div class="flex space-x-4">
-          <select
+        <div class="flex space-x-4 w-full max-w-xs">
+          <StyledSelect
             v-model="filters.status"
-            class="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          >
-            <option value="">All Statuses</option>
-            <option value="Complete">Complete</option>
-            <option value="Processing">Processing</option>
-            <option value="Failed">Failed</option>
-          </select>
-          
-          <select
+            :options="statusOptions"
+            label="Filter by status"
+            class="flex-1"
+          />
+          <StyledSelect
             v-model="filters.result"
-            class="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          >
-            <option value="">All Results</option>
-            <option value="Clean">Level 1: Clean</option>
-            <option value="AI-Supported">Level 2: AI-Supported</option>
-            <option value="AI-Generated">Level 3: AI-Generated</option>
-          </select>
+            :options="resultOptions"
+            label="Filter by result"
+            class="flex-1"
+          />
         </div>
       </div>
       
       <!-- Loading -->
-      <div v-if="isLoading" class="text-center py-12">
-        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-        <p class="text-gray-600">Loading your documents...</p>
+      <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-12">
+        <div v-for="n in 6" :key="n" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <div class="animate-pulse space-y-4">
+            <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4"></div>
+            <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+            <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6"></div>
+          </div>
+        </div>
       </div>
-      
       <!-- Verification tool -->
-      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-        <h2 class="text-xl font-bold mb-4">Verify a Document</h2>
-        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl dark:text-gray-300 font-bold mb-4">Verify a Document</h2>
+        <div class="flex items-end space-x-4">
           <div class="flex-1">
-            <input 
+            <label
+              for="certificate-id"
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >
+              Certificate ID
+            </label>
+            <input
+              id="certificate-id"
               v-model="verificationId"
               placeholder="Enter certificate ID (e.g., ABCD-1234-EFGH-5678)"
-              class="w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500"
+              class="w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
             />
           </div>
           <div>
             <button 
               @click="verifyDocument"
-              class="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded-md font-medium hover:bg-green-700 transition duration-300"
+              class="w-auto dark:text-gray-300 bg-green-600 text-white px-6 py-2 rounded-md font-medium hover:bg-green-700 transition duration-300"
               :disabled="!verificationId"
             >
               Verify
@@ -85,7 +89,15 @@
         </div>
         
         <!-- Verification result -->
-        <div v-if="verificationResult" class="mt-4 p-4 rounded-md" :class="verificationSuccess ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'">
+        <div
+          v-if="verificationResult"
+          class="mt-4 p-4 rounded-md"
+          :class="
+            verificationSuccess
+              ? 'bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700'
+              : 'bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700'
+          "
+        >
           <div class="flex items-start">
             <div class="flex-shrink-0">
               <svg v-if="verificationSuccess" class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -115,11 +127,11 @@
       <!-- Documents section -->
       <div v-if="!isLoading">
         <!-- Empty state -->
-        <div v-if="filteredDocuments.length === 0" class="bg-white rounded-lg shadow-md p-12 text-center">
+        <div v-if="filteredDocuments.length === 0" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-12 text-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
           </svg>
-          <h3 class="text-xl font-medium text-gray-900 mb-2">No documents found</h3>
+          <h3 class="text-xl dark:text-gray-300 font-medium text-gray-900 mb-2">No documents found</h3>
           <p class="text-gray-500 mb-6">
             {{ 
               filters.status || filters.result 
@@ -136,56 +148,48 @@
         </div>
         
         <!-- Documents grid -->
-        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div v-for="doc in filteredDocuments" :key="doc.id" class="bg-white rounded-lg shadow-md overflow-hidden">
+        <TransitionGroup name="fade-in" appear tag="div" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div v-for="doc in filteredDocuments" :key="doc.id" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
             <div class="p-6">
               <div class="flex items-start space-x-4">
-                <div class="bg-gray-100 rounded-lg p-3">
+                <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                   </svg>
                 </div>
                 <div class="flex-1 min-w-0">
-                  <h3 class="text-lg font-semibold text-gray-900 truncate">{{ doc.name }}</h3>
-                  <p class="text-sm text-gray-500">{{ formatDate(doc.date) }}</p>
+                  <h3 class="text-lg dark:text-gray-300 font-semibold text-gray-900 truncate">{{ doc.name }}</h3>
+                  <p class="text-sm dark:text-gray-300 text-gray-500">{{ formatDate(doc.date) }}</p>
                 </div>
               </div>
               
               <div class="mt-4 flex justify-between items-center">
-                <div>
-                  <span :class="getStatusClass(doc.status)" class="text-xs px-2 py-1 rounded-full">
-                    {{ doc.status }}
-                  </span>
-                </div>
-                <div>
-                  <span :class="getResultClass(doc.result)" class="text-xs px-2 py-1 rounded-full">
-                    {{ doc.result }}
-                  </span>
-                </div>
+                <DocumentStatus :status="doc.status" />
+                <DocumentStatus :status="doc.result" type="result" />
               </div>
               
               <div v-if="doc.certificateId" class="mt-2">
-                <p class="text-xs text-gray-500">Certificate ID: <span class="font-mono">{{ doc.certificateId }}</span></p>
+                <p class="text-xs dark:text-gray-300 text-gray-500">Certificate ID: <span class="font-mono">{{ doc.certificateId }}</span></p>
               </div>
               
               <div class="mt-6 flex space-x-2">
-                <NuxtLink 
-                  :to="`/report/${doc.id}`" 
-                  class="flex-1 bg-blue-100 text-blue-600 hover:bg-blue-200 text-center py-2 rounded-md text-sm font-medium transition duration-300"
+                <NuxtLink
+                  :to="`/report/${doc.id}`"
+                  class="flex-1 bg-blue-100 dark:bg-blue-900/40 text-blue-600 hover:bg-blue-200 dark:hover:bg-blue-900/60 text-center py-2 rounded-md text-sm font-medium transition duration-300"
                 >
                   View Report
                 </NuxtLink>
                 
-                <NuxtLink 
-                  :to="`/certificate/${doc.id}`" 
-                  class="flex-1 bg-green-100 text-green-600 hover:bg-green-200 text-center py-2 rounded-md text-sm font-medium transition duration-300"
+                <NuxtLink
+                  :to="`/certificate/${doc.id}`"
+                  class="flex-1 bg-green-100 dark:bg-green-900/40 text-green-600 hover:bg-green-200 dark:hover:bg-green-900/60 text-center py-2 rounded-md text-sm font-medium transition duration-300"
                 >
                   Certificate
                 </NuxtLink>
                 
                 <button 
-                  @click="deleteDocument(doc.id)"
-                  class="flex-none bg-gray-100 text-gray-600 hover:bg-gray-200 py-2 px-3 rounded-md text-sm transition duration-300"
+                  @click="promptDelete(doc.id)"
+                  class="flex-none bg-gray-100 dark:bg-red-700 text-white-600 hover:bg-red-400 py-2 px-3 rounded-md text-sm transition duration-300"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -194,7 +198,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </TransitionGroup>
         
         <!-- Pagination -->
         <div v-if="filteredDocuments.length > 0" class="mt-8 flex justify-center">
@@ -202,7 +206,7 @@
             <button
               @click="prevPage"
               :disabled="pagination.currentPage === 1"
-              class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700"
               :class="{ 'cursor-not-allowed opacity-50': pagination.currentPage === 1 }"
             >
               <span class="sr-only">Previous</span>
@@ -218,7 +222,7 @@
               :class="[
                 page === pagination.currentPage 
                   ? 'z-10 bg-blue-50 border-blue-500 text-blue-600' 
-                  : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50',
+                  : 'bg-white dark:bg-gray-800 border-gray-300 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700',
                 'relative inline-flex items-center px-4 py-2 border text-sm font-medium'
               ]"
             >
@@ -228,7 +232,7 @@
             <button
               @click="nextPage"
               :disabled="pagination.currentPage === pagination.totalPages"
-              class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700"
               :class="{ 'cursor-not-allowed opacity-50': pagination.currentPage === pagination.totalPages }"
             >
               <span class="sr-only">Next</span>
@@ -241,11 +245,38 @@
       </div>
     </div>
   </div>
+  <ConfirmModal
+    :show="showDeleteModal"
+    title="Delete Document"
+    message="Are you sure you want to delete this document?"
+    @confirm="confirmDelete"
+    @cancel="showDeleteModal = false"
+  />
+  <ConfirmModal
+    :show="showClearModal"
+    title="Clear All Documents"
+    message="Are you sure you want to clear all documents? This will remove all your uploaded files and analysis results."
+    @confirm="confirmClear"
+    @cancel="showClearModal = false"
+  />
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+definePageMeta({ title: 'My Documents' })
+useHead({
+  meta: [
+    {
+      name: 'description',
+      content: 'View and manage all documents you have submitted for AI validation.'
+    }
+  ]
+})
+import { ref, computed, onMounted, watch } from 'vue';
 import { useDocumentStore } from '~/stores/document';
+import ConfirmModal from '~/components/ConfirmModal.vue';
+import { useToast } from '~/composables/useToast'
+import StyledSelect from '~/components/StyledSelect.vue';
+import DocumentStatus from '~/components/DocumentStatus.vue';
 
 const documentStore = useDocumentStore();
 const isLoading = ref(true);
@@ -254,10 +285,33 @@ const verificationResult = ref('');
 const verificationSuccess = ref(false);
 const verifiedDocument = ref(null);
 
+const showDeleteModal = ref(false);
+const docToDelete = ref(null);
+const showClearModal = ref(false);
+const { showToast } = useToast();
+
 // Filters
 const filters = ref({
   status: '',
   result: ''
+});
+
+const statusOptions = [
+  { value: '', label: 'All Statuses' },
+  { value: 'Complete', label: 'Complete' },
+  { value: 'Processing', label: 'Processing' },
+  { value: 'Failed', label: 'Failed' }
+];
+
+const resultOptions = [
+  { value: '', label: 'All Results' },
+  { value: 'Clean', label: 'Level 1: Clean' },
+  { value: 'AI-Supported', label: 'Level 2: AI-Supported' },
+  { value: 'AI-Generated', label: 'Level 3: AI-Generated' }
+];
+
+watch(filters, () => {
+  pagination.value.currentPage = 1;
 });
 
 // Pagination
@@ -284,35 +338,6 @@ const formatDate = (date) => {
     month: 'short',
     day: 'numeric'
   });
-};
-
-// Get status class for styling
-const getStatusClass = (status) => {
-  const classes = 'inline-flex text-xs leading-5 font-semibold ';
-  switch (status) {
-    case 'Complete':
-      return classes + 'bg-green-100 text-green-800';
-    case 'Processing':
-      return classes + 'bg-blue-100 text-blue-800';
-    case 'Failed':
-      return classes + 'bg-red-100 text-red-800';
-    default:
-      return classes + 'bg-gray-100 text-gray-800';
-  }
-};
-
-// Get result class for styling
-const getResultClass = (result) => {
-  const classes = 'inline-flex text-xs leading-5 font-semibold ';
-  if (result.includes('Clean')) {
-    return classes + 'bg-green-100 text-green-800';
-  } else if (result.includes('AI-Supported')) {
-    return classes + 'bg-yellow-100 text-yellow-800';
-  } else if (result.includes('AI-Generated')) {
-    return classes + 'bg-red-100 text-red-800';
-  } else {
-    return classes + 'bg-gray-100 text-gray-800';
-  }
 };
 
 // Apply filters
@@ -367,17 +392,22 @@ const goToPage = (page) => {
 };
 
 // Delete document
-const deleteDocument = (id) => {
-  if (confirm('Are you sure you want to delete this document?')) {
-    // Delete from store (which updates localStorage)
-    documentStore.deleteDocument(id);
-    
-    // Update pagination if needed
+const promptDelete = (id) => {
+  docToDelete.value = id
+  showDeleteModal.value = true
+}
+
+const confirmDelete = () => {
+  if (docToDelete.value) {
+    documentStore.deleteDocument(docToDelete.value)
     if (filteredDocuments.value.length === 0 && pagination.value.currentPage > 1) {
-      pagination.value.currentPage--;
+      pagination.value.currentPage--
     }
+    showToast('Document deleted', 'success')
   }
-};
+  showDeleteModal.value = false
+  docToDelete.value = null
+}
 
 // Verify document
 const verifyDocument = () => {
@@ -402,11 +432,15 @@ const verifyDocument = () => {
 };
 
 // Clear cache
-const clearCache = () => {
-  if (confirm('Are you sure you want to clear all documents? This will remove all your uploaded files and analysis results.')) {
-    documentStore.clearAllData();
-    isLoading.value = false;
-    updatePagination();
-  }
-};
+const promptClear = () => {
+  showClearModal.value = true
+}
+
+const confirmClear = () => {
+  documentStore.clearAllData()
+  isLoading.value = false
+  updatePagination()
+  showClearModal.value = false
+  showToast('All documents cleared', 'success')
+}
 </script> 

@@ -2,7 +2,7 @@
   <div>
     <!-- Dropzone -->
     <div
-      class="border-2 border-dashed rounded-lg p-8 text-center transition-colors"
+      class="relative border-2 border-dashed rounded-lg p-8 text-center transition-colors"
       :class="[
         isDragging
           ? 'border-blue-500 bg-blue-50 dark:border-blue-400 dark:bg-blue-900/40'
@@ -13,6 +13,9 @@
       @dragleave="handleDragLeave"
       @drop="handleDrop"
     >
+      <div v-if="isDragging" class="absolute inset-0 flex items-center justify-center pointer-events-none bg-blue-50/70 dark:bg-blue-900/40 border-2 border-blue-500 border-dashed rounded-lg">
+        <p class="text-blue-600 dark:text-blue-200 font-medium">Drop PDF here</p>
+      </div>
       <div v-if="!hasFile && !isUploading">
         <div class="mb-4">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -30,10 +33,8 @@
 
       <!-- File details -->
       <div v-if="hasFile && !isUploading" class="flex items-center justify-between">
-        <div class="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-          </svg>
+        <div class="flex items-center space-x-3">
+          <embed v-if="previewUrl" :src="previewUrl" type="application/pdf" class="w-10 h-10 border rounded" />
           <div>
             <p class="font-medium text-left">{{ selectedFile?.name }}</p>
             <p class="text-sm text-gray-500 dark:text-gray-400 text-left">{{ selectedFile ? formatFileSize(selectedFile.size) : '' }}</p>
@@ -85,7 +86,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useFileUpload } from '~/composables/useFileUpload';
+import { useToast } from '~/composables/useToast'
 
 const emit = defineEmits<{
   (e: 'upload-complete', document: any): void
@@ -109,12 +112,22 @@ const {
   uploadFile
 } = useFileUpload();
 
+const { showToast } = useToast()
+
+const previewUrl = computed(() => {
+  if (selectedFile.value) {
+    return URL.createObjectURL(selectedFile.value)
+  }
+  return null
+})
+
 const startUpload = async () => {
   const result = await uploadFile();
-  
+
   if (result) {
     // Emit upload complete event with the document
-    emit('upload-complete', result); 
+    emit('upload-complete', result);
+    showToast('Document uploaded successfully')
   }
 };
 </script> 

@@ -13,7 +13,7 @@
         </Transition>
         <Transition name="zoom-in" appear>
           <NuxtLink
-            to="/dashboard"
+            to="/validate"
             class="bg-white dark:bg-gray-800 text-blue-600 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition duration-300 inline-block"
           >
             Try It Now
@@ -29,14 +29,14 @@
         
         <div class="grid md:grid-cols-3 gap-8">
           <Transition name="fade-in" appear>
-            <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <div class="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md">
               <Icon name="ph:upload-simple" class="text-blue-600 text-4xl mb-4" />
               <h3 class="text-xl dark:text-gray-300 font-semibold mb-3">Upload Your Document</h3>
               <p class="text-gray-600 dark:text-gray-300">Upload your PDF document to our secure platform for analysis.</p>            </div>
           </Transition>
 
           <Transition name="fade-in" appear>
-            <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <div class="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md">
               <Icon name="ph:brain" class="text-blue-600 text-4xl mb-4" />
               <h3 class="text-xl dark:text-gray-300 font-semibold mb-3">AI Analysis</h3>
               <p class="text-gray-600 dark:text-gray-300">Our advanced algorithm analyzes your document for AI-generated content.</p>
@@ -44,7 +44,7 @@
           </Transition>
 
           <Transition name="fade-in" appear>
-            <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <div class="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md">
               <Icon name="ph:certificate" class="text-blue-600 text-4xl mb-4" />
               <h3 class="text-xl dark:text-gray-300 font-semibold mb-3">Get Your Certificate</h3>
               <p class="text-gray-600 dark:text-gray-300">Receive a detailed report and certificate of creation for your document.</p>
@@ -94,7 +94,7 @@
         </Transition>
         <Transition name="zoom-in" appear>
           <NuxtLink
-            to="/dashboard"
+            to="/uploads"
             class="bg-white dark:bg-gray-800 text-blue-600 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition duration-300 inline-block"
           >
             Go to Dashboard

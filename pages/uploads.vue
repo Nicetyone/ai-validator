@@ -22,7 +22,7 @@
           </NuxtLink>
           
           <button 
-            @click="clearCache" 
+            @click="promptClear" 
             class="bg-red-600 text-white px-4 py-2 rounded-md font-medium hover:bg-red-700 transition duration-300 inline-flex items-center"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -33,35 +33,32 @@
         </div>
         
         <!-- Filters -->
-        <div class="flex space-x-4">
-          <select
+        <div class="flex space-x-4 w-full max-w-xs">
+          <StyledSelect
             v-model="filters.status"
-            class="rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          >
-            <option value="">All Statuses</option>
-            <option value="Complete">Complete</option>
-            <option value="Processing">Processing</option>
-            <option value="Failed">Failed</option>
-          </select>
-          
-          <select
+            :options="statusOptions"
+            label="Filter by status"
+            class="flex-1"
+          />
+          <StyledSelect
             v-model="filters.result"
-            class="rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          >
-            <option value="">All Results</option>
-            <option value="Clean">Level 1: Clean</option>
-            <option value="AI-Supported">Level 2: AI-Supported</option>
-            <option value="AI-Generated">Level 3: AI-Generated</option>
-          </select>
+            :options="resultOptions"
+            label="Filter by result"
+            class="flex-1"
+          />
         </div>
       </div>
       
       <!-- Loading -->
-      <div v-if="isLoading" class="text-center py-12">
-        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-        <p class="text-gray-600">Loading your documents...</p>
+      <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-12">
+        <div v-for="n in 6" :key="n" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <div class="animate-pulse space-y-4">
+            <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4"></div>
+            <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+            <div class="h-4 bg-gray-300 dark:bg-gray-700 rounded w-5/6"></div>
+          </div>
+        </div>
       </div>
-      
       <!-- Verification tool -->
       <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
         <h2 class="text-xl dark:text-gray-300 font-bold mb-4">Verify a Document</h2>
@@ -192,7 +189,7 @@
                 </NuxtLink>
                 
                 <button 
-                  @click="deleteDocument(doc.id)"
+                  @click="promptDelete(doc.id)"
                   class="flex-none bg-gray-100 dark:bg-gray-700 text-gray-600 hover:bg-gray-200 py-2 px-3 rounded-md text-sm transition duration-300"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -249,11 +246,28 @@
       </div>
     </div>
   </div>
+  <ConfirmModal
+    :show="showDeleteModal"
+    title="Delete Document"
+    message="Are you sure you want to delete this document?"
+    @confirm="confirmDelete"
+    @cancel="showDeleteModal = false"
+  />
+  <ConfirmModal
+    :show="showClearModal"
+    title="Clear All Documents"
+    message="Are you sure you want to clear all documents? This will remove all your uploaded files and analysis results."
+    @confirm="confirmClear"
+    @cancel="showClearModal = false"
+  />
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useDocumentStore } from '~/stores/document';
+import ConfirmModal from '~/components/ConfirmModal.vue';
+import { useToast } from '~/composables/useToast'
+import StyledSelect from '~/components/StyledSelect.vue';
 
 const documentStore = useDocumentStore();
 const isLoading = ref(true);
@@ -262,10 +276,33 @@ const verificationResult = ref('');
 const verificationSuccess = ref(false);
 const verifiedDocument = ref(null);
 
+const showDeleteModal = ref(false);
+const docToDelete = ref(null);
+const showClearModal = ref(false);
+const { showToast } = useToast();
+
 // Filters
 const filters = ref({
   status: '',
   result: ''
+});
+
+const statusOptions = [
+  { value: '', label: 'All Statuses' },
+  { value: 'Complete', label: 'Complete' },
+  { value: 'Processing', label: 'Processing' },
+  { value: 'Failed', label: 'Failed' }
+];
+
+const resultOptions = [
+  { value: '', label: 'All Results' },
+  { value: 'Clean', label: 'Level 1: Clean' },
+  { value: 'AI-Supported', label: 'Level 2: AI-Supported' },
+  { value: 'AI-Generated', label: 'Level 3: AI-Generated' }
+];
+
+watch(filters, () => {
+  pagination.value.currentPage = 1;
 });
 
 // Pagination
@@ -375,17 +412,22 @@ const goToPage = (page) => {
 };
 
 // Delete document
-const deleteDocument = (id) => {
-  if (confirm('Are you sure you want to delete this document?')) {
-    // Delete from store (which updates localStorage)
-    documentStore.deleteDocument(id);
-    
-    // Update pagination if needed
+const promptDelete = (id) => {
+  docToDelete.value = id
+  showDeleteModal.value = true
+}
+
+const confirmDelete = () => {
+  if (docToDelete.value) {
+    documentStore.deleteDocument(docToDelete.value)
     if (filteredDocuments.value.length === 0 && pagination.value.currentPage > 1) {
-      pagination.value.currentPage--;
+      pagination.value.currentPage--
     }
+    showToast('Document deleted', 'success')
   }
-};
+  showDeleteModal.value = false
+  docToDelete.value = null
+}
 
 // Verify document
 const verifyDocument = () => {
@@ -410,11 +452,15 @@ const verifyDocument = () => {
 };
 
 // Clear cache
-const clearCache = () => {
-  if (confirm('Are you sure you want to clear all documents? This will remove all your uploaded files and analysis results.')) {
-    documentStore.clearAllData();
-    isLoading.value = false;
-    updatePagination();
-  }
-};
+const promptClear = () => {
+  showClearModal.value = true
+}
+
+const confirmClear = () => {
+  documentStore.clearAllData()
+  isLoading.value = false
+  updatePagination()
+  showClearModal.value = false
+  showToast('All documents cleared', 'success')
+}
 </script> 

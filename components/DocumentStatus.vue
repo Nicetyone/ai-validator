@@ -1,9 +1,11 @@
 <template>
   <span
-    class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
+    class="px-2 py-1 inline-flex items-center space-x-1 text-xs leading-5 font-semibold rounded-full"
     :class="statusClass"
+    :title="status"
   >
-    {{ status }}
+    <Icon :name="iconName" class="w-4 h-4" />
+    <span>{{ status }}</span>
   </span>
 </template>
 
@@ -42,4 +44,29 @@ const statusClass = computed(() => {
     }
   }
 });
+
+const iconName = computed(() => {
+  if (props.type === 'status') {
+    switch (props.status) {
+      case 'Complete':
+        return 'ph:check-circle-bold'
+      case 'Processing':
+        return 'ph:clock-bold'
+      case 'Failed':
+        return 'ph:x-circle-bold'
+      default:
+        return 'ph:file-bold'
+    }
+  } else {
+    if (props.status.includes('Clean')) {
+      return 'ph:check-circle-bold'
+    } else if (props.status.includes('AI-Supported')) {
+      return 'ph:warning-circle-bold'
+    } else if (props.status.includes('AI-Generated')) {
+      return 'ph:x-circle-bold'
+    } else {
+      return 'ph:file-bold'
+    }
+  }
+})
 </script> 

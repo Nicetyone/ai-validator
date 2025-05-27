@@ -1,319 +1,185 @@
 <template>
   <div>
-    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-12">
-      <div class="container mx-auto px-4">
-        <div class="flex items-center mb-2">
-          <NuxtLink to="/docs" class="text-white hover:text-blue-100">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Back to Documentation
-          </NuxtLink>
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden py-20">
+      <div class="absolute inset-0 bg-gray-950 z-0">
+        <div class="absolute inset-0">
+          <!-- Colorful background blobs -->
+          <div class="absolute top-[-30%] left-[-20%] w-[80%] h-[80%] bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full blur-[120px] animate-slow-float"></div>
+          <div class="absolute top-[20%] right-[-20%] w-[70%] h-[70%] bg-gradient-to-tr from-green-500/10 to-teal-500/10 rounded-full blur-[120px] animate-slow-float animation-delay-2000"></div>
+          <div class="absolute bottom-[-30%] left-[20%] w-[60%] h-[60%] bg-gradient-to-r from-pink-500/10 to-rose-500/10 rounded-full blur-[100px] animate-slow-float animation-delay-4000"></div>
+          
+          <!-- Floating particles -->
+          <div class="absolute inset-0 opacity-30">
+            <div class="firefly"></div>
+            <div class="firefly animation-delay-1000"></div>
+            <div class="firefly animation-delay-2000"></div>
+            <div class="firefly animation-delay-3000"></div>
+            <div class="firefly animation-delay-4000"></div>
+          </div>
         </div>
-        <h1 class="text-3xl font-bold mb-4">AI Usage Guide</h1>
-        <p class="text-xl max-w-3xl">
-          Best practices for using AI tools properly in your work
-        </p>
       </div>
-    </div>
-    
-    <div class="container mx-auto px-4 py-12">
-      <div class="max-w-4xl mx-auto text-gray-700 dark:text-gray-300">
-        <!-- Introduction -->
-        <div class="mb-12">
-          <p class="text-gray-700 dark:text-gray-300 mb-6 text-lg">
-            Artificial Intelligence tools like ChatGPT, DALL-E, and other language and image generation models have become increasingly accessible and powerful. When used responsibly, these tools can enhance creativity, productivity, and learning. However, it's important to understand how to use them ethically and effectively.
-          </p>
-          <p class="text-gray-700 dark:text-gray-300 mb-6 text-lg">
-            This guide provides recommendations for using AI tools responsibly in academic, professional, and creative contexts.
+      
+      <div class="container mx-auto px-6 relative z-10">
+        <div class="max-w-3xl mx-auto text-center">
+          <h1 class="text-4xl sm:text-5xl font-medium mb-6 text-white leading-tight">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">AI Usage Guide</span>
+          </h1>
+          <p class="text-lg text-gray-300 mb-8">
+            Learn how to use AI tools ethically and effectively in your work
           </p>
         </div>
-        
-        <!-- Table of Contents -->
-        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-12">
-          <h2 class="text-xl font-bold mb-4">Contents</h2>
-          <ul class="space-y-2">
-            <li>
-              <a href="#principles" class="text-blue-600 hover:underline">Guiding Principles</a>
-            </li>
-            <li>
-              <a href="#academic" class="text-blue-600 hover:underline">Using AI in Academic Work</a>
-            </li>
-            <li>
-              <a href="#professional" class="text-blue-600 hover:underline">Using AI in Professional Settings</a>
-            </li>
-            <li>
-              <a href="#creative" class="text-blue-600 hover:underline">Using AI for Creative Projects</a>
-            </li>
-            <li>
-              <a href="#citation" class="text-blue-600 hover:underline">How to Cite AI-Generated Content</a>
-            </li>
-            <li>
-              <a href="#detection" class="text-blue-600 hover:underline">Understanding AI Detection</a>
-            </li>
-          </ul>
-        </div>
-        
-        <!-- Guiding Principles -->
-        <div id="principles" class="mb-12 scroll-mt-20">
-          <h2 class="text-2xl font-bold mb-6 text-blue-600">Guiding Principles</h2>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-6 py-12">
+      <div class="max-w-4xl mx-auto">
+        <!-- Guidelines Section -->
+        <div class="bg-gradient-to-br from-white/[0.03] to-white/[0.05] backdrop-blur-sm rounded-2xl p-8 mb-12 border border-white/5">
+          <h2 class="text-2xl font-medium mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Ethical Guidelines</h2>
           
           <div class="space-y-6">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-semibold mb-3">Transparency</h3>
-              <p class="text-gray-700 dark:text-gray-300">
-                Always be transparent about your use of AI tools. If you've used AI to generate content, ideas, or to assist in any part of your work, disclose this to your audience, whether they are professors, employers, clients, or the general public.
-              </p>
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-500/10 text-blue-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+              </div>
+              <div class="ml-4">
+                <h3 class="text-lg font-medium text-white mb-2">Transparency</h3>
+                <p class="text-gray-400">Always disclose when AI tools have been used in your work. This includes both direct AI generation and AI-assisted editing.</p>
+              </div>
             </div>
-            
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-semibold mb-3">Human Oversight</h3>
-              <p class="text-gray-700 dark:text-gray-300">
-                AI should be a tool that assists humans, not a replacement for human judgment. Always review, edit, and take responsibility for AI-generated content. Remember that AI can produce factual errors, biases, or inappropriate content.
-              </p>
+
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-indigo-500/10 text-indigo-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+              </div>
+              <div class="ml-4">
+                <h3 class="text-lg font-medium text-white mb-2">Fact Checking</h3>
+                <p class="text-gray-400">Verify all AI-generated content for accuracy. AI tools can sometimes produce incorrect or misleading information.</p>
+              </div>
             </div>
-            
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-semibold mb-3">Purpose and Context</h3>
-              <p class="text-gray-700 dark:text-gray-300">
-                Use AI tools purposefully and in appropriate contexts. Understand the rules and expectations of your specific context (e.g., academic institution policies, workplace guidelines, or client expectations) regarding AI use.
-              </p>
-            </div>
-            
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-semibold mb-3">Attribution</h3>
-              <p class="text-gray-700 dark:text-gray-300">
-                Properly attribute and cite AI-generated content. Just as you would cite other sources, acknowledge when content has been created or influenced by AI tools.
-              </p>
-            </div>
-            
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-semibold mb-3">Continuous Learning</h3>
-              <p class="text-gray-700 dark:text-gray-300">
-                Use AI as a learning tool, not a shortcut. AI can help you understand concepts, generate ideas, or improve your writing, but it should enhance your skills, not replace the learning process.
-              </p>
+
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-purple-500/10 text-purple-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+              </div>
+              <div class="ml-4">
+                <h3 class="text-lg font-medium text-white mb-2">Originality</h3>
+                <p class="text-gray-400">Use AI as a tool to enhance your work, not to replace your own thinking and creativity. Maintain your unique voice and perspective.</p>
+              </div>
             </div>
           </div>
         </div>
-        
-        <!-- Academic Use -->
-        <div id="academic" class="mb-12 scroll-mt-20">
-          <h2 class="text-2xl font-bold mb-6 text-blue-600">Using AI in Academic Work</h2>
+
+        <!-- Best Practices -->
+        <div class="bg-gradient-to-br from-white/[0.03] to-white/[0.05] backdrop-blur-sm rounded-2xl p-8 mb-12 border border-white/5">
+          <h2 class="text-2xl font-medium mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Best Practices</h2>
           
-          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
-            <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
-              <h3 class="text-xl font-semibold">Recommended Uses</h3>
-            </div>
-            <div class="p-6">
-              <ul class="space-y-3 list-disc pl-5 text-gray-700 dark:text-gray-300">
-                <li>Brainstorming research topics or essay ideas</li>
-                <li>Clarifying complex concepts or explaining difficult material</li>
-                <li>Generating outlines or structures for papers</li>
-                <li>Proofreading and suggesting improvements for your writing</li>
-                <li>Translating content between languages</li>
-                <li>Creating study materials or practice questions</li>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="p-6 bg-white/5 rounded-xl hover:bg-white/10 transition-all duration-300">
+              <h3 class="text-lg font-medium text-white mb-3">Writing Process</h3>
+              <ul class="space-y-2 text-gray-400">
+                <li class="flex items-start">
+                  <svg class="h-5 w-5 text-blue-400 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  <span>Use AI for brainstorming and initial drafts</span>
+                </li>
+                <li class="flex items-start">
+                  <svg class="h-5 w-5 text-blue-400 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  <span>Edit and refine AI-generated content</span>
+                </li>
+                <li class="flex items-start">
+                  <svg class="h-5 w-5 text-blue-400 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  <span>Add your personal insights and analysis</span>
+                </li>
               </ul>
             </div>
-          </div>
-          
-          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
-            <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
-              <h3 class="text-xl font-semibold">Cautions and Considerations</h3>
-            </div>
-            <div class="p-6">
-              <ul class="space-y-3 list-disc pl-5 text-gray-700 dark:text-gray-300">
-                <li>Check your institution's policies on AI use in academic work</li>
-                <li>Do not submit AI-generated content as your own without substantial editing and contribution</li>
-                <li>Verify any facts, references, or citations provided by AI</li>
-                <li>Use AI to enhance your learning, not to bypass it</li>
-                <li>Be especially careful in disciplines where original thought and analysis are central</li>
-                <li>Consider the ethical implications of using AI for assignments meant to develop specific skills</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="bg-blue-50 dark:bg-blue-900 p-6 rounded-lg">
-            <h3 class="font-semibold text-lg mb-2">Example Disclosure Statement</h3>
-            <p class="text-gray-700 dark:text-gray-300 italic">
-              "I used ChatGPT to help brainstorm ideas and structure for this essay. All final content was written by me, with AI-suggested content thoroughly revised and integrated with my own analysis. No direct AI-generated text was included without significant editing and validation."
-            </p>
-          </div>
-        </div>
-        
-        <!-- Professional Use -->
-        <div id="professional" class="mb-12 scroll-mt-20">
-          <h2 class="text-2xl font-bold mb-6 text-blue-600">Using AI in Professional Settings</h2>
-          
-          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
-            <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
-              <h3 class="text-xl font-semibold">Recommended Uses</h3>
-            </div>
-            <div class="p-6">
-              <ul class="space-y-3 list-disc pl-5 text-gray-700 dark:text-gray-300">
-                <li>Drafting emails, reports, or other routine communications</li>
-                <li>Summarizing long documents or meetings</li>
-                <li>Creating templates or frameworks for projects</li>
-                <li>Generating ideas during brainstorming sessions</li>
-                <li>Improving writing clarity and professionalism</li>
-                <li>Automating repetitive writing tasks</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
-            <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
-              <h3 class="text-xl font-semibold">Cautions and Considerations</h3>
-            </div>
-            <div class="p-6">
-              <ul class="space-y-3 list-disc pl-5 text-gray-700 dark:text-gray-300">
-                <li>Follow your organization's policies regarding AI use</li>
-                <li>Be careful with confidential or sensitive information (don't input it into public AI tools)</li>
-                <li>Always review AI-generated content for accuracy and appropriateness</li>
-                <li>Consider the impression AI-generated content makes on clients or colleagues</li>
-                <li>Be transparent with team members about AI assistance</li>
-                <li>Take responsibility for all content that goes out under your name</li>
+
+            <div class="p-6 bg-white/5 rounded-xl hover:bg-white/10 transition-all duration-300">
+              <h3 class="text-lg font-medium text-white mb-3">Quality Control</h3>
+              <ul class="space-y-2 text-gray-400">
+                <li class="flex items-start">
+                  <svg class="h-5 w-5 text-indigo-400 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  <span>Check for factual accuracy</span>
+                </li>
+                <li class="flex items-start">
+                  <svg class="h-5 w-5 text-indigo-400 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  <span>Verify citations and references</span>
+                </li>
+                <li class="flex items-start">
+                  <svg class="h-5 w-5 text-indigo-400 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  <span>Review for bias and tone</span>
+                </li>
               </ul>
             </div>
           </div>
         </div>
-        
-        <!-- Creative Use -->
-        <div id="creative" class="mb-12 scroll-mt-20">
-          <h2 class="text-2xl font-bold mb-6 text-blue-600">Using AI for Creative Projects</h2>
-          
-          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
-            <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
-              <h3 class="text-xl font-semibold">Recommended Uses</h3>
-            </div>
-            <div class="p-6">
-              <ul class="space-y-3 list-disc pl-5 text-gray-700 dark:text-gray-300">
-                <li>Generating ideas or inspiration for creative work</li>
-                <li>Exploring alternative approaches or perspectives</li>
-                <li>Overcoming creative blocks</li>
-                <li>Creating rough drafts or outlines to refine</li>
-                <li>Experimenting with different styles or techniques</li>
-                <li>Collaborating with AI as a creative partner</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
-            <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
-              <h3 class="text-xl font-semibold">Cautions and Considerations</h3>
-            </div>
-            <div class="p-6">
-              <ul class="space-y-3 list-disc pl-5 text-gray-700 dark:text-gray-300">
-                <li>Disclose AI use when sharing or publishing creative work</li>
-                <li>Consider copyright and ownership issues with AI-generated content</li>
-                <li>Develop your own creative voice rather than relying solely on AI</li>
-                <li>Be aware that AI often generates content based on existing works</li>
-                <li>Make the AI output truly your own through significant editing and iteration</li>
-                <li>Consider ethical implications, especially for visual arts and music</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Citation -->
-        <div id="citation" class="mb-12 scroll-mt-20">
-          <h2 class="text-2xl font-bold mb-6 text-blue-600">How to Cite AI-Generated Content</h2>
-          
-          <p class="text-gray-700 dark:text-gray-300 mb-6">
-            Citation formats for AI tools are still evolving, but here are some general guidelines for different citation styles:
-          </p>
+
+        <!-- Disclosure Templates -->
+        <div class="bg-gradient-to-br from-white/[0.03] to-white/[0.05] backdrop-blur-sm rounded-2xl p-8 mb-12 border border-white/5">
+          <h2 class="text-2xl font-medium mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Disclosure Templates</h2>
           
           <div class="space-y-6">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-semibold mb-3">APA Style</h3>
-              <p class="text-gray-700 dark:text-gray-300 mb-3">
-                <strong>In-text citation:</strong> (ChatGPT, 2023)
-              </p>
-              <p class="text-gray-700 dark:text-gray-300">
-                <strong>Reference list:</strong><br>
-                ChatGPT (2023). Personal communication with OpenAI's ChatGPT [Large language model]. Retrieved from https://chat.openai.com
-              </p>
+            <div class="p-6 bg-white/5 rounded-xl">
+              <h3 class="text-lg font-medium text-white mb-3">Academic Work</h3>
+              <div class="bg-gray-900/50 p-4 rounded-lg">
+                <p class="text-gray-300 font-mono text-sm">
+                  "This work was created with the assistance of AI tools. The content was generated using [AI tool name] and has been reviewed, edited, and fact-checked by the author. All claims and arguments represent the author's own analysis and conclusions."
+                </p>
+              </div>
             </div>
-            
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-semibold mb-3">MLA Style</h3>
-              <p class="text-gray-700 dark:text-gray-300 mb-3">
-                <strong>In-text citation:</strong> (ChatGPT)
-              </p>
-              <p class="text-gray-700 dark:text-gray-300">
-                <strong>Works Cited:</strong><br>
-                ChatGPT. Conversation with AI assistant, OpenAI, 25 May 2023, chat.openai.com.
-              </p>
-            </div>
-            
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-semibold mb-3">Chicago Style</h3>
-              <p class="text-gray-700 dark:text-gray-300 mb-3">
-                <strong>Footnote:</strong> ChatGPT, in discussion with the author, May 2023.
-              </p>
-              <p class="text-gray-700 dark:text-gray-300">
-                <strong>Bibliography:</strong><br>
-                ChatGPT. Personal communication. May 25, 2023. https://chat.openai.com.
-              </p>
-            </div>
-          </div>
-          
-          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-6">
-            <p class="text-yellow-700">
-              <strong>Note:</strong> Always check with your instructor, publisher, or organization for their preferred citation format for AI tools, as standards are still developing.
-            </p>
-          </div>
-        </div>
-        
-        <!-- AI Detection -->
-        <div id="detection" class="mb-12 scroll-mt-20">
-          <h2 class="text-2xl font-bold mb-6 text-blue-600">Understanding AI Detection</h2>
-          
-          <p class="text-gray-700 dark:text-gray-300 mb-6">
-            As AI content becomes more prevalent, tools to detect AI-generated text are also evolving. Here's what you should know about AI detection:
-          </p>
-          
-          <div class="space-y-6">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-semibold mb-3">How AI Detection Works</h3>
-              <p class="text-gray-700 dark:text-gray-300">
-                AI detection tools analyze patterns in text that are characteristic of AI-generated content. These include statistical patterns, repetitive phrasing, certain stylistic markers, and other features that differ from typical human writing. Our AI-Validator tool examines multiple factors to determine the likelihood that content was generated by AI.
-              </p>
-            </div>
-            
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-semibold mb-3">Accuracy and Limitations</h3>
-              <p class="text-gray-700 dark:text-gray-300">
-                No AI detection tool is 100% accurate. False positives (human content identified as AI) and false negatives (AI content identified as human) can occur. Detection accuracy also varies based on how much the AI-generated content has been edited by humans.
-              </p>
-            </div>
-            
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-semibold mb-3">Best Practices</h3>
-              <ul class="space-y-2 list-disc pl-5 text-gray-700 dark:text-gray-300">
-                <li>Be transparent about AI use rather than trying to evade detection</li>
-                <li>Heavily edit and personalize AI-generated content</li>
-                <li>Use AI as a starting point, not a final product</li>
-                <li>Integrate your own expertise, examples, and insights</li>
-                <li>When in doubt, create original content without AI assistance</li>
-              </ul>
+
+            <div class="p-6 bg-white/5 rounded-xl">
+              <h3 class="text-lg font-medium text-white mb-3">Professional Writing</h3>
+              <div class="bg-gray-900/50 p-4 rounded-lg">
+                <p class="text-gray-300 font-mono text-sm">
+                  "This document was prepared using AI-assisted writing tools. The content has been carefully reviewed and modified to ensure accuracy and alignment with our standards. The final version represents our organization's official position."
+                </p>
+              </div>
             </div>
           </div>
         </div>
-        
-        <!-- Conclusion -->
-        <div class="bg-blue-50 dark:bg-blue-900 rounded-lg p-8">
-          <h2 class="text-2xl font-bold mb-4">Final Thoughts</h2>
-          <p class="text-gray-700 dark:text-gray-300 mb-4">
-            AI tools are powerful assistants that, when used ethically and thoughtfully, can enhance your productivity and creativity. The key is to use them as tools that support your work, not replace your critical thinking, creativity, or learning.
-          </p>
-          <p class="text-gray-700 dark:text-gray-300">
-            By following the guidelines in this document, you can harness the benefits of AI while maintaining integrity, developing your skills, and producing work that genuinely reflects your abilities and insights.
-          </p>
+
+        <!-- Next Steps -->
+        <div class="text-center">
+          <NuxtLink
+            to="/validate"
+            class="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600 text-white transition-all duration-300 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:scale-105 group"
+          >
+            <span class="mr-2">Start Validating Your Work</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </NuxtLink>
         </div>
       </div>
     </div>
   </div>
-</template> 
+</template>
 
 <script setup>
 definePageMeta({ title: 'AI Usage Guide' })
@@ -321,8 +187,76 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Guidelines on acceptable AI usage and best practices when creating documents.'
+      content: 'Learn about ethical AI usage and best practices for using AI tools in your work.'
     }
   ]
 })
 </script>
+
+<style scoped>
+.animate-slow-float {
+  animation: slow-float 10s ease-in-out infinite;
+}
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+.animation-delay-3000 {
+  animation-delay: 3s;
+}
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+@keyframes slow-float {
+  0%, 100% {
+    opacity: 0.5;
+    transform: translate(0, 0);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(0, -10px);
+  }
+}
+
+/* Firefly effect */
+.firefly {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 10px 5px rgba(140, 140, 255, 0.3),
+              0 0 20px 10px rgba(100, 100, 255, 0.2),
+              0 0 30px 15px rgba(60, 60, 255, 0.1);
+  animation: firefly 15s linear infinite;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+@keyframes firefly {
+  0% {
+    top: 100%;
+    left: 10%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  70% {
+    opacity: 0.9;
+  }
+  100% {
+    top: 0%;
+    left: 90%;
+    opacity: 0;
+  }
+}
+</style>

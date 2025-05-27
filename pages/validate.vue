@@ -74,7 +74,9 @@
             <div class="group p-6 bg-gradient-to-br from-white/[0.03] to-white/[0.05] backdrop-blur-sm rounded-2xl hover:from-blue-500/5 hover:to-blue-500/10 transition-all duration-500 border border-white/5 hover:border-blue-500/20 hover:shadow-lg hover:shadow-blue-500/10">
               <div class="flex items-center mb-4">
                 <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-blue-500/10 text-blue-400 mr-3 group-hover:bg-blue-500/20 group-hover:scale-110 transition-all duration-300">
-                  <span class="text-lg">1</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                  </svg>
                 </div>
                 <h3 class="text-lg font-medium text-white group-hover:text-blue-300 transition-colors duration-300">Upload Your Document</h3>
               </div>
@@ -84,7 +86,9 @@
             <div class="group p-6 bg-gradient-to-br from-white/[0.03] to-white/[0.05] backdrop-blur-sm rounded-2xl hover:from-indigo-500/5 hover:to-indigo-500/10 transition-all duration-500 border border-white/5 hover:border-indigo-500/20 hover:shadow-lg hover:shadow-indigo-500/10">
               <div class="flex items-center mb-4">
                 <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-indigo-500/10 text-indigo-400 mr-3 group-hover:bg-indigo-500/20 group-hover:scale-110 transition-all duration-300">
-                  <span class="text-lg">2</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                  </svg>
                 </div>
                 <h3 class="text-lg font-medium text-white group-hover:text-indigo-300 transition-colors duration-300">AI Analysis</h3>
               </div>
@@ -94,7 +98,9 @@
             <div class="group p-6 bg-gradient-to-br from-white/[0.03] to-white/[0.05] backdrop-blur-sm rounded-2xl hover:from-purple-500/5 hover:to-purple-500/10 transition-all duration-500 border border-white/5 hover:border-purple-500/20 hover:shadow-lg hover:shadow-purple-500/10">
               <div class="flex items-center mb-4">
                 <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-purple-500/10 text-purple-400 mr-3 group-hover:bg-purple-500/20 group-hover:scale-110 transition-all duration-300">
-                  <span class="text-lg">3</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
                 </div>
                 <h3 class="text-lg font-medium text-white group-hover:text-purple-300 transition-colors duration-300">Get Your Results</h3>
               </div>
@@ -110,6 +116,7 @@
               Classification System
             </div>
             <h2 class="text-2xl font-medium mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Understanding AI Detection Levels</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto">Our advanced AI detection system analyzes your document and classifies it into one of three levels based on the presence of AI-generated content.</p>
           </div>
           
           <div class="grid md:grid-cols-3 gap-6">
@@ -123,7 +130,10 @@
                 <h3 class="text-lg font-medium text-white group-hover:text-green-300 transition-colors duration-300">Level 1: Clean</h3>
               </div>
               <p class="text-gray-400 mb-4 group-hover:text-gray-300 transition-colors duration-300">No AI detected. The document appears to be entirely human-created, ensuring maximum authenticity and credibility.</p>
-              <div class="text-green-400 text-sm font-medium">Fully Authentic</div>
+              <div class="flex items-center text-green-400 text-sm font-medium">
+                <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                Fully Authentic
+              </div>
             </div>
             
             <div class="group p-6 bg-gradient-to-br from-white/[0.03] to-white/[0.05] backdrop-blur-sm rounded-2xl hover:from-yellow-500/5 hover:to-yellow-500/10 transition-all duration-500 border border-white/5 hover:border-yellow-500/20 border-l-yellow-500/30 border-l-4 hover:scale-105">
@@ -136,7 +146,10 @@
                 <h3 class="text-lg font-medium text-white group-hover:text-yellow-300 transition-colors duration-300">Level 2: AI-Supported</h3>
               </div>
               <p class="text-gray-400 mb-4 group-hover:text-gray-300 transition-colors duration-300">Document shows signs of AI assistance, but with significant human input and editing throughout the content.</p>
-              <div class="text-yellow-400 text-sm font-medium">Partially AI-Generated</div>
+              <div class="flex items-center text-yellow-400 text-sm font-medium">
+                <span class="w-2 h-2 bg-yellow-400 rounded-full mr-2 animate-pulse"></span>
+                Partially AI-Generated
+              </div>
             </div>
             
             <div class="group p-6 bg-gradient-to-br from-white/[0.03] to-white/[0.05] backdrop-blur-sm rounded-2xl hover:from-red-500/5 hover:to-red-500/10 transition-all duration-500 border border-white/5 hover:border-red-500/20 border-l-red-500/30 border-l-4 hover:scale-105">
@@ -149,7 +162,53 @@
                 <h3 class="text-lg font-medium text-white group-hover:text-red-300 transition-colors duration-300">Level 3: AI-Generated</h3>
               </div>
               <p class="text-gray-400 mb-4 group-hover:text-gray-300 transition-colors duration-300">Document appears to be primarily AI-generated with minimal human editing, showing clear patterns of artificial creation.</p>
-              <div class="text-red-400 text-sm font-medium">AI-Generated</div>
+              <div class="flex items-center text-red-400 text-sm font-medium">
+                <span class="w-2 h-2 bg-red-400 rounded-full mr-2 animate-pulse"></span>
+                AI-Generated
+              </div>
+            </div>
+          </div>
+
+          <!-- Additional Information -->
+          <div class="mt-12 p-6 bg-gradient-to-br from-white/[0.03] to-white/[0.05] backdrop-blur-sm rounded-2xl border border-white/5">
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+              </div>
+              <div class="ml-4">
+                <h3 class="text-lg font-medium text-white mb-2">Understanding the Results</h3>
+                <p class="text-gray-400 mb-4">Our AI detection system uses advanced machine learning algorithms to analyze various aspects of your document, including:</p>
+                <ul class="grid md:grid-cols-2 gap-4">
+                  <li class="flex items-center text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    Writing patterns and style
+                  </li>
+                  <li class="flex items-center text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    Language complexity
+                  </li>
+                  <li class="flex items-center text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    Content consistency
+                  </li>
+                  <li class="flex items-center text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    Statistical patterns
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

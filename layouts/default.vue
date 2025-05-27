@@ -27,13 +27,8 @@
     <header class="sticky top-0 z-50 glass-dark dark:glass-dark bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-gray-800/60 shadow-sm">
       <div class="container mx-auto px-6 py-4">
         <div class="flex justify-between items-center">
-          <NuxtLink to="/" class="text-xl font-medium text-white bg-clip-text bg-gradient-to-r from-brand-DEFAULT via-accent-primary to-accent-secondary flex items-center gap-3 hover:scale-105 transition-transform rainbow-shadow">
-            <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-brand-DEFAULT to-accent-primary flex items-center justify-center text-white shadow-md shadow-brand-DEFAULT/20 dark:shadow-brand-DEFAULT/30">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </div>
-            AI-SV
+          <NuxtLink to="/" class="flex items-center hover:scale-105 transition-transform">
+            <img src="/logo.png" alt="AI-Validator Logo" class="h-12 w-12 object-contain" />
           </NuxtLink>
           
           <nav class="hidden md:flex items-center space-x-8">

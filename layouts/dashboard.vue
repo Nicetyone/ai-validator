@@ -23,13 +23,18 @@
     <!-- Header with gradient effects -->
     <header class="sticky top-0 z-50 backdrop-blur-xl bg-gray-950/70 border-b border-gray-900/60">
       <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-        <NuxtLink to="/" class="text-xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 flex items-center gap-3 hover:scale-105 transition-transform">
-          <div class="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
+        <NuxtLink 
+          to="/" 
+          class="text-xl font-medium flex items-center gap-3 hover:scale-105 transition-all duration-300 relative group"
+        >
+          <div class="relative">
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-300/30 via-purple-300/30 to-pink-300/30 rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity"></div>
+            <div class="relative bg-gray-900/80 backdrop-blur-sm rounded-xl px-4 py-2 flex items-center gap-2">
+              <span class="font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">AI</span>
+              <span class="text-gray-500">-</span>
+              <span class="font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">SV</span>
+            </div>
           </div>
-          AI-Validator
         </NuxtLink>
         <div class="flex items-center space-x-6">
           <button class="relative text-gray-400 hover:text-white transition-colors hover:scale-110 transition-transform">
@@ -198,6 +203,19 @@
     top: 0%;
     left: 90%;
     opacity: 0;
+  }
+}
+
+.animate-rainbow-rotate {
+  animation: rainbow-rotate 8s linear infinite;
+}
+
+@keyframes rainbow-rotate {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
   }
 }
 </style> 

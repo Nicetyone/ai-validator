@@ -31,3 +31,153 @@
   transform: scale(1);
   opacity: 1;
 }
+
+/* Firefly animation for background effects */
+.firefly {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.3);
+  animation: firefly-float 15s ease-in-out infinite, firefly-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes firefly-float {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(100px, -100px);
+  }
+  20% {
+    transform: translate(200px, 50px);
+  }
+  30% {
+    transform: translate(100px, 150px);
+  }
+  40% {
+    transform: translate(0, 50px);
+  }
+  50% {
+    transform: translate(-100px, 150px);
+  }
+  60% {
+    transform: translate(-200px, 50px);
+  }
+  70% {
+    transform: translate(-100px, -50px);
+  }
+  80% {
+    transform: translate(-50px, -150px);
+  }
+  90% {
+    transform: translate(50px, -50px);
+  }
+}
+
+@keyframes firefly-glow {
+  0% {
+    opacity: 0.2;
+    box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.1);
+  }
+  100% {
+    opacity: 0.6;
+    box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Animation delays for staggered effects */
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+.animation-delay-3000 {
+  animation-delay: 3s;
+}
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+.animation-delay-5000 {
+  animation-delay: 5s;
+}
+.animation-delay-6000 {
+  animation-delay: 6s;
+}
+.animation-delay-7000 {
+  animation-delay: 7s;
+}
+
+/* Glass morphism effects */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-dark {
+  background: rgba(17, 24, 39, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Premium shimmer effects */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+/* Light version */
+.light-mode {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --border-color: #e5e7eb;
+}
+
+/* Typography enhancements */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.025em;
+}
+
+/* Micro-interactions */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom scrollbar for a premium feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.7);
+}

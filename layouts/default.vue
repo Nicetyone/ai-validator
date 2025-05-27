@@ -43,7 +43,7 @@
             <NuxtLink to="/about" class="text-gray-700 dark:text-gray-300 hover:text-brand-DEFAULT dark:hover:text-white hover:scale-105 font-medium transition-all duration-300">About</NuxtLink>
             <NuxtLink 
               to="/uploads" 
-              class="bg-gradient-to-r from-brand-DEFAULT to-accent-primary hover:from-brand-dark hover:to-accent-primary text-white px-5 py-2.5 rounded-full font-medium transition-all duration-300 shadow-md shadow-brand-DEFAULT/20 dark:shadow-brand-DEFAULT/40 hover:shadow-lg hover:shadow-brand-DEFAULT/30 dark:hover:shadow-brand-DEFAULT/50 hover:scale-105"
+              class="bg-gradient-to-r from-brand-DEFAULT via-accent-primary to-accent-secondary text-white px-5 py-2.5 rounded-full font-medium transition-all duration-300 shadow-md shadow-brand-DEFAULT/20 dark:shadow-brand-DEFAULT/40 hover:shadow-lg hover:shadow-brand-DEFAULT/30 dark:hover:shadow-brand-DEFAULT/50 hover:scale-105 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90 border border-white/10 dark:border-white/10"
             >
               My Documents
             </NuxtLink>

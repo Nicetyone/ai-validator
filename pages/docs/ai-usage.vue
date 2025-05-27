@@ -358,40 +358,41 @@
             </div>
           </div>
           
-          <div class="grid md:grid-cols-2 gap-6">
-            <NuxtLink to="/docs/validation" class="group relative overflow-hidden p-6 bg-white/5 backdrop-blur-sm rounded-2xl hover:bg-gradient-to-br hover:from-indigo-500/5 hover:to-indigo-600/10 transition-all duration-500 border border-white/10 hover:border-indigo-500/20 flex items-center">
-              <div class="mr-4 w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center group-hover:bg-indigo-500/20 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10.496 2.132a1 1 0 00-.992 0l-7 4A1 1 0 003 8v7a1 1 0 100 2h14a1 1 0 100-2V8a1 1 0 00.496-1.868l-7-4zM6 9a1 1 0 00-1 1v3a1 1 0 102 0v-3a1 1 0 00-1-1zm3 1a1 1 0 012 0v3a1 1 0 11-2 0v-3zm5-1a1 1 0 00-1 1v3a1 1 0 102 0v-3a1 1 0 00-1-1z" clip-rule="evenodd" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-lg font-bold text-white group-hover:text-indigo-300 transition-colors duration-300">Learn about our validation process</h3>
-                <p class="text-gray-300 text-sm">Understanding how our AI detection technology works</p>
-              </div>
-              <div class="ml-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 group-hover:text-indigo-400 transform group-hover:translate-x-1 transition-all duration-300" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
-              </div>
-            </NuxtLink>
+          <!-- Learn More Section -->
+          <div class="mt-16 space-y-8">
+            <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Learn More</h2>
             
-            <NuxtLink to="/docs/certificates" class="group relative overflow-hidden p-6 bg-white/5 backdrop-blur-sm rounded-2xl hover:bg-gradient-to-br hover:from-purple-500/5 hover:to-purple-600/10 transition-all duration-500 border border-white/10 hover:border-purple-500/20 flex items-center">
-              <div class="mr-4 w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center group-hover:bg-purple-500/20 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                </svg>
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="group relative overflow-hidden p-6 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 cursor-not-allowed">
+                <div class="mr-4 w-12 h-12 rounded-xl bg-gray-500/10 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M6.672 1.911a1 1 0 10-1.932.518l.259.966a1 1 0 001.932-.518l-.26-.966zM2.429 4.74a1 1 0 10-.517 1.932l.966.259a1 1 0 00.517-1.932l-.966-.26zm8.814-.569a1 1 0 00-1.415-1.414l-.707.707a1 1 0 101.415 1.415l.707-.708zm-7.071 7.072l.707-.707A1 1 0 003.465 9.12l-.708.707a1 1 0 001.415 1.415zm3.2-5.171a1 1 0 00-1.3 1.3l4 10a1 1 0 001.823.075l1.38-2.759 3.018 3.02a1 1 0 001.414-1.415l-3.019-3.02 2.76-1.379a1 1 0 00-.076-1.822l-10-4z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-gray-400">Validation Process</h3>
+                  <p class="text-gray-500 text-sm">How our AI detection technology works</p>
+                </div>
+                <div class="ml-auto">
+                  <span class="text-gray-500 text-sm">Work in Progress</span>
+                </div>
               </div>
-              <div>
-                <h3 class="text-lg font-bold text-white group-hover:text-purple-300 transition-colors duration-300">Learn about our certificates</h3>
-                <p class="text-gray-300 text-sm">How to use and verify our authenticity certificates</p>
+
+              <div class="group relative overflow-hidden p-6 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 cursor-not-allowed">
+                <div class="mr-4 w-12 h-12 rounded-xl bg-gray-500/10 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-gray-400">Certificate Verification</h3>
+                  <p class="text-gray-500 text-sm">Understanding and verifying certificates</p>
+                </div>
+                <div class="ml-auto">
+                  <span class="text-gray-500 text-sm">Work in Progress</span>
+                </div>
               </div>
-              <div class="ml-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 group-hover:text-purple-400 transform group-hover:translate-x-1 transition-all duration-300" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
-              </div>
-            </NuxtLink>
+            </div>
           </div>
         </div>
       </div>

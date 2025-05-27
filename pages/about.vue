@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-4xl mx-auto text-gray-800 dark:text-gray-300">
+  <div class="max-w-4xl mx-auto text-gray-800 dark:text-gray-300 py-20">
     <h1 class="text-3xl dark:text-gray-300 font-bold mb-8">About AI-Validator</h1>
     
     <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 mb-8">

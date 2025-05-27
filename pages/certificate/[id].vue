@@ -153,6 +153,14 @@
 
 <script setup>
 definePageMeta({ title: 'Certificate' })
+useHead({
+  meta: [
+    {
+      name: 'description',
+      content: 'Access the verification certificate for your analyzed document.'
+    }
+  ]
+})
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useDocumentStore } from '~/stores/document';

@@ -79,4 +79,12 @@
 
 <script setup>
 definePageMeta({ title: 'About' })
+useHead({
+  meta: [
+    {
+      name: 'description',
+      content: 'Learn more about the mission and operation of the AI-Validator project.'
+    }
+  ]
+})
 </script> 

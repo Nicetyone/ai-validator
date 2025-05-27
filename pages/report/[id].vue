@@ -143,6 +143,14 @@
 
 <script setup>
 definePageMeta({ title: 'Analysis Report' })
+useHead({
+  meta: [
+    {
+      name: 'description',
+      content: 'View the full AI analysis report for your uploaded document.'
+    }
+  ]
+})
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useDocumentStore } from '~/stores/document';

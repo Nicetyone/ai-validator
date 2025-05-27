@@ -175,6 +175,14 @@
 
 <script setup lang="ts">
 definePageMeta({ title: 'Documentation' })
+useHead({
+  meta: [
+    {
+      name: 'description',
+      content: 'Browse documentation to learn how to use AI-Validator effectively.'
+    }
+  ]
+})
 import { ref } from 'vue'
 
 const openItem = ref<number | null>(null)

@@ -1,15 +1,31 @@
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="py-16 bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
+    <section class="py-20 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 text-white">
       <div class="container mx-auto px-4 text-center">
         <Transition name="slide-up" appear>
           <h1 class="text-4xl md:text-5xl font-bold mb-6">Validate Your PDF Documents</h1>
         </Transition>
         <Transition name="fade-in" appear>
-          <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-            Detect AI-generated content with our advanced AI-Validator. Get certification for your authentic work.
+          <p class="text-lg md:text-xl mb-4 max-w-2xl mx-auto">
+            Detect AI-generated content with our advanced AI-Validator and secure your credibility.
           </p>
+        </Transition>
+        <Transition name="fade-in" appear>
+          <ul class="flex flex-col md:flex-row justify-center space-y-2 md:space-y-0 md:space-x-6 mb-8">
+            <li class="flex items-center space-x-2">
+              <Icon name="ph:shield-check" class="text-2xl" />
+              <span>Secure Analysis</span>
+            </li>
+            <li class="flex items-center space-x-2">
+              <Icon name="ph:certificate" class="text-2xl" />
+              <span>Instant Certification</span>
+            </li>
+            <li class="flex items-center space-x-2">
+              <Icon name="ph:timer" class="text-2xl" />
+              <span>Fast Results</span>
+            </li>
+          </ul>
         </Transition>
         <Transition name="zoom-in" appear>
           <NuxtLink
@@ -29,14 +45,14 @@
         
         <div class="grid md:grid-cols-3 gap-8">
           <Transition name="fade-in" appear>
-            <div class="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md">
+            <div class="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md transition-transform hover:-translate-y-1 hover:shadow-lg">
               <Icon name="ph:upload-simple" class="text-blue-600 text-4xl mb-4" />
               <h3 class="text-xl dark:text-gray-300 font-semibold mb-3">Upload Your Document</h3>
               <p class="text-gray-600 dark:text-gray-300">Upload your PDF document to our secure platform for analysis.</p>            </div>
           </Transition>
 
           <Transition name="fade-in" appear>
-            <div class="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md">
+            <div class="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md transition-transform hover:-translate-y-1 hover:shadow-lg">
               <Icon name="ph:brain" class="text-blue-600 text-4xl mb-4" />
               <h3 class="text-xl dark:text-gray-300 font-semibold mb-3">AI Analysis</h3>
               <p class="text-gray-600 dark:text-gray-300">Our advanced algorithm analyzes your document for AI-generated content.</p>
@@ -44,7 +60,7 @@
           </Transition>
 
           <Transition name="fade-in" appear>
-            <div class="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md">
+            <div class="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md transition-transform hover:-translate-y-1 hover:shadow-lg">
               <Icon name="ph:certificate" class="text-blue-600 text-4xl mb-4" />
               <h3 class="text-xl dark:text-gray-300 font-semibold mb-3">Get Your Certificate</h3>
               <p class="text-gray-600 dark:text-gray-300">Receive a detailed report and certificate of creation for your document.</p>
@@ -60,22 +76,22 @@
         <h2 class="text-3xl font-bold text-center mb-12">AI Detection Levels</h2>
         
         <div class="grid md:grid-cols-3 gap-8">
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-green-500">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-green-500 transition-transform hover:-translate-y-1 hover:shadow-lg">
             <h3 class="text-xl font-semibold mb-3 text-green-600">Level 1: Clean</h3>
             <p class="text-gray-600 dark:text-gray-300 mb-4">No AI detected. The document appears to be entirely human-created.</p>
             <div class="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 px-3 py-1 rounded-full text-sm inline-block">Fully Authentic</div>
           </div>
           
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-yellow-500">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-yellow-500 transition-transform hover:-translate-y-1 hover:shadow-lg">
             <h3 class="text-xl font-semibold mb-3 text-yellow-600">Level 2: AI-Supported</h3>
             <p class="text-gray-600 dark:text-gray-300 mb-4">Document shows signs of AI assistance, but with significant human input.</p>
             <div class="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300 px-3 py-1 rounded-full text-sm inline-block">Partially AI-Generated</div>
           </div>
           
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-red-500">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-red-500 transition-transform hover:-translate-y-1 hover:shadow-lg">
             <h3 class="text-xl font-semibold mb-3 text-red-600">Level 3: AI-Generated</h3>
             <p class="text-gray-600 dark:text-gray-300 mb-4">Document appears to be primarily AI-generated with minimal human editing.</p>
-            <div class="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 px-3 py-1 rounded-full text-sm inline-block">AI Ripoff</div>
+            <div class="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 px-3 py-1 rounded-full text-sm inline-block">AI-Generated</div>
           </div>
         </div>
       </div>
@@ -107,4 +123,12 @@
 
 <script setup>
 definePageMeta({ title: 'Home' })
+useHead({
+  meta: [
+    {
+      name: 'description',
+      content: 'Detect AI-generated content in your PDF documents and get certification.'
+    }
+  ]
+})
 </script> 

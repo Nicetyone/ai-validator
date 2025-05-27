@@ -62,7 +62,7 @@
       <!-- Verification tool -->
       <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
         <h2 class="text-xl dark:text-gray-300 font-bold mb-4">Verify a Document</h2>
-        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+        <div class="flex items-end space-x-4">
           <div class="flex-1">
             <label
               for="certificate-id"
@@ -80,7 +80,7 @@
           <div>
             <button 
               @click="verifyDocument"
-              class="w-full dark:text-gray-300 md:w-auto bg-green-600 text-white px-6 py-2 rounded-md font-medium hover:bg-green-700 transition duration-300"
+              class="w-auto dark:text-gray-300 bg-green-600 text-white px-6 py-2 rounded-md font-medium hover:bg-green-700 transition duration-300"
               :disabled="!verificationId"
             >
               Verify
@@ -189,7 +189,7 @@
                 
                 <button 
                   @click="promptDelete(doc.id)"
-                  class="flex-none bg-gray-100 dark:bg-gray-700 text-gray-600 hover:bg-gray-200 py-2 px-3 rounded-md text-sm transition duration-300"
+                  class="flex-none bg-gray-100 dark:bg-red-700 text-white-600 hover:bg-red-400 py-2 px-3 rounded-md text-sm transition duration-300"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -263,6 +263,14 @@
 
 <script setup>
 definePageMeta({ title: 'My Documents' })
+useHead({
+  meta: [
+    {
+      name: 'description',
+      content: 'View and manage all documents you have submitted for AI validation.'
+    }
+  ]
+})
 import { ref, computed, onMounted, watch } from 'vue';
 import { useDocumentStore } from '~/stores/document';
 import ConfirmModal from '~/components/ConfirmModal.vue';

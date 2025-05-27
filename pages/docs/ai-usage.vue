@@ -317,4 +317,12 @@
 
 <script setup>
 definePageMeta({ title: 'AI Usage Guide' })
+useHead({
+  meta: [
+    {
+      name: 'description',
+      content: 'Guidelines on acceptable AI usage and best practices when creating documents.'
+    }
+  ]
+})
 </script>

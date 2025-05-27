@@ -23,4 +23,12 @@ definePageMeta({
   layout: false,
   title: '404 – Page not found'
 })
+useHead({
+  meta: [
+    {
+      name: 'description',
+      content: 'The page you are looking for could not be found.'
+    }
+  ]
+})
 </script>

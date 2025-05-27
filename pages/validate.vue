@@ -39,19 +39,19 @@
           <h2 class="text-2xl font-bold mb-6">How It Works</h2>
           
           <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-blue-500">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-blue-500 transition-transform hover:-translate-y-1 hover:shadow-lg">
               <div class="text-blue-600 text-4xl font-bold mb-4">1</div>
               <h3 class="text-xl dark:text-gray-300 font-semibold mb-3">Upload Your Document</h3>
               <p class="text-gray-600 dark:text-gray-300">Upload your PDF document to our secure platform for analysis.</p>
             </div>
             
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-blue-500">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-blue-500 transition-transform hover:-translate-y-1 hover:shadow-lg">
               <div class="text-blue-600 text-4xl font-bold mb-4">2</div>
               <h3 class="text-xl dark:text-gray-300 font-semibold mb-3">AI Analysis</h3>
               <p class="text-gray-600 dark:text-gray-300">Our advanced algorithm analyzes your document for AI-generated content.</p>
             </div>
             
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-blue-500">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-blue-500 transition-transform hover:-translate-y-1 hover:shadow-lg">
               <div class="text-blue-600 text-4xl font-bold mb-4">3</div>
               <h3 class="text-xl dark:text-gray-300 font-semibold mb-3">Get Your Results</h3>
               <p class="text-gray-600 dark:text-gray-300">Receive a detailed report and certificate of verification for your document.</p>
@@ -64,22 +64,22 @@
           <h2 class="text-2xl font-bold mb-6">Understanding AI Detection Levels</h2>
           
           <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-green-500">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-green-500 transition-transform hover:-translate-y-1 hover:shadow-lg">
               <h3 class="text-xl font-semibold mb-3 text-green-600">Level 1: Clean</h3>
               <p class="text-gray-600 dark:text-gray-300 mb-4">No AI detected. The document appears to be entirely human-created.</p>
               <div class="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 px-3 py-1 rounded-full text-sm inline-block">Fully Authentic</div>
             </div>
             
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-yellow-500">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-yellow-500 transition-transform hover:-translate-y-1 hover:shadow-lg">
               <h3 class="text-xl font-semibold mb-3 text-yellow-600">Level 2: AI-Supported</h3>
               <p class="text-gray-600 dark:text-gray-300 mb-4">Document shows signs of AI assistance, but with significant human input.</p>
               <div class="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300 px-3 py-1 rounded-full text-sm inline-block">Partially AI-Generated</div>
             </div>
             
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-red-500">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-t-4 border-red-500 transition-transform hover:-translate-y-1 hover:shadow-lg">
               <h3 class="text-xl font-semibold mb-3 text-red-600">Level 3: AI-Generated</h3>
               <p class="text-gray-600 dark:text-gray-300 mb-4">Document appears to be primarily AI-generated with minimal human editing.</p>
-              <div class="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 px-3 py-1 rounded-full text-sm inline-block">AI Ripoff</div>
+              <div class="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 px-3 py-1 rounded-full text-sm inline-block">AI-Generated</div>
             </div>
           </div>
         </div>
@@ -90,6 +90,14 @@
 
 <script setup>
 definePageMeta({ title: 'Validate Document' })
+useHead({
+  meta: [
+    {
+      name: 'description',
+      content: 'Upload PDFs and receive a detailed AI analysis report with AI-Validator.'
+    }
+  ]
+})
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import FileUpload from '~/components/FileUpload.vue';

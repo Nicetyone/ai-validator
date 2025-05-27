@@ -53,11 +53,7 @@
                   </div>
                 </div>
               </div>
-              <div>
-                <span :class="getResultBadgeClass(document.result)" class="text-sm px-3 py-1 rounded-full">
-                  {{ document.result }}
-                </span>
-              </div>
+              <DocumentStatus :status="document.result" type="result" />
             </div>
           </div>
 
@@ -146,9 +142,11 @@
 </template>
 
 <script setup>
+definePageMeta({ title: 'Analysis Report' })
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useDocumentStore } from '~/stores/document';
+import DocumentStatus from '~/components/DocumentStatus.vue';
 
 const route = useRoute();
 const documentStore = useDocumentStore();
@@ -185,19 +183,6 @@ const formatDate = (date) => {
     month: 'long',
     day: 'numeric'
   });
-};
-
-// Get result badge class
-const getResultBadgeClass = (result) => {
-  if (result.includes('Clean')) {
-    return 'bg-green-100 text-green-800';
-  } else if (result.includes('AI-Supported')) {
-    return 'bg-yellow-100 text-yellow-800';
-  } else if (result.includes('AI-Generated')) {
-    return 'bg-red-100 text-red-800';
-  } else {
-    return 'bg-gray-100 text-gray-800';
-  }
 };
 
 // Get result text class

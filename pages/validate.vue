@@ -89,6 +89,7 @@
 </template>
 
 <script setup>
+definePageMeta({ title: 'Validate Document' })
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import FileUpload from '~/components/FileUpload.vue';

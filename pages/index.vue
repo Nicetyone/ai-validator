@@ -106,5 +106,5 @@
 </template>
 
 <script setup>
-// Home page functionality
+definePageMeta({ title: 'Home' })
 </script> 

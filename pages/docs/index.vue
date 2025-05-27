@@ -174,6 +174,7 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({ title: 'Documentation' })
 import { ref } from 'vue'
 
 const openItem = ref<number | null>(null)

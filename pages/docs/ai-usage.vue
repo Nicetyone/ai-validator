@@ -314,3 +314,7 @@
     </div>
   </div>
 </template> 
+
+<script setup>
+definePageMeta({ title: 'AI Usage Guide' })
+</script>

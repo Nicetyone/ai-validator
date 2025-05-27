@@ -64,7 +64,14 @@
         <h2 class="text-xl dark:text-gray-300 font-bold mb-4">Verify a Document</h2>
         <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
           <div class="flex-1">
-            <input 
+            <label
+              for="certificate-id"
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >
+              Certificate ID
+            </label>
+            <input
+              id="certificate-id"
               v-model="verificationId"
               placeholder="Enter certificate ID (e.g., ABCD-1234-EFGH-5678)"
               class="w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
@@ -157,16 +164,8 @@
               </div>
               
               <div class="mt-4 flex justify-between items-center">
-                <div>
-                  <span :class="getStatusClass(doc.status)" class="text-xs px-2 py-1 rounded-full">
-                    {{ doc.status }}
-                  </span>
-                </div>
-                <div>
-                  <span :class="getResultClass(doc.result)" class="text-xs px-2 py-1 rounded-full">
-                    {{ doc.result }}
-                  </span>
-                </div>
+                <DocumentStatus :status="doc.status" />
+                <DocumentStatus :status="doc.result" type="result" />
               </div>
               
               <div v-if="doc.certificateId" class="mt-2">
@@ -263,11 +262,13 @@
 </template>
 
 <script setup>
+definePageMeta({ title: 'My Documents' })
 import { ref, computed, onMounted, watch } from 'vue';
 import { useDocumentStore } from '~/stores/document';
 import ConfirmModal from '~/components/ConfirmModal.vue';
 import { useToast } from '~/composables/useToast'
 import StyledSelect from '~/components/StyledSelect.vue';
+import DocumentStatus from '~/components/DocumentStatus.vue';
 
 const documentStore = useDocumentStore();
 const isLoading = ref(true);
@@ -329,35 +330,6 @@ const formatDate = (date) => {
     month: 'short',
     day: 'numeric'
   });
-};
-
-// Get status class for styling
-const getStatusClass = (status) => {
-  const classes = 'inline-flex text-xs leading-5 font-semibold ';
-  switch (status) {
-    case 'Complete':
-      return classes + 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-    case 'Processing':
-      return classes + 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
-    case 'Failed':
-      return classes + 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-    default:
-      return classes + 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
-  }
-};
-
-// Get result class for styling
-const getResultClass = (result) => {
-  const classes = 'inline-flex text-xs leading-5 font-semibold ';
-  if (result.includes('Clean')) {
-    return classes + 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-  } else if (result.includes('AI-Supported')) {
-    return classes + 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
-  } else if (result.includes('AI-Generated')) {
-    return classes + 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-  } else {
-    return classes + 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
-  }
 };
 
 // Apply filters

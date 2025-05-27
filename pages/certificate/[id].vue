@@ -61,12 +61,7 @@
               <!-- Result -->
               <div class="mb-8 text-center">
                 <div class="text-lg font-semibold mb-2">Has been analyzed and classified as:</div>
-                <div 
-                  class="text-3xl font-bold inline-block px-6 py-3 rounded-lg"
-                  :class="getResultClass(document.result)"
-                >
-                  {{ document.result }}
-                </div>
+                <DocumentStatus :status="document.result" type="result" class="text-3xl px-6 py-3" />
               </div>
               
               <!-- Score -->
@@ -157,9 +152,11 @@
 </template>
 
 <script setup>
+definePageMeta({ title: 'Certificate' })
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useDocumentStore } from '~/stores/document';
+import DocumentStatus from '~/components/DocumentStatus.vue';
 
 const route = useRoute();
 const documentStore = useDocumentStore();
@@ -197,19 +194,6 @@ const formatDate = (date) => {
     month: 'long',
     day: 'numeric'
   });
-};
-
-// Get result class
-const getResultClass = (result) => {
-  if (result.includes('Clean')) {
-    return 'bg-green-100 text-green-800 border border-green-300';
-  } else if (result.includes('AI-Supported')) {
-    return 'bg-yellow-100 text-yellow-800 border border-yellow-300';
-  } else if (result.includes('AI-Generated')) {
-    return 'bg-red-100 text-red-800 border border-red-300';
-  } else {
-    return 'bg-gray-100 text-gray-800 border border-gray-300';
-  }
 };
 
 // Get result text class

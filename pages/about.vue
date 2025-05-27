@@ -78,5 +78,5 @@
 </template>
 
 <script setup>
-// About page functionality
+definePageMeta({ title: 'About' })
 </script> 
